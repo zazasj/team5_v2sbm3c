@@ -1,3 +1,2 @@
-![team5erd](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/cab09d1e-2d97-4456-8184-708c04fe5318)
-
-11월 8일 대면 회의 시간에 공통적으로 함께 만들었기 때문에 인원별 색구별은 하지않았습니다.
+![team5논리적](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/a18ca4f6-073b-45e4-a85c-29ed486ed24a)
+![team5물리적](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/b4651bdf-8a3d-4a5b-9986-bbbd6d4a64f6)
