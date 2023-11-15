@@ -1,4 +1,5 @@
-![team5논리적](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/3e69ba12-fe24-4c02-9b62-ac3826b85fc3)
+# DB Logical ERD Table
+![bb](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/4335d234-a957-4ab5-b93f-20aa28c36071)
 
-
-![team5물리적](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/c4a19acb-4c93-4b48-8e0f-f948ed7e56be)
+# DB Physical ERD Table
+![aa](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/47407f0d-41a9-40e8-8a6d-046ba3d87329)
