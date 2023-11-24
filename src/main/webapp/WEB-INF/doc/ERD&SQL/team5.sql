@@ -31,56 +31,62 @@ commit;
 
 SELECT * FROM admin ORDER BY adminno ASC;
 
-/**********************************/
-/* Table Name: 사용자 테이블 */
-/**********************************/
-DROP TABLE Users CASCADE CONSTRAINTS;
 
-CREATE TABLE Users(
-		UserID NUMERIC(10) PRIMARY KEY,
-		Username VARCHAR(100) NOT NULL,
-		Password VARCHAR(100) NOT NULL,
-		Email VARCHAR(100),
-		Age INT NOT NULL,
-		Address VARCHAR(255) NOT NULL,
-		PhoneNumber VARCHAR(50) NOT NULL,
-        CreatedAt  DATE NOT NULL
+/**********************************/
+/* Table Name: 회원 테이블 */
+/**********************************/
+DROP TABLE Member CASCADE CONSTRAINTS;
+
+CREATE TABLE Member(
+		memberno NUMERIC(10) NOT NULL PRIMARY KEY,
+		id VARCHAR(50) NOT NULL,
+		passwd VARCHAR(100) NOT NULL,
+		mname VARCHAR(100) NOT NULL,
+		tel VARCHAR(20),
+		Age INT,
+		address1 VARCHAR(200),
+		address2 VARCHAR(100),
+		mdate DATE NOT NULL,
+		grade NUMERIC(2) NOT NULL
 );
 
-DROP SEQUENCE USERS_SEQ;
+DROP SEQUENCE MEMBER_SEQ;
 
-CREATE SEQUENCE USERS_SEQ
+CREATE SEQUENCE MEMBER_SEQ
   START WITH 1              -- 시작 번호
   INCREMENT BY 1            -- 증가값
   MAXVALUE 9999999999            -- 최대값: 9999999999 --> NUMBER(10) 대응
   CACHE 2                   -- 2번은 메모리에서만 계산
   NOCYCLE;                  -- 다시 1부터 생성되는 것을 방지
 
-INSERT INTO Users(UserID, Username, Password, Email, Age, Address,PhoneNumber,CreatedAt)
-VALUES(users_seq.nextval, 'user1', '1234', 'user1@naver.com',24,'경기도 안양시','01099887766', sysdate);
+INSERT INTO Member(memberno, id, passwd,mname,tel, Age, address1,mdate,grade)
+VALUES(member_seq.nextval, 'user1@naver.com', '1234','회원1','01099887766',24,'경기도 안양시', sysdate,1);
 
-INSERT INTO Users(UserID, Username, Password, Email, Age, Address,PhoneNumber,CreatedAt)
-VALUES(users_seq.nextval, 'user2', '1234', 'user2@naver.com',24,'경기도 수원시','01038384848' ,sysdate);
+INSERT INTO Member(memberno, id, passwd,mname,tel, Age, address1,mdate,grade)
+VALUES(member_seq.nextval, 'user2@gmail.com', '1234','회원2','01038384848',26,'경기도 수원시', sysdate,1);
 
 commit;
 
-SELECT * FROM Users ORDER BY UserID ASC;
+SELECT * FROM Member ORDER BY memberno ASC;
 
 
 /**********************************/
 /* Table Name: 주문 */
 /**********************************/
+DROP TABLE Orders CASCADE CONSTRAINTS;
 CREATE TABLE Orders(
 		OrderID  NUMERIC(10) PRIMARY KEY,
-		UserID NUMERIC(10),
+		memberno NUMERIC(10),
 		OrderDate DATE,
-		TotalAmount VARCHAR(100),
+		TotalAmount NUMERIC(20),
 		Status VARCHAR(50),
-  FOREIGN KEY (UserID) REFERENCES Users (UserID)
+  FOREIGN KEY (memberno) REFERENCES Member (memberno)
 );
 
 UPDATE Orders SET TotalAmount = NULL;
 ALTER TABLE Orders MODIFY TotalAmount NUMERIC(20);
+
+DROP SEQUENCE ORDERS_SEQ;
 
 CREATE SEQUENCE ORDERS_SEQ
   START WITH 1              -- 시작 번호
@@ -89,8 +95,8 @@ CREATE SEQUENCE ORDERS_SEQ
   CACHE 2                   -- 2번은 메모리에서만 계산
   NOCYCLE;                  -- 다시 1부터 생성되는 것을 방지
 
-INSERT INTO Orders(OrderID, UserID, OrderDate, TotalAmount, Status)
-VALUES(orders_seq.nextval, 1, sysdate, '100000','대기중');
+INSERT INTO Orders(OrderID, memberno, OrderDate, TotalAmount, Status)
+VALUES(orders_seq.nextval, 1, sysdate, '0','대기중');
 
 UPDATE Orders SET TotalAmount='99000' WHERE OrderID=1;
 
@@ -403,12 +409,12 @@ SELECT * FROM OrderDetails;
 /**********************************/
 CREATE TABLE Carts(
 		CartID NUMERIC(10) PRIMARY KEY,
+        memberno NUMERIC(10),
 		CreatedAt DATETIME,
 		cnt NUMERIC(10),
-		ProductID NUMERIC(10),
-		Userno NUMERIC(10),
+		ProductID NUMERIC(10),		
   FOREIGN KEY (ProductID) REFERENCES Products (ProductID),
-  FOREIGN KEY (Userno) REFERENCES Users (Userno)
+  FOREIGN KEY (memberno) REFERENCES Member (memberno)
 );
 
 CREATE SEQUENCE CARTS_SEQ
@@ -423,13 +429,13 @@ CREATE SEQUENCE CARTS_SEQ
 /**********************************/
 CREATE TABLE Reviews(
 		ReviewID NUMERIC(10) PRIMARY KEY,
+        memberno NUMERIC(10),
 		ProductID NUMERIC(10),
 		Rating NUMERIC(3),
 		Comment VARCHAR(300),
-		ReviewDate DATETIME,
-		Userno NUMERIC(10),
+		ReviewDate DATETIME,		
   FOREIGN KEY (ProductID) REFERENCES Products (ProductID),
-  FOREIGN KEY (Userno) REFERENCES Users (Userno)
+  FOREIGN KEY (memberno) REFERENCES Member (memberno)
 );
 
 CREATE SEQUENCE REVIEWS_SEQ
@@ -538,10 +544,10 @@ CREATE SEQUENCE EVENT_SEQ
 CREATE TABLE FavProduct(
 		FavID NUMERIC(10),
 		ProductID NUMERIC(10),
-		Userno NUMERIC(10),
+		memberno NUMERIC(10),
 		CreatedAt DATE,
   FOREIGN KEY (ProductID) REFERENCES Products (ProductID),
-  FOREIGN KEY (Userno) REFERENCES Users (Userno)
+  FOREIGN KEY (memberno) REFERENCES Member (memberno)
 );
 
 CREATE SEQUENCE FAV_SEQ
@@ -556,7 +562,7 @@ CREATE SEQUENCE FAV_SEQ
 CREATE TABLE Payments(
 		PaymentID NUMERIC(10) PRIMARY KEY,
 		OrderID  NUMERIC(10),
-		Userno NUMERIC(10),
+		memberno NUMERIC(10) NOT NULL,
 		PaymentMethod INT,
 		PaymentAmount INT,
 		PaymentStatus VARCHAR(50),
@@ -564,7 +570,7 @@ CREATE TABLE Payments(
 		AuthorizationCode VARCHAR(100),
 		PaymentDetails VARCHAR(500),
   FOREIGN KEY (OrderID ) REFERENCES Orders (OrderID ),
-  FOREIGN KEY (Userno) REFERENCES Users (Userno)
+  FOREIGN KEY (memberno) REFERENCES Member (memberno)
 );
 CREATE SEQUENCE PAYMENTS_SEQ
   START WITH 1              -- 시작 번호
