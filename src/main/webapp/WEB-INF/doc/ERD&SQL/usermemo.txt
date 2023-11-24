@@ -1,0 +1,92 @@
+
+[01] 회원 탈퇴
+
+CREATE TABLE member (
+  memberno NUMBER(10) NOT NULL, -- 회원 번호, 레코드를 구분하는 컬럼 
+  id         VARCHAR(30)   NOT NULL UNIQUE, -- 이메일(아이디), 중복 안됨, 레코드를 구분 
+  passwd     VARCHAR(60)   NOT NULL, -- 패스워드, 영숫자 조합
+  mname      VARCHAR(30)   NOT NULL, -- 성명, 한글 10자 저장 가능
+  tel         VARCHAR(14)       NULL, -- 전화번호
+  zipcode     VARCHAR(5)        NULL, -- 우편번호, 12345
+  address1    VARCHAR(80)       NULL, -- 주소 1
+  address2    VARCHAR(50)       NULL, -- 주소 2
+  mdate       DATE             NOT NULL, -- 가입일    
+  grade        NUMBER(2)     NOT NULL, -- 등급(1~10: 관리자, 11~20: 회원, 40~49: 정지 회원, 99: 탈퇴 회원)
+  PRIMARY KEY (memberno)               -- 한번 등록된 값은 중복 안됨
+);
+
+① 회원 탈퇴를 하면 grade 컬럼의 값을 99로 UPDATE 처리합니다.
+
+
+
+[02] 로그인시 탈퇴 회원인지 확인후 로그인 처리
+
+1) 로그인시 정지 회원이지 확인
+SELECT COUNT(*) as cnt 
+FROM member
+WHERE id='user1@gmail.com' AND grade >= 40 AND grade <= 49;
+
+       CNT
+----------
+         0  <- 정지 회원 아님
+
+2) 로그인시 탈퇴한 회원이지 확인
+SELECT COUNT(*) as cnt 
+FROM member
+WHERE id='user1@gmail.com' AND grade = 99;
+
+       CNT
+----------
+         0  <- 탈퇴 회원 아님
+
+Controller에서 정지 회원 갯수도 0이고 탈퇴 회원 갯수도 0일 경우 로그인 처리입니다. 
+
+
+3) Controller 처리
+mav.addObject("code", "grade_99");
+mav.addObject("url", "/member/msg");  // /member/msg -> /member/msg.jsp
+mav.setViewName("redirect:/member/msg.do"); // POST -> GET -> /member/msg.jsp
+
+mav.addObject("code", "grade_39");
+mav.addObject("url", "/member/msg");  // /member/msg -> /member/msg.jsp
+mav.setViewName("redirect:/member/msg.do"); // POST -> GET -> /member/msg.jsp
+
+
+
+
+
+package dev.mvc.user;
+
+  /**
+   * Cookie 기반 로그인 처리
+   * @param request Cookie를 읽기위해 필요
+   * @param response Cookie를 쓰기위해 필요
+   * @param session 로그인 정보를 메모리에 기록
+   * @param id  회원 아이디
+   * @param passwd 회원 패스워드
+   * @param id_save 회원 아이디 Cookie에 저장 여부
+   * @param passwd_save 패스워드 Cookie에 저장 여부
+   * @return
+   */
+   // http://localhost:9091/member/login.do 
+   @RequestMapping(value = "/member/login.do", 
+                             method = RequestMethod.POST)
+   public ModelAndView login_cookie_proc(
+                             HttpServletRequest request,
+                             HttpServletResponse response,
+                             HttpSession session,
+                             String id,
+                             String passwd,
+                             @RequestParam(value="id_save", defaultValue="") String id_save,
+                             @RequestParam(value="passwd_save", defaultValue="") String passwd_save) {
+     
+     // client ip
+     String ip=request.getRemoteAddr();
+     System.out.println("-> ip: " + ip); // 자기자신은 0.0.0.0 으로 출력되고 외부 접속은 정상적으로 ip가 나옴
+     
+     ModelAndView mav = new ModelAndView();
+     HashMap<String, Object> map = new HashMap<String, Object>();
+     map.put("id", id);
+     map.put("passwd", passwd);
+
+

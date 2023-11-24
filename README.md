@@ -1,5 +1,5 @@
 # DB Logical ERD Table
-![bb](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/4335d234-a957-4ab5-b93f-20aa28c36071)
+![d1d1](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/f6e2e13a-3cb2-44c4-8939-3c216ddbb184)
 
 # DB Physical ERD Table
-![aa](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/47407f0d-41a9-40e8-8a6d-046ba3d87329)
+![c1c1](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/304a969d-2e67-4d61-ba62-717e54862b90)

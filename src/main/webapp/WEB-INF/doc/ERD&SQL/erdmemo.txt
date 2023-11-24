@@ -2,3 +2,6 @@
 Admin 관련 로그 테이블을 만들어서 모든 테이블과 연관 . 
 카테고리를 세분화한 세부 카테고리 .
 재고와 공급업체 디테일 추가. 
+
+
+mail_sender : xvtb dbim rlba dzll

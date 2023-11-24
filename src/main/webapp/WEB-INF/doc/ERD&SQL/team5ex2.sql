@@ -11,17 +11,20 @@ CREATE TABLE Admin(
 );
 
 /**********************************/
-/* Table Name: 사용자 테이블 */
+/* Table Name: 회원 테이블 */
 /**********************************/
-CREATE TABLE Users(
-		Userno NUMERIC(10) PRIMARY KEY,
-		UserID NUMERIC(10),
-		Username VARCHAR(100),
-		Password VARCHAR(100),
+CREATE TABLE Member(
+		memberno NUMERIC(10) NOT NULL PRIMARY KEY,
+		id NUMERIC(10) NOT NULL,
+		passwd VARCHAR(100) NOT NULL,
+		mname VARCHAR(100) NOT NULL,
+		tel VARCHAR(20),
 		Email VARCHAR(100),
 		Age INT,
-		Address VARCHAR(255),
-		PhoneNumber VARCHAR(20)
+		address1 VARCHAR(255),
+		address2 INT,
+		mdate DATE NOT NULL,
+		grade NUMERIC(2) NOT NULL
 );
 
 /**********************************/
@@ -32,8 +35,8 @@ CREATE TABLE Orders(
 		OrderDate DATETIME,
 		TotalAmount VARCHAR(100),
 		Status VARCHAR(50),
-		Userno NUMERIC(10),
-  FOREIGN KEY (Userno) REFERENCES Users (Userno)
+		memberno NUMERIC(10),
+  FOREIGN KEY (memberno) REFERENCES Member (memberno)
 );
 
 /**********************************/
@@ -114,9 +117,9 @@ CREATE TABLE Carts(
 		CreatedAt DATETIME,
 		cnt NUMERIC(10),
 		ProductID NUMERIC(10),
-		Userno NUMERIC(10),
+		memberno NUMERIC(10),
   FOREIGN KEY (ProductID) REFERENCES Products (ProductID),
-  FOREIGN KEY (Userno) REFERENCES Users (Userno)
+  FOREIGN KEY (memberno) REFERENCES Member (memberno)
 );
 
 /**********************************/
@@ -128,16 +131,16 @@ CREATE TABLE Reviews(
 		Rating NUMERIC(3),
 		Comment VARCHAR(300),
 		ReviewDate DATETIME,
-		Userno NUMERIC(10),
+		memberno NUMERIC(10),
   FOREIGN KEY (ProductID) REFERENCES Products (ProductID),
-  FOREIGN KEY (Userno) REFERENCES Users (Userno)
+  FOREIGN KEY (memberno) REFERENCES Member (memberno)
 );
 
 /**********************************/
 /* Table Name: 재고 */
 /**********************************/
 CREATE TABLE Inventory(
-		InventoryID VARCHAR(10) PRIMARY KEY,
+		InventoryID NUMERIC(10) PRIMARY KEY,
 		ProductID NUMERIC(10),
 		Quantity NUMERIC(10),
 		LastUpdated DATETIME,
@@ -161,13 +164,13 @@ CREATE TABLE Shipping(
 /* Table Name: 챗봇 */
 /**********************************/
 CREATE TABLE ChatbotSessions(
-		SessionID INT PRIMARY KEY,
-		Userno NUMERIC(10),
+		SessionID NUMERIC(10) PRIMARY KEY,
 		SessionStart DATETIME,
 		SessionEnd DATETIME,
 		UserQuery VARCHAR(500),
 		BotResponse VARCHAR(500),
-  FOREIGN KEY (Userno) REFERENCES Users (Userno)
+		memberno NUMERIC(10),
+  FOREIGN KEY (memberno) REFERENCES Member (memberno)
 );
 
 /**********************************/
@@ -175,19 +178,54 @@ CREATE TABLE ChatbotSessions(
 /**********************************/
 CREATE TABLE Recommendations(
 		RID NUMERIC(10) PRIMARY KEY,
-		UserID NUMERIC(10),
 		ProductID NUMERIC(10),
 		CreatedAt DATETIME,
 		Userno NUMERIC(10),
+		memberno NUMERIC(10),
   FOREIGN KEY (ProductID) REFERENCES Products (ProductID),
-  FOREIGN KEY (Userno) REFERENCES Users (Userno)
+  FOREIGN KEY (memberno) REFERENCES Member (memberno)
+);
+
+/**********************************/
+/* Table Name: 황경태 */
+/**********************************/
+CREATE TABLE 황경태(
+
+);
+
+/**********************************/
+/* Table Name: 한창명 */
+/**********************************/
+CREATE TABLE 한창명(
+
+);
+
+/**********************************/
+/* Table Name: 전세진 */
+/**********************************/
+CREATE TABLE 전세진(
+
+);
+
+/**********************************/
+/* Table Name: 이정탁 */
+/**********************************/
+CREATE TABLE 이정탁(
+
+);
+
+/**********************************/
+/* Table Name: 홍재민 */
+/**********************************/
+CREATE TABLE 홍재민(
+
 );
 
 /**********************************/
 /* Table Name: 이벤트 */
 /**********************************/
 CREATE TABLE Event(
-		eventno NUMERIC(10),
+		eventno NUMERIC(10) NOT NULL PRIMARY KEY,
 		title VARCHAR(50),
 		contents VARCHAR(2000),
 		thumbs VARCHAR(1000),
@@ -204,27 +242,27 @@ CREATE TABLE Event(
 CREATE TABLE FavProduct(
 		FavID NUMERIC(10),
 		ProductID NUMERIC(10),
-		Userno NUMERIC(10),
 		CreatedAt DATE,
+		memberno NUMERIC(10),
   FOREIGN KEY (ProductID) REFERENCES Products (ProductID),
-  FOREIGN KEY (Userno) REFERENCES Users (Userno)
+  FOREIGN KEY (memberno) REFERENCES Member (memberno)
 );
 
 /**********************************/
 /* Table Name: 결제 */
 /**********************************/
 CREATE TABLE Payments(
-		PaymentID NUMERIC(10) PRIMARY KEY,
-		OrderID  NUMERIC(10),
-		Userno NUMERIC(10),
-		PaymentMethod INT,
-		PaymentAmount INT,
+		PaymentID NUMERIC(10) NOT NULL PRIMARY KEY,
+		OrderID  NUMERIC(10) NOT NULL,
+		memberno NUMERIC(10) NOT NULL,
+		PaymentMethod VARCHAR(100) NOT NULL,
+		PaymentAmount VARCHAR(100) NOT NULL,
 		PaymentStatus VARCHAR(50),
-		COLUMN_5 DATE,
+		PaymentDate DATE,
 		AuthorizationCode VARCHAR(100),
 		PaymentDetails VARCHAR(500),
   FOREIGN KEY (OrderID ) REFERENCES Orders (OrderID ),
-  FOREIGN KEY (Userno) REFERENCES Users (Userno)
+  FOREIGN KEY (memberno) REFERENCES Member (memberno)
 );
 
 /**********************************/
@@ -238,5 +276,16 @@ CREATE TABLE AdminLog(
 		ActDate DATE,
 		Adminno NUMERIC(5),
   FOREIGN KEY (Adminno) REFERENCES Admin (Adminno)
+);
+
+/**********************************/
+/* Table Name: 로그인 내역 */
+/**********************************/
+CREATE TABLE Login(
+		loginno NUMERIC(10) NOT NULL PRIMARY KEY,
+		memberno NUMERIC(10),
+		ip NUMERIC(10) NOT NULL,
+		logindate DATE NOT NULL,
+  FOREIGN KEY (memberno) REFERENCES Member (memberno)
 );
 

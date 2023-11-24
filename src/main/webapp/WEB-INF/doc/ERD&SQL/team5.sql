@@ -252,14 +252,17 @@ SELECT * FROM Category;
 /**********************************/
 /* Table Name: 공급업체 */
 /**********************************/
+DROP TABLE Suppliers CASCADE CONSTRAINTS;
 CREATE TABLE Suppliers(
 		SupplierID NUMERIC(10) PRIMARY KEY,
+        Adminno    NUMBER(5),
 		SName VARCHAR(100) NOT NULL,
 		ContactInfo VARCHAR(200) NOT NULL,
 		SAddress VARCHAR(200) NOT NULL,
-        Rdate DATE
+        Rdate DATE,
+        FOREIGN KEY (Adminno) REFERENCES Admin (Adminno)
 );
-
+DROP SEQUENCE SUPPLY_SEQ;
 CREATE SEQUENCE SUPPLY_SEQ
   START WITH 1              -- 시작 번호
   INCREMENT BY 1            -- 증가값
@@ -268,11 +271,11 @@ CREATE SEQUENCE SUPPLY_SEQ
   NOCYCLE;                  -- 다시 1부터 생성되는 것을 방지
 
 
-INSERT INTO Suppliers(SupplierID, SName, ContactInfo, SAddress, Rdate)
-VALUES(supply_seq.nextval, '[주]세진컴퍼니' , '연락처 : 010-1234-5678 이메일: abcd123@naver.com', '경기도 수원시' , sysdate);
+INSERT INTO Suppliers(SupplierID, Adminno, SName, ContactInfo, SAddress, Rdate)
+VALUES(supply_seq.nextval,1, '[주]주류사업장' , '연락처 : 010-1234-5678 이메일: abcd123@naver.com', '경기도 수원시' , sysdate);
 
-INSERT INTO Suppliers(SupplierID, SName, ContactInfo, SAddress, Rdate)
-VALUES(supply_seq.nextval, '공식 주류 특판장' , '연락처 : 010-1111-2233 이메일: abcd123@naver.com', '서울시 강남구' , sysdate);
+INSERT INTO Suppliers(SupplierID, Adminno, SName, ContactInfo, SAddress, Rdate)
+VALUES(supply_seq.nextval,1, '공식 주류 특판장', '연락처 : 010-1111-2233 이메일: abcd123@naver.com', '서울시 강남구' , sysdate);
 
 SELECT * FROM Suppliers;
 /**********************************/
@@ -441,9 +444,11 @@ CREATE SEQUENCE REVIEWS_SEQ
 CREATE TABLE Inventory(
 		InventoryID VARCHAR(10) PRIMARY KEY,
 		ProductID NUMERIC(10),
+        SupplierID NUMERIC(10),
 		Quantity NUMERIC(10),
 		LastUpdated DATETIME,
-  FOREIGN KEY (ProductID) REFERENCES Products (ProductID)
+  FOREIGN KEY (ProductID) REFERENCES Products (ProductID),
+  FOREIGN KEY (SupplierID) REFERENCES Suppliers (SupplierID)
 );
 CREATE SEQUENCE INVEN_SEQ
   START WITH 1              -- 시작 번호
