@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="dev.mvc.category.CategoryDAOInter">
+
+  <!-- return : 등록한 레코드 갯수를 1을 리턴, parameterType : 전달받는 데이터 -->
+  <insert id="create" parameterType="dev.mvc.movieb.MoviebVO">
+    INSERT INTO category(categoryID, name, cnt, rdate) VALUES(movieb_seq.nextval, #{name}, 0, sysdate)
+  </insert>
+  
+  <!-- 출력 모드 적용 -->
+  <select id="list_all" resultType="dev.mvc.movieb.MoviebVO">
+    SELECT categoryID, name, cnt, rdate, seqno, visible FROM category ORDER BY seqno ASC
+  </select>
+  
+    <!-- 비회원/회원 SELECT LIST -->
+  <select id="list_all_y" resultType="dev.mvc.movieb.MoviebVO">
+    SELECT categoryID, name, cnt, rdate, seqno, visible 
+    FROM category 
+    WHERE visible='Y'
+    ORDER BY seqno ASC
+  </select>
+  
+  <!-- 읽기, SQL -> CateVo return -->
+  <select id="read" resultType="dev.mvc.movieb.MoviebVO" parameterType="int">
+    SELECT categoryID, name, cnt, rdate FROM category WHERE categoryID = #{categoryID}
+  </select>
+  
+  <!-- return : 수정한 레코드 갯수를 1을 리턴, parameterType : 수정할 레코드 정보 -->
+  <update id="update" parameterType="dev.mvc.movieb.MoviebVO">
+    UPDATE category SET name = #{name}, cnt = #{cnt} WHERE categoryID = #{categoryID}
+  </update>
+  
+    <!-- return : 삭제된 레코드 갯수 리턴, parameterType : 삭제할 레코드 정보 -->
+  <delete id="delete" parameterType="int">
+    DELETE FROM category WHERE categoryID = #{categoryID}
+  </delete>
+  
+    <!-- 우선 순위 높임, 10 등 -> 1 등 -->
+  <update id="update_seqno_forward" parameterType="int">
+    UPDATE category SET seqno = seqno - 1 WHERE categoryID=#{categoryID}
+  </update>
+
+  <!-- 우선 순위 낮춤, 1 등 -> 10 등 -->
+  <update id="update_seqno_backward" parameterType="int">
+    UPDATE category SET seqno = seqno + 1 WHERE categoryID=#{categoryID}
+  </update>
+  
+  <!-- 카테고리 공개 설정 -->
+  <update id="update_visible_y" parameterType="int">
+    UPDATE category SET visible='Y' WHERE categoryID=#{categoryID}
+  </update>
+  
+  <!-- 카테고리 비공개 설정 -->
+  <update id="update_visible_n" parameterType="int">
+    UPDATE category SET visible='N' WHERE categoryID=#{categoryID}
+  </update>
+
+</mapper>
