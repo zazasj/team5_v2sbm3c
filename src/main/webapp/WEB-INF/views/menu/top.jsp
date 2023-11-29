@@ -48,11 +48,11 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav mr-auto">
             <%-- 게시판 목록 출력 --%>
-            <c:forEach var="categoryVO" items="${list_top}">
-              <c:set var="categoryID" value="${categoryVO.categoryID }" />
-              <c:set var="name" value="${categoryVO.name }" />
+            <c:forEach var="cateGroupVO" items="${list_top}">
+              <c:set var="GrpID" value="${cateGroupVO.GrpID }" />
+              <c:set var="name" value="${cateGroupVO.name }" />
               <li class="nav-item"> <%-- 서브 메뉴가 없는 독립메뉴 --%>
-                <a class="nav-link top_menu_link" href="/category/list_by_categoryID.do?categoryID=${categoryVO.categoryID }&now_page=1">${categoryVO.name }</a> 
+                <a class="nav-link top_menu_link" href="/category/list_by_GrpID.do?GrpID=${cateGroupVO.GrpID }&now_page=1">${cateGroupVO.name }</a> 
               </li>
             </c:forEach>
             
