@@ -17,7 +17,7 @@
 
 <div class='title_line'>카테고리그룹 등록</div>
 
-<form name='frm' method='post' action='/category/create.do'>
+<form name='frm' method='post' action='/cateGroup/create.do'>
     <div>
       <label>카테고리그룹 이름</label>
       <input type="text" name="name" value="" required="required" autofocus="autofocus" 

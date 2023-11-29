@@ -7,11 +7,13 @@ public class CateGroupVO {
   private String rdate;
   private int Seqno;
   private String Visible;
+  
+  
   public int getGrpID() {
     return GrpID;
   }
-  public void setGrpID(int grpID) {
-    GrpID = grpID;
+  public void setGrpID(int GrpID) {
+    this.GrpID = GrpID;
   }
   public String getGname() {
     return gname;
@@ -28,14 +30,14 @@ public class CateGroupVO {
   public int getSeqno() {
     return Seqno;
   }
-  public void setSeqno(int seqno) {
-    Seqno = seqno;
+  public void setSeqno(int Seqno) {
+    this.Seqno = Seqno;
   }
   public String getVisible() {
     return Visible;
   }
-  public void setVisible(String visible) {
-    Visible = visible;
+  public void setVisible(String Visible) {
+    this.Visible = Visible;
   }
   @Override
   public String toString() {

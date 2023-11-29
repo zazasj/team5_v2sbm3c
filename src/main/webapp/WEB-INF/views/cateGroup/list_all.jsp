@@ -42,7 +42,6 @@
     <colgroup>
       <col style="width: 10%;" />
       <col style="width: 45%;" />
-      <col style="width: 10%;" />
       <col style="width: 20%;" />
       <col style="width: 15%;" />
     </colgroup>
@@ -56,16 +55,16 @@
     </thead>
 
     <tbody>
-        <c:forEach var="categoryVO" items="${list }" varStatus="info">
-          <c:set var="categoryID" value="${cateGroupVO.GrpID }" />
+        <c:forEach var="cateGroupVO" items="${list }" varStatus="info">
+          <c:set var="GrpID" value="${cateGroupVO.grpID}" />
     
           <tr>
             <td class="td_bs">${info.count }</td>
-            <td><a href="../cateGroup/list_by_GrpID.do?GrpID=${GrpID }" style="display: block;">${cateGroupVO.gname }</a></td>
+            <td><a href="../cateGroup/list_by_GrpID.do?GrpID=${cateGroupVO.grpID }" style="display: block;">${cateGroupVO.gname }</a></td>
             <td class="td_bs">${cateGroupVO.rdate.substring(0, 10) }</td>
             <td class="td_bs">
               <c:choose>
-                <c:when test="${cateGroupVO.Visible == 'Y'}">
+                <c:when test="${cateGroupVO.visible == 'Y'}">
                   <a href="./update_visible_n.do?GrpID=${GrpID }" title="카테고리 공개 설정"><img src="/cateGroup/images/show.png" class="icon"></a>
                 </c:when>
                 <c:otherwise>

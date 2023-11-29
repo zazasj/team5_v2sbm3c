@@ -6,7 +6,7 @@ public interface CateGroupProcInter {
   
   /**
    * 등록, 추상메소드 -> Spring Boot이 구현함. 
-   * @param categoryVO 객체
+   * @param cateGroupVO 객체
    * @return
    */
   public int create(CateGroupVO cateGroupVO);
@@ -26,7 +26,7 @@ public interface CateGroupProcInter {
   
   /**
    * 수정
-   * @param categoryID
+   * @param GrpID
    * @return
    */
   public int update(CateGroupVO cateGroupVO);

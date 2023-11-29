@@ -26,7 +26,7 @@ String gname = cateGroupVO.getGname();
 
 <div id='panel_delete' style='padding: 10px 0px 10px 0px; background-color: #F9F9F9; width: 100%; text-align: center;'>
     <form name='frm_delete' id='frm_delete' method='POST' action='./delete.do'>
-      <input type="hidden" name="categoryID" value="<%=GrpID %>">
+      <input type="hidden" name="GrpID" value="<%=GrpID %>">
       
       <div class="msg_warning">카테고리를 삭제하면 복구 할 수 없습니다.</div>
       <label>카테고리그룹 이름</label>: <%=gname %>

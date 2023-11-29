@@ -18,14 +18,14 @@
 <div class='title_line'>카테고리 수정</div>
 
 <aside class="aside_right">
-  <a href="./create.do?GrpID=${cateGroupVO.GrpID }">등록</a>
+  <a href="./create.do?GrpID=${cateGroupVO.grpID }">등록</a>
   <span class='menu_divide' >│</span>
   <a href="javascript:location.reload();">새로고침</a>
 </aside>
 <div class="menu_line"></div> 
 
 <form name='frm' method='post' action='/cateGroup/update.do'>
-  <input type='hidden' name='GrpID' value='${cateGroupVO.GrpID }'>
+  <input type='hidden' name='GrpID' value='${cateGroupVO.grpID }'>
   <div style="text-align: center;">
     <label>카테고리그룹 이름</label>
     <input type="text" name="gname" value="${cateGroupVO.gname }" required="required" autofocus="autofocus" 
@@ -40,7 +40,6 @@
   <colgroup>
       <col style='width: 10%;'/>
       <col style='width: 40%;'/>
-      <col style='width: 10%;'/>    
       <col style='width: 20%;'/>
       <col style='width: 20%;'/>
     </colgroup>
@@ -53,19 +52,19 @@
       </tr>
     </thead>
     <tbody>
-      <c:forEach var="categoryVO" items="${list }" varStatus="info">
-        <c:set var="categoryID" value="${cateGroupVO.GrpID }" />
+      <c:forEach var="cateGroupVO" items="${list }" varStatus="info">
+        <c:set var="GrpID" value="${cateGroupVO.grpID }" />
   
         <tr>
           <td class="td_bs">${info.count }</td>
-          <td><a href="./read.do?GrpID=${GrpID }" style="display: block;">${categoryVO.name }</a></td>
+          <td><a href="./read.do?GrpID=${cateGroupVO.grpID }" style="display: block;">${cateGroupVO.gname }</a></td>
           <td class="td_bs">${cateGroupVO.rdate.substring(0, 10) }</td>
           <td class="td_bs">
             <img src="/cateGroup/images/show.png" class="icon">
-            <a href="./update_seqno_forward.do?GrpID=${GrpID }" title="우선 순위 높임"><img src="/cateGroup/images/decrease.png" class="icon"></a>
-            <a href="./update_seqno_backward.do?GrpID=${GrpID }" title="우선 순위 낮춤"><img src="/cateGroup/images/increase.png" class="icon"></a>
-            <a href="./update.do?GrpID=${GrpID }" title="수정"><img src="/cateGroup/images/update.png" class="icon"></a>
-            <a href="./delete.do?GrpID=${GrpID }" title="삭제"><img src="/cateGroup/images/delete.png" class="icon"></a>
+            <a href="./update_seqno_forward.do?GrpID=${cateGroupVO.grpID }" title="우선 순위 높임"><img src="/cateGroup/images/decrease.png" class="icon"></a>
+            <a href="./update_seqno_backward.do?GrpID=${cateGroupVO.grpID }" title="우선 순위 낮춤"><img src="/cateGroup/images/increase.png" class="icon"></a>
+            <a href="./update.do?GrpID=${cateGroupVO.grpID }" title="수정"><img src="/cateGroup/images/update.png" class="icon"></a>
+            <a href="./delete.do?GrpID=${cateGroupVO.grpID }" title="삭제"><img src="/cateGroup/images/delete.png" class="icon"></a>
           </td>
         </tr>
       </c:forEach>

@@ -36,9 +36,6 @@
 
 <div class='container_main'>
 
-
-  
-
   <nav class="navbar navbar-expand-md navbar-light bg-light">
       <a class="navbar-brand" href="/"><img src='/css/images/home.png' title="시작페이지" style='display: block; padding-left: 5px;'></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle Navigation">
@@ -48,16 +45,15 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav mr-auto">
             <%-- 게시판 목록 출력 --%>
-            <c:forEach var="cateGroupVO" items="${list_top}">
-              <c:set var="GrpID" value="${cateGroupVO.GrpID }" />
-              <c:set var="name" value="${cateGroupVO.name }" />
-              <li class="nav-item"> <%-- 서브 메뉴가 없는 독립메뉴 --%>
-                <a class="nav-link top_menu_link" href="/cateGroup/list_by_GrpID.do?GrpID=${cateGroupVO.GrpID }&now_page=1">${cateGroupVO.name }</a> 
-              </li>
+            <c:forEach var="cateGroupVO" items="${list_top }">
+            <c:set var="grpID" value="${cateGroupVO.grpID }" />
+            <c:set var="name" value="${cateGroupVO.gname }" />
+            <li class="nav-item">
+                <a class="nav-link top_menu_link" href="/cateGroup/read.do?GrpID=${cateGroupVO.grpID }">${cateGroupVO.gname }</a>
+            </li>
             </c:forEach>
-            
             <li class="nav-item"> <%-- 서브 메뉴가 없는 독립메뉴 --%>
-              <a class="nav-link top_menu_link" href="/category/list_all.do">전체 글 목록</a>
+              <a class="nav-link top_menu_link" href="/cateGroup/list_all.do">전체 글 목록</a>
             </li>
 
             <li class="nav-item dropdown"> <%-- 회원 서브 메뉴 --%>
@@ -90,7 +86,7 @@
                 <li class="nav-item dropdown"> <%-- 관리자 서브 메뉴 --%>
                   <a class="nav-link top_menu_link dropdown-toggle" data-bs-toggle="dropdown" href="#">관리자</a>
                   <div class="dropdown-menu">
-                    <a class="dropdown-item" href='/category/list_all.do'>카테고리 전체 목록</a>
+                    <a class="dropdown-item" href='/cateGroup/list_all.do'>카테고리그룹 전체 목록</a>
                     <a class="dropdown-item" href='/member/list.do'>회원 목록</a>
                     <a class="dropdown-item" href='/admin/logout.do'>관리자 ${sessionScope.admin_id } 로그아웃</a>
                   </div>

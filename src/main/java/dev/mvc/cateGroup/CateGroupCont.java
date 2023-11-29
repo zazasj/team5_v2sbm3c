@@ -22,8 +22,8 @@ public class CateGroupCont {
   private CateGroupProcInter cateGroupProc;
   
   @Autowired
-  @Qualifier("dev.mvc.admin.AdminProc") // "dev.mvc.admin.AdminProc"占쎌뵬�⑨옙 筌뤿굝梨몌옙留� 占쎄깻占쎌삋占쎈뮞
-  private AdminProcInter adminProc; // AdminProcInter�몴占� �뤃�뗭겱占쎈립 AdminProc 占쎄깻占쎌삋占쎈뮞占쎌벥 揶쏆빘猿쒐몴占� 占쎌쁽占쎈짗占쎌몵嚥∽옙 占쎄문占쎄쉐占쎈릭占쎈연 占쎈막占쎈뼣
+  @Qualifier("dev.mvc.admin.AdminProc")
+  private AdminProcInter adminProc;
   
   
   public CateGroupCont() {
