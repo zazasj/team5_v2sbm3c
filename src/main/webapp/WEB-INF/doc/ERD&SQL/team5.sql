@@ -603,3 +603,26 @@ CREATE SEQUENCE ADLOG_SEQ
   MAXVALUE 9999999999            -- 최대값: 9999999999 --> NUMBER(10) 대응
   CACHE 2                   -- 2번은 메모리에서만 계산
   NOCYCLE;                  -- 다시 1부터 생성되는 것을 방지
+
+/**********************************/
+/* Table Name: 로그인 내역 */
+/**********************************/
+DROP TABLE Login;
+
+CREATE TABLE Login(
+		loginno NUMERIC(10) NOT NULL PRIMARY KEY,
+		memberno NUMERIC(10),
+		ip VARCHAR(30) NOT NULL,
+		logindate DATE NOT NULL,
+  FOREIGN KEY (memberno) REFERENCES Member (memberno)
+);
+
+CREATE SEQUENCE LOGIN_SEQ
+  START WITH 1              -- 시작 번호
+  INCREMENT BY 1            -- 증가값
+  MAXVALUE 9999999999            -- 최대값: 9999999999 --> NUMBER(10) 대응
+  CACHE 2                   -- 2번은 메모리에서만 계산
+  NOCYCLE;                  -- 다시 1부터 생성되는 것을 방지
+
+SELECT * FROM Login;
+commit;
