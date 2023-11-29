@@ -4,12 +4,13 @@
 DROP TABLE Admin CASCADE CONSTRAINTS;
 
 CREATE TABLE Admin(
-        Adminno    NUMBER(5) NOT NULL PRIMARY KEY,
-		AdminID VARCHAR(20) NOT NULL UNIQUE,
-        Passwd VARCHAR(100) NOT NULL,
-		Adname VARCHAR(100) NOT NULL,
-		Email VARCHAR(50),
-		CreatedAt DATE NOT NULL
+        ADMINNO    NUMBER(5)    NOT NULL,
+        ID         VARCHAR(20)   NOT NULL UNIQUE, -- 아이디, 중복 안됨, 레코드를 구분 
+        PASSWD     VARCHAR(15)   NOT NULL, -- 패스워드, 영숫자 조합
+        MNAME      VARCHAR(20)   NOT NULL, -- 성명, 한글 10자 저장 가능
+        MDATE      DATE          NOT NULL, -- 가입일    
+        GRADE      NUMBER(2)     NOT NULL, -- 등급(1~10: 관리자, 정지 관리자: 20, 탈퇴 관리자: 99)    
+        PRIMARY KEY (ADMINNO) 
 );
 
 DROP SEQUENCE ADMIN_SEQ;
@@ -21,15 +22,18 @@ CREATE SEQUENCE ADMIN_SEQ
   CACHE 2                   -- 2번은 메모리에서만 계산
   NOCYCLE;                  -- 다시 1부터 생성되는 것을 방지
 
-INSERT INTO admin(Adminno, AdminID, Passwd, Adname, CreatedAt, Email)
-VALUES(admin_seq.nextval, 'admin1', '1234', '관리자1', sysdate, 'admin1@naver.com');
+INSERT INTO admin(adminno, id, passwd, mname, mdate, grade)
+VALUES(admin_seq.nextval, 'admin1', '1234', '관리자1', sysdate, 1);
 
-INSERT INTO admin(Adminno, AdminID, Passwd, Adname, CreatedAt, Email)
-VALUES(admin_seq.nextval, 'admin2', '1234', '관리자2', sysdate, 'admin2@naver.com');
+INSERT INTO admin(adminno, id, passwd, mname, mdate, grade)
+VALUES(admin_seq.nextval, 'admin2', '2345', '관리자2', sysdate, 1);
 
+INSERT INTO admin(adminno, id, passwd, mname, mdate, grade)
+VALUES(admin_seq.nextval, 'admin3', '3456', '관리자3', sysdate, 1);
 commit;
 
 SELECT * FROM admin ORDER BY adminno ASC;
+SELECT adminno, id, passwd, mname, mdate, grade FROM admin ORDER BY adminno ASC;
 
 
 /**********************************/
@@ -44,6 +48,7 @@ CREATE TABLE Member(
 		mname VARCHAR(100) NOT NULL,
 		tel VARCHAR(20),
 		Age INT,
+        zipcode VARCHAR(5) NULL,
 		address1 VARCHAR(200),
 		address2 VARCHAR(100),
 		mdate DATE NOT NULL,
@@ -64,6 +69,8 @@ VALUES(member_seq.nextval, 'user1@naver.com', '1234','회원1','01099887766',24,
 
 INSERT INTO Member(memberno, id, passwd,mname,tel, Age, address1,mdate,grade)
 VALUES(member_seq.nextval, 'user2@gmail.com', '1234','회원2','01038384848',26,'경기도 수원시', sysdate,1);
+
+ALTER TABLE Member ADD zipcode VARCHAR(5);
 
 commit;
 

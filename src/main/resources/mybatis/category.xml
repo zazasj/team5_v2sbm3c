@@ -4,30 +4,30 @@
 <mapper namespace="dev.mvc.category.CategoryDAOInter">
 
   <!-- return : 등록한 레코드 갯수를 1을 리턴, parameterType : 전달받는 데이터 -->
-  <insert id="create" parameterType="dev.mvc.movieb.MoviebVO">
-    INSERT INTO category(categoryID, name, cnt, rdate) VALUES(movieb_seq.nextval, #{name}, 0, sysdate)
+  <insert id="create" parameterType="dev.mvc.category.CategoryVO">
+    INSERT INTO Category(CategoryID, name, cnt, rdate) VALUES(category_seq.nextval, #{name}, 0, sysdate)
   </insert>
   
   <!-- 출력 모드 적용 -->
-  <select id="list_all" resultType="dev.mvc.movieb.MoviebVO">
-    SELECT categoryID, name, cnt, rdate, seqno, visible FROM category ORDER BY seqno ASC
+  <select id="list_all" resultType="dev.mvc.category.CategoryVO">
+    SELECT CategoryID, CategoryName, cnt, Rdate, seqno, Visible FROM Category ORDER BY seqno ASC
   </select>
   
     <!-- 비회원/회원 SELECT LIST -->
-  <select id="list_all_y" resultType="dev.mvc.movieb.MoviebVO">
-    SELECT categoryID, name, cnt, rdate, seqno, visible 
-    FROM category 
+  <select id="list_all_y" resultType="dev.mvc.category.CategoryVO">
+    SELECT CategoryID, CategoryName, cnt, Rdate, seqno, Visible 
+    FROM Category 
     WHERE visible='Y'
     ORDER BY seqno ASC
   </select>
   
   <!-- 읽기, SQL -> CateVo return -->
-  <select id="read" resultType="dev.mvc.movieb.MoviebVO" parameterType="int">
-    SELECT categoryID, name, cnt, rdate FROM category WHERE categoryID = #{categoryID}
+  <select id="read" resultType="dev.mvc.category.CategoryVO" parameterType="int">
+    SELECT CategoryID, CategoryName, cnt, Rdate FROM Category WHERE CategoryID = #{CategoryID}
   </select>
   
   <!-- return : 수정한 레코드 갯수를 1을 리턴, parameterType : 수정할 레코드 정보 -->
-  <update id="update" parameterType="dev.mvc.movieb.MoviebVO">
+  <update id="update" parameterType="dev.mvc.category.CategoryVO">
     UPDATE category SET name = #{name}, cnt = #{cnt} WHERE categoryID = #{categoryID}
   </update>
   
