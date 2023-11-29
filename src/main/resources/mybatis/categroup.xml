@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
  
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
-<mapper namespace="dev.mvc.category.CategoryDAOInter">
+<mapper namespace="dev.mvc.cateGroupry.CateGroupDAOInter">
 
 <!-- CREATE TABLE CateGroup(
     GrpID NUMERIC(10) PRIMARY KEY,
@@ -12,17 +12,17 @@
 );-->
 
   <!-- return : 등록한 레코드 갯수를 1을 리턴, parameterType : 전달받는 데이터 -->
-  <insert id="create" parameterType="dev.mvc.category.CategoryVO">
+  <insert id="create" parameterType="dev.mvc.cateGroup.CateGroupVO">
     INSERT INTO CateGroup(GrpID, gname, rdate) VALUES(categroup_seq.nextval, #{gname}, sysdate)
   </insert>
   
   <!-- 출력 모드 적용 -->
-  <select id="list_all" resultType="dev.mvc.category.CategoryVO">
+  <select id="list_all" resultType="dev.mvc.cateGroup.CateGroupVO">
     SELECT GrpID, gname, Seqno, Visible, rdate FROM CateGroup ORDER BY Seqno ASC
   </select>
   
     <!-- 비회원/회원 SELECT LIST -->
-  <select id="list_all_y" resultType="dev.mvc.category.CategoryVO">
+  <select id="list_all_y" resultType="dev.mvc.cateGroup.CateGroupVO">
     SELECT GrpID, gname, Seqno, Visible, rdate 
     FROM CateGroup 
     WHERE visible='Y'
@@ -30,12 +30,12 @@
   </select>
   
   <!-- 읽기, SQL -> CateVo return -->
-  <select id="read" resultType="dev.mvc.category.CategoryVO" parameterType="int">
+  <select id="read" resultType="dev.mvc.cateGroup.CateGroupVO" parameterType="int">
     SELECT GrpID, gname, rdate FROM CateGroup WHERE GrpID = #{GrpID }
   </select>
   
   <!-- return : 수정한 레코드 갯수를 1을 리턴, parameterType : 수정할 레코드 정보 -->
-  <update id="update" parameterType="dev.mvc.category.CategoryVO">
+  <update id="update" parameterType="dev.mvc.cateGroup.CateGroupVO">
     UPDATE CateGroup SET gname = #{gname} WHERE GrpID = #{GrpID }
   </update>
   
