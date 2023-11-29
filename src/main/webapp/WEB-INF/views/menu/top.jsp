@@ -52,7 +52,7 @@
               <c:set var="GrpID" value="${cateGroupVO.GrpID }" />
               <c:set var="name" value="${cateGroupVO.name }" />
               <li class="nav-item"> <%-- 서브 메뉴가 없는 독립메뉴 --%>
-                <a class="nav-link top_menu_link" href="/category/list_by_GrpID.do?GrpID=${cateGroupVO.GrpID }&now_page=1">${cateGroupVO.name }</a> 
+                <a class="nav-link top_menu_link" href="/cateGroup/list_by_GrpID.do?GrpID=${cateGroupVO.GrpID }&now_page=1">${cateGroupVO.name }</a> 
               </li>
             </c:forEach>
             

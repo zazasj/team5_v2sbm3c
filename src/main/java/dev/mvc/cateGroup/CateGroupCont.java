@@ -18,19 +18,19 @@ import dev.mvc.tool.Tool;
 public class CateGroupCont {
   
   @Autowired
-  @Qualifier("dev.mvc.cateGroup.CateGrouopProc")
+  @Qualifier("dev.mvc.cateGroup.CateGroupProc")
   private CateGroupProcInter cateGroupProc;
   
   @Autowired
-  @Qualifier("dev.mvc.admin.AdminProc") // "dev.mvc.admin.AdminProc"라고 명명된 클래스
-  private AdminProcInter adminProc; // AdminProcInter를 구현한 AdminProc 클래스의 객체를 자동으로 생성하여 할당
+  @Qualifier("dev.mvc.admin.AdminProc") // "dev.mvc.admin.AdminProc"占쎌뵬�⑨옙 筌뤿굝梨몌옙留� 占쎄깻占쎌삋占쎈뮞
+  private AdminProcInter adminProc; // AdminProcInter�몴占� �뤃�뗭겱占쎈립 AdminProc 占쎄깻占쎌삋占쎈뮞占쎌벥 揶쏆빘猿쒐몴占� 占쎌쁽占쎈짗占쎌몵嚥∽옙 占쎄문占쎄쉐占쎈릭占쎈연 占쎈막占쎈뼣
   
   
   public CateGroupCont() {
     System.out.println("-> CateGroupCont created.");
   }
   
-  //FORM 출력, http://localhost:9093/cateGroup/create.do
+  //FORM �빊�뮆�젾, http://localhost:9093/cateGroup/create.do
  @RequestMapping(value="/cateGroup/create.do", method = RequestMethod.GET)
  public ModelAndView create() {
    ModelAndView mav = new ModelAndView();
@@ -39,9 +39,9 @@ public class CateGroupCont {
    return mav;
  }
   
- //FORM 데이터 처리, http://localhost:9093/cateGroup/create.do
+ //FORM 占쎈쑓占쎌뵠占쎄숲 筌ｌ꼶�봺, http://localhost:9093/cateGroup/create.do
   @RequestMapping(value="/cateGroup/create.do", method = RequestMethod.POST)
-  public ModelAndView create(CateGroupVO cateGroupVO) { // 자동으로 cateVO 객체가 생성되고 폼의 값이 할당됨
+  public ModelAndView create(CateGroupVO cateGroupVO) { // 占쎌쁽占쎈짗占쎌몵嚥∽옙 cateVO 揶쏆빘猿쒎첎占� 占쎄문占쎄쉐占쎈┷�⑨옙 占쎈쨲占쎌벥 揶쏅�れ뵠 占쎈막占쎈뼣占쎈쭡
   ModelAndView mav = new ModelAndView();
   
   int cnt = this.cateGroupProc.create(cateGroupVO);
@@ -60,7 +60,7 @@ public class CateGroupCont {
 }
   
   /**
-   * 전체목록
+   * 占쎌읈筌ｋ��걠嚥∽옙
    * http://localhost:9093/cateGroup/list_all.do
    * @return
    */
@@ -83,7 +83,7 @@ public class CateGroupCont {
   }
 
   /**
-   * 조회
+   * 鈺곌퀬�돳
    * http://localhost:9093/cateGroup/read.do?GrpID=1
    * @return
    */
@@ -99,7 +99,7 @@ public class CateGroupCont {
   }
   
   /**
-   * 수정폼
+   * 占쎈땾占쎌젟占쎈쨲
    * http://localhost:9093/cateGroup/update.do?GrpID=1
    * @return
    */
@@ -125,16 +125,16 @@ public class CateGroupCont {
   }
   
   /**
-   * 수정 처리, http://localhost:9093/cateGroup/update.do
-   * @param cateGroupVO 수정할 내용
+   * 占쎈땾占쎌젟 筌ｌ꼶�봺, http://localhost:9093/cateGroup/update.do
+   * @param cateGroupVO 占쎈땾占쎌젟占쎈막 占쎄땀占쎌뒠
    * @return
    */
   
   @RequestMapping(value="/cateGroup/update.do", method = RequestMethod.POST)
-  public ModelAndView update(CateGroupVO cateGroupVO) { // 자동으로 cateVO 객체가 생성되고 폼의 값이 할당됨
+  public ModelAndView update(CateGroupVO cateGroupVO) { // 占쎌쁽占쎈짗占쎌몵嚥∽옙 cateVO 揶쏆빘猿쒎첎占� 占쎄문占쎄쉐占쎈┷�⑨옙 占쎈쨲占쎌벥 揶쏅�れ뵠 占쎈막占쎈뼣占쎈쭡
     ModelAndView mav = new ModelAndView();
     
-    int cnt = this.cateGroupProc.update(cateGroupVO); // 수정 처리
+    int cnt = this.cateGroupProc.update(cateGroupVO); // 占쎈땾占쎌젟 筌ｌ꼶�봺
     System.out.println("-> cnt: " + cnt);
     
     if (cnt == 1) {
@@ -151,7 +151,7 @@ public class CateGroupCont {
   }
   
   /**
-   *  삭제FORM 
+   *  占쎄텣占쎌젫FORM 
    *  http://localhost:9093/cateGroup/delete.do?GrpID=1
    * @param GrpID
    * @return
@@ -169,7 +169,7 @@ public class CateGroupCont {
       ArrayList<CateGroupVO> list = this.cateGroupProc.list_all();
       mav.addObject("list", list);
       
-      // 특정 카테고리에 속한 레코드 갯수를 리턴
+      // 占쎈뱟占쎌젟 燁삳똾�믤�⑥쥓�봺占쎈퓠 占쎈꺗占쎈립 占쎌쟿�굜遺얜굡 揶쏉옙占쎈땾�몴占� �뵳�뗪쉘
      // int count_by_cateno = this.contentsProc.count_by_cateno(cateno);
      // mav.addObject("count_by_cateno", count_by_cateno);
       
@@ -182,8 +182,8 @@ public class CateGroupCont {
   }
   
   /**
-   * 삭제처리, http://localhost:9093/cateGroup/delete.do
-   * @param cateGroupVO 삭제할 레코드 번호
+   * 占쎄텣占쎌젫筌ｌ꼶�봺, http://localhost:9093/cateGroup/delete.do
+   * @param cateGroupVO 占쎄텣占쎌젫占쎈막 占쎌쟿�굜遺얜굡 甕곕뜇�깈
    * @return 
    */
   @RequestMapping(value="/cateGroup/delete.do", method=RequestMethod.POST)
@@ -192,29 +192,29 @@ public class CateGroupCont {
     ModelAndView mav = new ModelAndView();
     
     if (this.adminProc.isAdmin(session) == true) {
-//      ArrayList<ContentsVO> list = this.contentsProc.list_by_cateno(cateno); // 자식 레코드 목록 읽기
+//      ArrayList<ContentsVO> list = this.contentsProc.list_by_cateno(cateno); // 占쎌쁽占쎈뻼 占쎌쟿�굜遺얜굡 筌뤴뫖以� 占쎌뵭疫뀐옙
 //      
-//      for(ContentsVO contentsVO : list) { // 자식 레코드 관련 파일 삭제
+//      for(ContentsVO contentsVO : list) { // 占쎌쁽占쎈뻼 占쎌쟿�굜遺얜굡 �꽴占쏙옙�졃 占쎈솁占쎌뵬 占쎄텣占쎌젫
 //        // -------------------------------------------------------------------
-//        // 파일 삭제 시작
+//        // 占쎈솁占쎌뵬 占쎄텣占쎌젫 占쎈뻻占쎌삂
 //        // -------------------------------------------------------------------
 //        String file1saved = contentsVO.getFile1saved();
 //        String thumb1 = contentsVO.getThumb1();
 //        
 //        String uploadDir = Contents.getUploadDir();
-//        Tool.deleteFile(uploadDir, file1saved);  // 실제 저장된 파일삭제
-//        Tool.deleteFile(uploadDir, thumb1);     // preview 이미지 삭제
+//        Tool.deleteFile(uploadDir, file1saved);  // 占쎈뼄占쎌젫 占쏙옙占쎌삢占쎈쭆 占쎈솁占쎌뵬占쎄텣占쎌젫
+//        Tool.deleteFile(uploadDir, thumb1);     // preview 占쎌뵠沃섎챷占� 占쎄텣占쎌젫
 //        // -------------------------------------------------------------------
-//        // 파일 삭제 종료
+//        // 占쎈솁占쎌뵬 占쎄텣占쎌젫 �넫�굝利�
 //        // -------------------------------------------------------------------
 //      }
 //      
-//      this.contentsProc.delete_by_cateno(cateno); // 자식 레코드 삭제     
+//      this.contentsProc.delete_by_cateno(cateno); // 占쎌쁽占쎈뻼 占쎌쟿�굜遺얜굡 占쎄텣占쎌젫     
             
-      int cnt = this.cateGroupProc.delete(GrpID); // 카테고리 삭제
+      int cnt = this.cateGroupProc.delete(GrpID); // 燁삳똾�믤�⑥쥓�봺 占쎄텣占쎌젫
       
       if (cnt == 1) {
-        mav.setViewName("redirect:/cateGroup/list_all.do");       // 자동 주소 이동, Spring 재호출
+        mav.setViewName("redirect:/cateGroup/list_all.do");       // 占쎌쁽占쎈짗 雅뚯눘�꺖 占쎌뵠占쎈짗, Spring 占쎌삺占쎌깈�빊占�
         
       } else {
         mav.addObject("code", "delete_fail");
@@ -231,8 +231,8 @@ public class CateGroupCont {
   }
   
   /**
-   * 우선 순위 높임, 10 등 -> 1 등, http://localhost:9093/cateGroup/update_seqno_forward.do?GrpID=1
-   * @param cateGroupVO 수정할 내용
+   * 占쎌뒭占쎄퐨 占쎈떄占쎌맄 占쎈꼥占쎌뿫, 10 占쎈쾻 -> 1 占쎈쾻, http://localhost:9093/cateGroup/update_seqno_forward.do?GrpID=1
+   * @param cateGroupVO 占쎈땾占쎌젟占쎈막 占쎄땀占쎌뒠
    * @return
    */
   @RequestMapping(value="/cateGroup/update_seqno_forward.do", method = RequestMethod.GET)
@@ -256,8 +256,8 @@ public class CateGroupCont {
   }
   
   /**
-   * 우선 순위 낮춤, 1 등 -> 10 등, http://localhost:9093/cateGroup/update_seqno_backward.do?GrpID=1
-   * @param GrpID 수정할 레코드 PK 번호
+   * 占쎌뒭占쎄퐨 占쎈떄占쎌맄 占쎄텤�빊占�, 1 占쎈쾻 -> 10 占쎈쾻, http://localhost:9093/cateGroup/update_seqno_backward.do?GrpID=1
+   * @param GrpID 占쎈땾占쎌젟占쎈막 占쎌쟿�굜遺얜굡 PK 甕곕뜇�깈
    * @return
    */
   @RequestMapping(value="/cateGroup/update_seqno_backward.do", method = RequestMethod.GET)
@@ -281,8 +281,8 @@ public class CateGroupCont {
   }
   
   /**
-   * 카테고리 공개 설정, http://localhost:9093/cateGroup/update_visible_y.do?GrpID=1
-   * @param cateGroupID 수정할 레코드 PK 번호
+   * 燁삳똾�믤�⑥쥓�봺 �⑤벀而� 占쎄퐬占쎌젟, http://localhost:9093/cateGroup/update_visible_y.do?GrpID=1
+   * @param cateGroupID 占쎈땾占쎌젟占쎈막 占쎌쟿�굜遺얜굡 PK 甕곕뜇�깈
    * @return
    */
   @RequestMapping(value="/cateGroup/update_visible_y.do", method = RequestMethod.GET)
@@ -306,8 +306,8 @@ public class CateGroupCont {
   }
   
   /**
-   * 카테고리 비공개 설정, http://localhost:9093/cateGroup/update_visible_n.do?GrpID=1
-   * @param GrpID 수정할 레코드 PK 번호
+   * 燁삳똾�믤�⑥쥓�봺 �뜮袁㏓궗揶쏉옙 占쎄퐬占쎌젟, http://localhost:9093/cateGroup/update_visible_n.do?GrpID=1
+   * @param GrpID 占쎈땾占쎌젟占쎈막 占쎌쟿�굜遺얜굡 PK 甕곕뜇�깈
    * @return
    */
   @RequestMapping(value="/cateGroup/update_visible_n.do", method = RequestMethod.GET)
