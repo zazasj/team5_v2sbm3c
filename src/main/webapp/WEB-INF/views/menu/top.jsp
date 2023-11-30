@@ -10,34 +10,37 @@
 <style>
   .top_menu_link:link{  /* 방문전 상태 */
     text-decoration: none; /* 밑줄 삭제 */
-    color: #000000;
+    color: #FFFFFF;
     font-weight: bold;
   }
 
   .top_menu_link:visited{  /* 방문후 상태 */
     text-decoration: none; /* 밑줄 삭제 */
-    color: #000000;
+    color: #FFFFFF;
     font-weight: bold;
   }
 
   .top_menu_link:hover{  /* A 태그에 마우스가 올라간 상태 */
     text-decoration: none; /* 밑줄 출력 */
-    color: #FF0000;
+    color: #FFFF00;
     font-size: 1.05em;
   }
 </style> 
 
 <div id="logo">
-    <a href="/"><img src="/css/images/logo4.jpg"></a>
-    <input type="text" placeholder="검색할 제품을 입력해주세요." style = "width : 300px; margin-left: 350px; " >
-    <input type = "button" value="검색">
-    
+  <a href="/"><img src="/css/images/logo4.jpg"></a>
+  <input type="text" placeholder="검색할 제품을 입력해주세요." style = "width : 300px; margin-left: 350px; " >
+  <input type = "button" value="검색">
+  <aside class="aside_right">
+  <a href="">로그인</a> <span
+    class='menu_divide'>│</span> <a href="">회원가입</a>
+  </aside>
 </div>
 
 <div class='container_main'>
 
-  <nav class="navbar navbar-expand-md navbar-light bg-light">
-      <a class="navbar-brand" href="/"><img src='/css/images/home.png' title="시작페이지" style='display: block; padding-left: 5px;'></a>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+      <a class="navbar-brand" style='padding-left: 20px;'></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle Navigation">
         <span class="navbar-toggler-icon"></span>
       </button>    
@@ -100,6 +103,7 @@
                   <div class="dropdown-menu">
                     <a class="dropdown-item" href='/cateGroup/list_all.do'>카테고리그룹 전체 목록</a>
                     <a class="dropdown-item" href='/member/list.do'>회원 목록</a>
+                    <a class="dropdown-item" href='/cookie/notice.do'>이벤트 관리</a>
                     <a class="dropdown-item" href='/admin/logout.do'>관리자 ${sessionScope.admin_id } 로그아웃</a>
                   </div>
                 </li>
@@ -120,4 +124,50 @@
       </div>    
   </nav>
     
+
+  <!-- Offcanvas Sidebar -->
+<div class="offcanvas offcanvas-start" id="demo">
+  <div class="offcanvas-header">
+    <h1 class="offcanvas-title">Event</h1>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <hr>
+  <div class="offcanvas-body">
+    <p>Some text lorem ipsum.</p>
+    <p>Some text lorem ipsum.</p>
+    <button class="btn btn-secondary" type="button">A Button</button>
+  </div>
+</div>
+
+ <div id="parent" style="text-align: center;">
+  <div id="" style="border: 0pt none; display: inline-block; width: 779px; height: 150px;">
+    <img id="myImage" src="/images/irish-whiskey_1280.jpg" class="rounded" alt="Cinque Terre" style="width: 100%; height: auto; margin-top: 20px;">
+  </div>
+ </div>
+
+<script>
+  document.getElementById('myImage').addEventListener('click', function() {
+    var offcanvas = new bootstrap.Offcanvas(document.querySelector('#demo'));
+    offcanvas.toggle();
+  });
+</script>
+
+<script>
+  var images = [
+    "/images/irish-whiskey_1280.jpg",
+    "/images/red-wine_1280.jpg"
+    // ... (원하는 이미지 경로들 추가)
+  ];
+
+  var currentImageIndex = 0;
+  var imageElement = document.getElementById('myImage');
+
+  function changeImage() {
+    imageElement.src = images[currentImageIndex];
+    currentImageIndex = (currentImageIndex + 1) % images.length;
+  }
+
+  setInterval(changeImage, 10000); // 10초마다 이미지 변경
+</script>
+
   <div class='content_body'> <!--  내용 시작 -->

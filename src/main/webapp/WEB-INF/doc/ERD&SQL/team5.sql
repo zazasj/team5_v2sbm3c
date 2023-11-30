@@ -528,12 +528,13 @@ CREATE SEQUENCE RECOM_SEQ
 /* Table Name: 이벤트 */
 /**********************************/
 CREATE TABLE Event(
-		eventno NUMERIC(10),
+		eventno NUMERIC(10) PRIMARY KEY,
 		title VARCHAR(50),
 		contents VARCHAR(2000),
-		thumbs VARCHAR(1000),
-		files VARCHAR(1000),
-		sizes VARCHAR(1000),
+		file1  VARCHAR2(100),
+		file1saved  VARCHAR2(100),
+		thumb1  VARCHAR2(100),
+		size1 VARCHAR(1000),
 		rdate DATE,
 		Adminno NUMERIC(5),
   FOREIGN KEY (Adminno) REFERENCES Admin (Adminno)
@@ -545,6 +546,30 @@ CREATE SEQUENCE EVENT_SEQ
   MAXVALUE 9999999999            -- 최대값: 9999999999 --> NUMBER(10) 대응
   CACHE 2                   -- 2번은 메모리에서만 계산
   NOCYCLE;                  -- 다시 1부터 생성되는 것을 방지
+  
+  
+INSERT INTO Event(eventno, title, contents, rdate, Adminno)
+VALUES(event_seq.nextval,1, '연말 위스키 10% 할인 이벤트' , '10만원 이상 위스키 전 품목 10% 할인! 10만원 이하 위스키 전품목 5% 할인! ', sysdate ,1);
+
+-- 유형 1 전체 목록
+SELECT * FROM Event
+ORDER BY eventno ASC;
+
+SELECT eventno, thumbs, files, sizes
+FROM Event
+ORDER BY eventno ASC;
+
+-- 유형 2 카테고리별 목록
+
+        
+INSERT INTO Event(eventno, title, contents , file1, file1saved, thumb1, size1, rdate, Adminno)
+VALUES(event_seq.nextval, '연말 위스키 10% 할인 이벤트' , '10만원 이상 위스키 전 품목 10% 할인! 10만원 이하 위스키 전품목 5% 할인! '
+,'space.jpg', 'space_1.jpg', 'space_t.jpg', 1000, sysdate ,1);
+  
+COMMIT;
+
+UPDATE Event SET thumb1='' WHERE eventno=5;
+
 /**********************************/
 /* Table Name: 관심상품 */
 /**********************************/
