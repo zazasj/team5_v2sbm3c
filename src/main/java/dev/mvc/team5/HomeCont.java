@@ -11,6 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import dev.mvc.cateGroup.CateGroupProcInter;
 import dev.mvc.cateGroup.CateGroupVO;
+import dev.mvc.category.CategoryProcInter;
+import dev.mvc.category.CategoryVO;
 
 
 
@@ -19,6 +21,10 @@ public class HomeCont {
   @Autowired // CateProcInter interface 구현한 객체를 만들어 자동으로 할당해라.
   @Qualifier("dev.mvc.cateGroup.CateGroupProc")
   private CateGroupProcInter cateGroupProc;
+  
+  @Autowired // CateProcInter interface 구현한 객체를 만들어 자동으로 할당해라.
+  @Qualifier("dev.mvc.category.CategoryProc")
+  private CategoryProcInter categoryProc;
   
   public HomeCont() {
     System.out.println("-> HomeCont created.");
@@ -45,10 +51,15 @@ public class HomeCont {
     ArrayList<CateGroupVO> list_top = this.cateGroupProc.list_all_y();
     mav.addObject("list_top", list_top);
     
+    ArrayList<CategoryVO> list_top2 = this.categoryProc.list_all();
+    mav.addObject("list_top2", list_top2);
+    
     mav.setViewName("/menu/top"); // /WEB-INF/views/menu/top.jsp
     
     return mav;
   }
+
+  
 }
 
 

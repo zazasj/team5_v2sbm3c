@@ -45,13 +45,25 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav mr-auto">
             <%-- 게시판 목록 출력 --%>
-            <c:forEach var="cateGroupVO" items="${list_top }">
-            <c:set var="grpID" value="${cateGroupVO.grpID }" />
-            <c:set var="name" value="${cateGroupVO.gname }" />
-            <li class="nav-item">
-                <a class="nav-link top_menu_link" href="/cateGroup/read.do?GrpID=${cateGroupVO.grpID }">${cateGroupVO.gname }</a>
+            <c:forEach var="cateGroupVO" items="${list_top}">
+            <c:set var="grpID" value="${cateGroupVO.grpID}" />
+            <c:set var="gname" value="${cateGroupVO.gname}" />
+                              
+            <li class="nav-item dropdown">
+                <a class="nav-link top_menu_link dropdown-toggle" data-bs-toggle="dropdown" href="#">${cateGroupVO.gname}</a>               
+                    <div class="dropdown-menu">
+                    <c:forEach var="categoryVO" items="${list_top2}">
+                        <c:set var="grpid" value="${categoryVO.grpID}" />
+                        <c:set var="categoryName" value="${categoryVO.categoryName}" />
+                        <c:if test="${grpID eq grpid }">
+                            <a class="dropdown-item" href="#">${categoryVO.categoryName }</a>
+                        </c:if>                  
+                        
+                    </c:forEach>
+                </div>
             </li>
-            </c:forEach>
+        </c:forEach>
+
             <li class="nav-item"> <%-- 서브 메뉴가 없는 독립메뉴 --%>
               <a class="nav-link top_menu_link" href="/cateGroup/list_all.do">전체 글 목록</a>
             </li>
