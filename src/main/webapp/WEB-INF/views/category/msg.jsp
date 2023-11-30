@@ -17,7 +17,7 @@
 <%
 String code = (String)request.getAttribute("code");
 int cnt = (int)request.getAttribute("cnt");
-String name = (String)request.getAttribute("name");
+String CategoryName = (String)request.getAttribute("CategoryName");
 %>
 <div class='title_line'>카테고리 > 알림</div>
 <div class='message'>
@@ -27,43 +27,43 @@ String name = (String)request.getAttribute("name");
         if(code.equals("create_success")){ %>
             <li class="li_none">
               <span class="span_success">카테고리를 등록했습니다.</span><br>
-              등록된 카테고리 : <%=name %>
+              등록된 카테고리 : <%=CategoryName %>
             </li>
         <%}
         else if(code.equals("create_fail")){%>
             <li class="li_none">
               <span class="span_fail">카테고리를 등록에 실패했습니다.</span><br>
-              등록 실패된 카테고리 : <%=name %>
+              등록 실패된 카테고리 : <%=CategoryName %>
             </li>
         <%}
         else if(code.equals("create_fail")){%>
         <li class="li_none">
           <span class="span_fail">카테고리를 등록에 실패했습니다.</span><br>
-          등록 실패된 카테고리 : <%=name %>
+          등록 실패된 카테고리 : <%=CategoryName %>
         </li>
         <%}
         else if(code.equals("update_success")){%>
         <li class="li_none">
           <span class="span_success">카테고리를 수정에 성공했습니다.</span><br>
-          수정된 카테고리 : <%=name %>
+          수정된 카테고리 : <%=CategoryName %>
         </li>
         <%}
         else if(code.equals("update_fail")){%>
         <li class="li_none">
           <span class="span_fail">카테고리를 수정에 실패했습니다.</span><br>
-          수정 실패된 카테고리 : <%=name %>
+          수정 실패된 카테고리 : <%=CategoryName %>
         </li>
         <%}
         else if(code.equals("delete_success")){%>
         <li class="li_none">
           <span class="span_success">카테고리를 삭제에 성공했습니다.</span><br>
-          수정된 카테고리 : <%=name %>
+          수정된 카테고리 : <%=CategoryName %>
         </li>
         <%}
         else if(code.equals("delete_fail")){%>
         <li class="li_none">
           <span class="span_fail">카테고리를 삭제에 실패했습니다.</span><br>
-          수정 실패된 카테고리 : <%=name %>
+          수정 실패된 카테고리 : <%=CategoryName %>
         </li>
         <%}
         %>

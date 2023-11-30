@@ -19,17 +19,17 @@
 <div class='title_line'>카테고리 수정</div>
 
 <aside class="aside_right">
-  <a href="./create.do?categoryID=${categoryVO.categoryID }">등록</a>
+  <a href="./create.do?categoryID=${categoryVO.CategoryID }">등록</a>
   <span class='menu_divide' >│</span>
   <a href="javascript:location.reload();">새로고침</a>
 </aside>
 <div class="menu_line"></div> 
 
 <form name='frm' method='post' action='/category/update.do'>
-  <input type='hidden' name='categoryID' value='${categoryVO.categoryID }'>
+  <input type='hidden' name='categoryID' value='${categoryVO.CategoryID }'>
   <div style="text-align: center;">
     <label>카테고리 이름</label>
-    <input type="text" name="name" value="${categoryVO.name }" required="required" autofocus="autofocus" 
+    <input type="text" name="name" value="${categoryVO.CategoryName }" required="required" autofocus="autofocus" 
                class="" style="width: 30%">
 
     <label>글수</label>

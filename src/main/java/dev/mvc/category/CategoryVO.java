@@ -1,24 +1,45 @@
 package dev.mvc.category;
 
+/*
+CREATE TABLE Category(
+    CategoryID NUMERIC(10) PRIMARY KEY,
+    GrpID NUMERIC(10),
+    CategoryName VARCHAR(100),
+    cnt NUMERIC(7) NOT NULL,
+    Rdate DATE,
+    Seqno NUMERIC(5) DEFAULT 99 NOT NULL,
+    Visible CHAR(1)  DEFAULT 'Y' NOT NULL,
+  FOREIGN KEY (GrpID) REFERENCES CateGroup (GrpID)
+);
+ */
+
 public class CategoryVO {
 
-  private int categoryID;
-  private String name;
+  private int CategoryID;
+  private int GrpID;
+  private String CategoryName;
   private int cnt;
-  private String rdate;
-  private int seqno;
-  private String visible;
+  private String Rdate;
+  private int Seqno;
+  private String Visible;
+  
   public int getCategoryID() {
-    return categoryID;
+    return CategoryID;
   }
-  public void setCategoryID(int categoryID) {
-    this.categoryID = categoryID;
+  public void setCategoryID(int CategoryID) {
+    this.CategoryID = CategoryID;
   }
-  public String getName() {
-    return name;
+  public int getGrpID() {
+    return GrpID;
   }
-  public void setName(String name) {
-    this.name = name;
+  public void setGrpID(int GrpID) {
+    this.GrpID = GrpID;
+  }
+  public String getCategoryName() {
+    return CategoryName;
+  }
+  public void setCategoryName(String CategoryName) {
+    this.CategoryName = CategoryName;
   }
   public int getCnt() {
     return cnt;
@@ -27,27 +48,30 @@ public class CategoryVO {
     this.cnt = cnt;
   }
   public String getRdate() {
-    return rdate;
+    return Rdate;
   }
-  public void setRdate(String rdate) {
-    this.rdate = rdate;
+  public void setRdate(String Rdate) {
+    this.Rdate = Rdate;
   }
   public int getSeqno() {
-    return seqno;
+    return Seqno;
   }
-  public void setSeqno(int seqno) {
-    this.seqno = seqno;
+  public void setSeqno(int Seqno) {
+    this.Seqno = Seqno;
   }
   public String getVisible() {
-    return visible;
+    return Visible;
   }
-  public void setVisible(String visible) {
-    this.visible = visible;
+  public void setVisible(String Visible) {
+    this.Visible = Visible;
   }
+  
   
   @Override
   public String toString() {
-    return "CategoryVO [categoryID=" + categoryID + ", name=" + name + ", cnt=" + cnt + ", rdate=" + rdate
-        + ", seqno=" + seqno + ", visible=" + visible + "]";
+    return "CategoryVO [CategoryID=" + CategoryID + ", GrpID=" + GrpID + ", CategoryName=" + CategoryName + ", cnt="
+        + cnt + ", Rdate=" + Rdate + ", Seqno=" + Seqno + ", Visible=" + Visible + "]";
   }
+  
+  
 }

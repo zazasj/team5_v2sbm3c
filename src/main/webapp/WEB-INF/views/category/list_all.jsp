@@ -27,7 +27,7 @@
 
   <form name='frm' method='post' action='/category/create.do'>
     <div style="text-align: center;">
-      <label>카테고리 이름</label> <input type="text" name="name" value=""
+      <label>카테고리 이름</label> <input type="text" name="categoryName" value=""
         required="required" autofocus="autofocus" class=""
         style="width: 50%">
       <button type="submit" class="btn btn-secondary btn-sm"
@@ -62,16 +62,16 @@
     
           <tr>
             <td class="td_bs">${info.count }</td>
-            <td><a href="../category/list_by_categoryID.do?categoryID=${categoryID }" style="display: block;">${categoryVO.name }</a></td>
+            <td><a href="../category/list_by_categoryID.do?categoryID=${categoryID }" style="display: block;">${categoryVO.categoryName }</a></td>
             <td class="td_bs">${categoryVO.cnt }</td>
             <td class="td_bs">${categoryVO.rdate.substring(0, 10) }</td>
             <td class="td_bs">
               <c:choose>
                 <c:when test="${categoryVO.visible == 'Y'}">
-                  <a href="./update_visible_n.do?categoryID=${categoryID }" title="카테고리 공개 설정"><img src="/category/images/show.png" class="icon"></a>
+                  <a href="./update_visible_n.do?CategoryID=${categoryID }" title="카테고리 공개 설정"><img src="/category/images/show.png" class="icon"></a>
                 </c:when>
                 <c:otherwise>
-                  <a href="./update_visible_y.do?categoryID=${categoryID }" title="카테고리 비공개 설정"><img src="/category/images/hide.png" class="icon"></a>
+                  <a href="./update_visible_y.do?CategoryID=${categoryID }" title="카테고리 비공개 설정"><img src="/category/images/hide.png" class="icon"></a>
                 </c:otherwise>
               </c:choose>    
               

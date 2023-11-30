@@ -18,7 +18,7 @@
 <div class='title_line'>카테고리 삭제</div>
 
 <aside class="aside_right">
-  <a href="./create.do?categoryID=${categoryVO.categoryID }">등록</a>
+  <a href="./create.do?categoryID=${categoryVO.CategoryID }">등록</a>
   <span class='menu_divide' >│</span>
   <a href="javascript:location.reload();">새로고침</a>
 </aside>
@@ -26,10 +26,10 @@
 
 <div style="text-align: center;">
   <form name='frm_delete' id='frm_delete' method='post' action='./delete.do'>
-    <input type="hidden" name="categoryID" value="${categoryVO.categoryID }">
+    <input type="hidden" name="categoryID" value="${categoryVO.CategoryID }">
     
     <div class="msg_warning">카테고리를 삭제하면 복구 할 수 없습니다.</div>
-    <label>카테고리 이름</label>: ${categoryVO.name }
+    <label>카테고리 이름</label>: ${categoryVO.CategoryName }
   
     <button type="submit" id='submit' class='btn btn-warning btn-sm' style='height: 28px; margin-bottom: 5px;'>삭제</button>
     <button type="button" onclick="location.href='/category/list_all.do'" class='btn btn-info btn-sm' style='height: 28px; margin-bottom: 5px;'>취소</button>

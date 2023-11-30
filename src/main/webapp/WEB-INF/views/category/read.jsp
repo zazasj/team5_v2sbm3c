@@ -20,7 +20,7 @@
   <div class="container mt-3">
     <ul class="list-group list-group-flush">
       <li class="list-group-item">번호: <%=categoryVO.getCategoryID() %></li>
-      <li class="list-group-item">이름: <%=categoryVO.getName() %></li>
+      <li class="list-group-item">이름: <%=categoryVO.getCategoryName() %></li>
       <li class="list-group-item">등록 글수: <%=categoryVO.getCnt() %></li>
       <li class="list-group-item">등록일: <%=categoryVO.getRdate() %></li>
     </ul>

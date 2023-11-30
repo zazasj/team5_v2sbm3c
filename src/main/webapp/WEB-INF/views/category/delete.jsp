@@ -17,18 +17,18 @@
 
 <%
 CategoryVO categoryVO = (CategoryVO)request.getAttribute("categoryVO");
-int categoryID = categoryVO.getCategoryID();
-String name = categoryVO.getName();
+int CategoryID = categoryVO.getCategoryID();
+String CategoryName = categoryVO.getCategoryName();
 %>
 
-<div class='title_line'>카테고리 > [<%=name%>] 삭제</div>
+<div class='title_line'>카테고리 > [<%=CategoryName%>] 삭제</div>
 
 <div id='panel_delete' style='padding: 10px 0px 10px 0px; background-color: #F9F9F9; width: 100%; text-align: center;'>
     <form name='frm_delete' id='frm_delete' method='POST' action='./delete.do'>
-      <input type="hidden" name="categoryID" value="<%=categoryID %>">
+      <input type="hidden" name="categoryID" value="<%=CategoryID %>">
       
       <div class="msg_warning">카테고리를 삭제하면 복구 할 수 없습니다.</div>
-      <label>카테고리 이름</label>: <%=name %>
+      <label>카테고리 이름</label>: <%=CategoryName %>
   
       <button type="submit" id='submit' class='btn btn-warning btn-sm' style='height: 28px; margin-bottom: 5px;'>삭제</button>
       <button type="button" onclick="location.href='/category/list_all.do'" class='btn btn-info btn-sm' style='height: 28px; margin-bottom: 5px;'>취소</button>

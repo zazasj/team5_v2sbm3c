@@ -24,8 +24,8 @@ public class CategoryProc implements CategoryProcInter {
   }
 
   @Override
-  public CategoryVO read(int categoryID) {
-    CategoryVO categoryVO = this.categoryDAO.read(categoryID);
+  public CategoryVO read(int CategoryID) {
+    CategoryVO categoryVO = this.categoryDAO.read(CategoryID);
     return categoryVO;
   }
 
@@ -36,32 +36,32 @@ public class CategoryProc implements CategoryProcInter {
   }
 
   @Override
-  public int delete(int categoryID) {
-    int cnt = this.categoryDAO.delete(categoryID);
+  public int delete(int CategoryID) {
+    int cnt = this.categoryDAO.delete(CategoryID);
     return cnt;
   }
 
   @Override
-  public int update_seqno_forward(int categoryID) {
-    int cnt = this.categoryDAO.update_seqno_forward(categoryID);
+  public int update_seqno_forward(int CategoryID) {
+    int cnt = this.categoryDAO.update_seqno_forward(CategoryID);
     return cnt;
   }
 
   @Override
-  public int update_seqno_backward(int categoryID) {
-    int cnt = this.categoryDAO.update_seqno_backward(categoryID);
+  public int update_seqno_backward(int CategoryID) {
+    int cnt = this.categoryDAO.update_seqno_backward(CategoryID);
     return cnt;
   }
 
   @Override
-  public int update_visible_y(int categoryID) {
-    int cnt = this.categoryDAO.update_visible_y(categoryID);
+  public int update_visible_y(int CategoryID) {
+    int cnt = this.categoryDAO.update_visible_y(CategoryID);
     return cnt;
   }
 
   @Override
-  public int update_visible_n(int categoryID) {
-    int cnt = this.categoryDAO.update_visible_n(categoryID);
+  public int update_visible_n(int CategoryID) {
+    int cnt = this.categoryDAO.update_visible_n(CategoryID);
     return cnt;
   }
 

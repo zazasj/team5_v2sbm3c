@@ -19,14 +19,14 @@
 
 <%
 CategoryVO categoryVO = (CategoryVO)request.getAttribute("categoryVO");
-int categoryID = categoryVO.getCategoryID();
+int CategoryID = categoryVO.getCategoryID();
 %>
 
 <form name='fm' method='post' action='/categoryID/update.do'>
-  <input type="hidden" name="categoryID" value="<%=categoryID%>">
+  <input type="hidden" name="categoryID" value="<%=CategoryID%>">
   <div>
     <label>카테고리 이름</label>
-    <input type="text" name="name" value="<%=categoryVO.getName() %>" required="required" autofocus="autofocus" class="form-control" style="width: 50%">
+    <input type="text" name="name" value="<%=categoryVO.getCategoryName() %>" required="required" autofocus="autofocus" class="form-control" style="width: 50%">
   </div>
   
   <div style="margin-top: 20px">
