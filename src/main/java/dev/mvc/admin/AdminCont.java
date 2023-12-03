@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import dev.mvc.adminlog.AdlogService;
 import dev.mvc.tool.Tool;
 
 @Controller
@@ -19,6 +20,9 @@ public class AdminCont {
   @Autowired
   @Qualifier("dev.mvc.admin.AdminProc") // "dev.mvc.admin.AdminProc"라고 명명된 클래스
   private AdminProcInter adminProc; // AdminProcInter를 구현한 AdminProc 클래스의 객체를 자동으로 생성하여 할당
+  
+  @Autowired
+  private AdlogService adlogservice;
   
   public AdminCont() {
     System.out.println("-> AdminCont created.");
@@ -46,6 +50,12 @@ public class AdminCont {
   @RequestMapping(value="/admin/logout.do", method=RequestMethod.GET)
   public ModelAndView logout(HttpSession session){
     ModelAndView mav = new ModelAndView();
+    int adminno =  (int) session.getAttribute("adminno");
+    String tablename = "Admin";
+    int recordid = 0;
+    String acttype = "Logout";  
+    adlogservice.createLog(tablename, recordid, acttype, adminno);
+    
     session.invalidate(); // 모든 session 변수 삭제
     
     mav.setViewName("redirect:/index.do"); 
@@ -95,6 +105,7 @@ public class AdminCont {
       session.setAttribute("admin_id", adminVO_read.getId());
       session.setAttribute("admin_mname", adminVO_read.getMname());
       session.setAttribute("admin_grade", adminVO_read.getGrade());
+      int adminno =  (int) session.getAttribute("adminno");
    
       String id = adminVO.getId();                  // 폼에 입력된 id
       String passwd = adminVO.getPasswd();  // 폼에 입력된 passwd 
@@ -143,6 +154,12 @@ public class AdminCont {
       response.addCookie(ck_admin_passwd_save);
       // -------------------------------------------------------------------
    
+      //adminlog관련 
+      String tablename = "Admin";
+      int recordid = 0;
+      String acttype = "Login";  
+      adlogservice.createLog(tablename, recordid, acttype, adminno);
+      
       mav.setViewName("redirect:/index.do");  
     } else {
       mav.addObject("url", "/admin/login_fail_msg");

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import dev.mvc.admin.AdminProcInter;
+import dev.mvc.adminlog.AdlogService;
 import dev.mvc.tool.Tool;
 
 @Controller
@@ -41,14 +42,15 @@ public class CateGroupCont {
   
  //FORM 占쎈쑓占쎌뵠占쎄숲 筌ｌ꼶�봺, http://localhost:9093/cateGroup/create.do
   @RequestMapping(value="/cateGroup/create.do", method = RequestMethod.POST)
-  public ModelAndView create(CateGroupVO cateGroupVO) { // 占쎌쁽占쎈짗占쎌몵嚥∽옙 cateVO 揶쏆빘猿쒎첎占� 占쎄문占쎄쉐占쎈┷�⑨옙 占쎈쨲占쎌벥 揶쏅�れ뵠 占쎈막占쎈뼣占쎈쭡
+  public ModelAndView create(CateGroupVO cateGroupVO,HttpSession session) { // 占쎌쁽占쎈짗占쎌몵嚥∽옙 cateVO 揶쏆빘猿쒎첎占� 占쎄문占쎄쉐占쎈┷�⑨옙 占쎈쨲占쎌벥 揶쏅�れ뵠 占쎈막占쎈뼣占쎈쭡
   ModelAndView mav = new ModelAndView();
   
   int cnt = this.cateGroupProc.create(cateGroupVO);
   System.out.println("-> cnt: " + cnt);
   
-  if (cnt == 1) {
+  if (cnt == 1) {     
     mav.setViewName("redirect:/cateGroup/list_all.do");
+    
   } else {
     mav.addObject("code", "create_fail");
     mav.setViewName("/cateGroup/msg");

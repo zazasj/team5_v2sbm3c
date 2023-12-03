@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace = "dev.mvc.adminlog.AdlogDAOInter">
+ 
+
+  <insert id="create" parameterType="dev.mvc.adminlog.AdlogVO">
+    INSERT INTO AdminLog(adminlogno, tablename, recordid, acttype, actdate, Adminno)
+    VALUES (adlog_seq.nextval, #{tablename}, #{recordid}, #{acttype}, sysdate, #{adminno})
+  </insert>
+ 
+</mapper> 
+
+

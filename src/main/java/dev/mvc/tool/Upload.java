@@ -404,14 +404,15 @@ public class Upload extends HttpServletRequestWrapper {
                 System.out.println("-> 서버 저장 전 serverFullPath: " + serverFullPath);
                 
                 outputStream = new FileOutputStream( serverFullPath );
-    
+                System.out.println("1111");
                 // 버퍼를 만든다.
                 int readBytes = 0;
                 byte[] buffer = new byte[8192];
-    
+                System.out.println("222");
                 while((readBytes = inputStream.read(buffer, 0, 8192)) != -1 ) {
                     outputStream.write( buffer, 0, readBytes );
                 }
+                System.out.println("333");
                 outputStream.close();
                 inputStream.close();
                         

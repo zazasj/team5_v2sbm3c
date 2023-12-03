@@ -527,9 +527,10 @@ CREATE SEQUENCE RECOM_SEQ
 /**********************************/
 /* Table Name: 이벤트 */
 /**********************************/
+DROP TABLE Event;
 CREATE TABLE Event(
 		eventno NUMERIC(10) PRIMARY KEY,
-		title VARCHAR(50),
+		title VARCHAR(200),
 		contents VARCHAR(2000),
 		file1  VARCHAR2(100),
 		file1saved  VARCHAR2(100),
@@ -539,7 +540,7 @@ CREATE TABLE Event(
 		Adminno NUMERIC(5),
   FOREIGN KEY (Adminno) REFERENCES Admin (Adminno)
 );
-
+DROP SEQUENCE EVENT_SEQ;
 CREATE SEQUENCE EVENT_SEQ
   START WITH 1              -- 시작 번호
   INCREMENT BY 1            -- 증가값
@@ -549,13 +550,17 @@ CREATE SEQUENCE EVENT_SEQ
   
   
 INSERT INTO Event(eventno, title, contents, rdate, Adminno)
-VALUES(event_seq.nextval,1, '연말 위스키 10% 할인 이벤트' , '10만원 이상 위스키 전 품목 10% 할인! 10만원 이하 위스키 전품목 5% 할인! ', sysdate ,1);
+VALUES(event_seq.nextval, '연말 위스키 10% 할인 이벤트' , '10만원 이상 위스키 전 품목 10% 할인! 10만원 이하 위스키 전품목 5% 할인! ', sysdate ,1);
 
 -- 유형 1 전체 목록
 SELECT * FROM Event
 ORDER BY eventno ASC;
 
-SELECT eventno, thumbs, files, sizes
+DELETE FROM Event WHERE eventno >= 2;
+
+
+commit;
+SELECT eventno, thumb1, file1
 FROM Event
 ORDER BY eventno ASC;
 
@@ -613,21 +618,29 @@ CREATE SEQUENCE PAYMENTS_SEQ
 /**********************************/
 /* Table Name: 관리자로그 */
 /**********************************/
+DROP TABLE AdminLog;
 CREATE TABLE AdminLog(
-		ActivityID NUMERIC(10) PRIMARY KEY,
-		TableName VARCHAR(100),
-		RecordID NUMERIC(10),
-		ActType VARCHAR(10),
-		ActDate DATE,
+		adminlogno NUMERIC(10) PRIMARY KEY,
+		tablename VARCHAR(50),
+		recordid NUMERIC(10) DEFAULT 0,
+		acttype VARCHAR(10),
+		actdate DATE,
 		Adminno NUMERIC(5),
-  FOREIGN KEY (Adminno) REFERENCES Admin (Adminno)
+  FOREIGN KEY (Adminno) REFERENCES Admin (ADMINNO)
 );
+DROP SEQUENCE ADLOG_SEQ;
+
+ALTER TABLE ADMINLOG MODIFY (ACTTYPE VARCHAR(30));
+ 
+
 CREATE SEQUENCE ADLOG_SEQ
   START WITH 1              -- 시작 번호
   INCREMENT BY 1            -- 증가값
   MAXVALUE 9999999999            -- 최대값: 9999999999 --> NUMBER(10) 대응
   CACHE 2                   -- 2번은 메모리에서만 계산
   NOCYCLE;                  -- 다시 1부터 생성되는 것을 방지
+
+SELECT * FROM AdminLog;
 
 /**********************************/
 /* Table Name: 로그인 내역 */

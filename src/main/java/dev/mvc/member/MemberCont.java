@@ -473,6 +473,7 @@ public class MemberCont {
       response.addCookie(ck_passwd_save);
       // -------------------------------------------------------------------
       
+      //로그인 관련
       loginService.createLoginRecord(mno, memberip);
       
       mav.setViewName("redirect:/index.do");  

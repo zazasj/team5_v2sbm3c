@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="dev.mvc.event.EventDAOInter">
+  <!-- 등록한 레코드 갯수 1 리턴, #{adminno}: public int getAdminno() 호출됨 -->
+  <insert id="create" parameterType="dev.mvc.event.EventVO">   
+	INSERT INTO Event(eventno, title, contents , file1, file1saved, thumb1, 
+		size1, rdate, Adminno)
+	VALUES(event_seq.nextval,  #{title} ,  #{contents}, #{file1}, #{file1saved}, #{thumb1}, #{size1}, sysdate ,#{adminno})
+  </insert>
+
+  <!-- 모든 카테고리의 등록된 글목록 -->
+  <select id="list_all" resultType="dev.mvc.event.EventVO">
+    SELECT eventno, title, contents , file1, file1saved, thumb1, size1, rdate
+    FROM Event
+    ORDER BY eventno
+  </select>
+  
+  <!-- 일반적인 조회 -->
+  <select id="read" resultType="dev.mvc.event.EventVO" parameterType="int">
+    SELECT eventno, title, contents , file1, file1saved, thumb1, size1, rdate
+    FROM Event
+    WHERE eventno = #{eventno}
+  </select>
+  
+  <!-- 글 수정 -->
+  <update id="update_text" parameterType="dev.mvc.event.EventVO">
+    UPDATE Event
+    SET title=#{title}, contents=#{contents}
+    WHERE eventno = #{eventno}
+  </update>
+
+
+  <!-- 파일 수정 -->
+  <update id="update_file" parameterType="dev.mvc.event.EventVO">
+    UPDATE Event
+    SET file1=#{file1}, file1saved=#{file1saved}, thumb1=#{thumb1}, size1=#{size1}
+    WHERE eventno = #{eventno}
+  </update>  
+
+  <delete id="delete" parameterType="int">
+    DELETE FROM Event
+    WHERE eventno=#{eventno}
+  </delete>    
+</mapper> 
+
+
