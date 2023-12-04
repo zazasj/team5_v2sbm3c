@@ -387,10 +387,10 @@ public class Tool {
       String path = "";
       if (File.separator.equals("\\")) {
           // Windows 개발시 사용 폴더
-          // path="C:\\kd\\ws_java\\resort_v2sbm3c\\src\\main\\resources\\static";
-          
+          //path="C:\\kd\\ws_java\\team5_v2sbm3c\\src\\main\\resources\\static\\contents";
+          //C:\kd\ws_java\team5_v2sbm3c
           // Windows 배포, 폴더 생성
-          //path = "C:/kd/deploy/resort_v3sbm3c";
+          path = "C:/kd/ws_java/team5_v2sbm3c";
 
       } else {
           // Linux 배포

@@ -402,7 +402,8 @@ public class Upload extends HttpServletRequestWrapper {
                 System.out.println("-> 서버 저장 전 originalFileName: " + originalFileName);
                 System.out.println("-> 서버 저장 전 fileName: " + fileName);
                 System.out.println("-> 서버 저장 전 serverFullPath: " + serverFullPath);
-                
+                System.out.println("0000");
+                //여기 밑에가 안됨. 
                 outputStream = new FileOutputStream( serverFullPath );
                 System.out.println("1111");
                 // 버퍼를 만든다.
