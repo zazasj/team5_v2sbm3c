@@ -23,7 +23,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import dev.mvc.admin.AdminProcInter;
+import dev.mvc.admin.AdminVO;
+import dev.mvc.adminlog.AdlogService;
 import dev.mvc.login.LoginService;
+import dev.mvc.tool.Tool;
  
 @Controller
 public class MemberCont {
@@ -37,7 +40,6 @@ public class MemberCont {
   
   @Autowired
   private LoginService loginService;
-  
   
   public MemberCont(){
     System.out.println("-> MemberCont created.");
@@ -61,13 +63,14 @@ public class MemberCont {
     }catch(Exception e) {
       
     }
+      int cnt2 = this.memberProc.checkID(id);
+      
+      JSONObject json = new JSONObject();
+      json.put("cnt2", cnt2); // �궎�� 媛� = HashMap
+     
+      return json.toString(); // {"cnt":1}     
     
-    int cnt = this.memberProc.checkID(id);
-   
-    JSONObject json = new JSONObject();
-    json.put("cnt", cnt); // �궎�� 媛� = HashMap
-   
-    return json.toString(); // {"cnt":1} 
+    
   }
 
   // http://localhost:9091/member/create.do
@@ -407,7 +410,7 @@ public class MemberCont {
                             HttpServletResponse response,
                             HttpSession session,
                             String id,
-                            String passwd,
+                            String passwd,                            
                             @RequestParam(value="id_save", defaultValue="") String id_save,
                             @RequestParam(value="passwd_save", defaultValue="") String passwd_save) {
     ModelAndView mav = new ModelAndView();

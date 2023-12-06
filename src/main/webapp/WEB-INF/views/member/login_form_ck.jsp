@@ -25,12 +25,23 @@
     
 </script> 
 
+<script>
+        function openPasswordDialog() {
+            var password = prompt("비밀번호를 입력하세요:", "1234");
+            if (password === "1234") {
+            	window.location.href = "/admin/login.do";
+            } else {
+                alert("잘못된 비밀번호입니다.");
+            }
+        }
+    </script>
+
 </head> 
  
 <body>
 <c:import url="/menu/top.do" />
  
-  <DIV class='title_line'>로그인</DIV>
+  <DIV class='title_line' onclick="openPasswordDialog()">회원 로그인</DIV>
 
   <DIV class='content_body'> 
     <DIV style='width: 40%; margin: 0px auto;'>
@@ -56,7 +67,7 @@
         <div class="bottom_menu">
           <button type="submit" class="btn btn-secondary btn-sm">로그인</button>
           <button type='button' id='btn_create' class="btn btn-secondary btn-sm">회원가입</button>
-          <button type='button' id='btn_loadDefault' class="btn btn-secondary btn-sm">테스트 계정</button>
+          <button type='button' id='btn_loadDefault' class="btn btn-secondary btn-sm">회원 테스트 계정</button>
         </div>   
         
       </FORM>

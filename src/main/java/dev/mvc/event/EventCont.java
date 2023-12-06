@@ -85,7 +85,7 @@ public class EventCont {
 	          file1saved = Upload.saveFileSpring(mf, upDir); 
 	          
 	          if (Tool.isImage(file1saved)) { 
-	            thumb1 = Tool.preview(upDir, file1saved, 200, 150); 
+	            thumb1 = Tool.preview(upDir, file1saved, 480, 500); 
 	          }
 	          
 	        }    
@@ -138,7 +138,7 @@ public class EventCont {
 	  public ModelAndView list_all(HttpSession session) {
 	    ModelAndView mav = new ModelAndView();
 	    
-	    if (this.adminProc.isAdmin(session) == true) {
+	    
 	      mav.setViewName("/event/list_all"); 
 	      
 	      ArrayList<EventVO> list = this.eventProc.list_all();
@@ -157,10 +157,7 @@ public class EventCont {
 	      
 	      mav.addObject("list", list);
 	      
-	    } else {
-	      mav.setViewName("/admin/login_need"); // /WEB-INF/views/admin/login_need.jsp
-	      
-	    }
+	    
 	    
 	    return mav;
 	  }
@@ -321,7 +318,7 @@ public class EventCont {
 	        file1saved = Upload.saveFileSpring(mf, upDir); 
 	        
 	        if (Tool.isImage(file1saved)) {      
-	          thumb1 = Tool.preview(upDir, file1saved, 250, 200); 
+	          thumb1 = Tool.preview(upDir, file1saved, 480, 500); 
 	        }        
 	      } else { 
 	        file1="";

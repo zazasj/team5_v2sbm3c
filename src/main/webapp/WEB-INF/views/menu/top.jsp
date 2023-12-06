@@ -31,10 +31,10 @@
   <a href="/"><img src="/css/images/logo4.jpg"></a>
   <input type="text" placeholder="검색할 제품을 입력해주세요." style = "width : 300px; margin-left: 350px; " >
   <input type = "button" value="검색">
-  <aside class="aside_right">
+  <!-- <aside class="aside_right">
   <a href="">로그인</a> <span
     class='menu_divide'>│</span> <a href="">회원가입</a>
-  </aside>
+  </aside> -->
 </div>
 
 <div class='container_main'>
@@ -66,11 +66,11 @@
                 </div>
             </li>
         </c:forEach>
-
+        
             <li class="nav-item"> <%-- 서브 메뉴가 없는 독립메뉴 --%>
-              <a class="nav-link top_menu_link" href="/cateGroup/list_all.do">전체 글 목록</a>
+              <a class="nav-link top_menu_link" href="/event/list_all.do">이벤트</a>
             </li>
-
+        
             <li class="nav-item dropdown"> <%-- 회원 서브 메뉴 --%>
               <a class="nav-link top_menu_link dropdown-toggle" data-bs-toggle="dropdown" href="#">회원</a>
               <div class="dropdown-menu">
@@ -93,17 +93,20 @@
           
             <c:choose>
               <c:when test="${sessionScope.admin_id == null }">
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                   <a class="nav-link top_menu_link" href="/admin/login.do">관리자 로그인</a>
-                </li>
+                </li> -->
               </c:when>
               <c:otherwise>
+                <li class="nav-item"> <%-- 서브 메뉴가 없는 독립메뉴 --%>
+                    <a class="nav-link top_menu_link" href="/cateGroup/list_all.do">전체 글 목록</a>
+                </li>
+              
                 <li class="nav-item dropdown"> <%-- 관리자 서브 메뉴 --%>
                   <a class="nav-link top_menu_link dropdown-toggle" data-bs-toggle="dropdown" href="#">관리자</a>
                   <div class="dropdown-menu">
                     <a class="dropdown-item" href='/cateGroup/list_all.do'>카테고리그룹 전체 목록</a>
                     <a class="dropdown-item" href='/member/list.do'>회원 목록</a>
-                    <a class="dropdown-item" href='/event/list_all.do'>이벤트 관리</a>
                     <a class="dropdown-item" href='/admin/logout.do'>관리자 ${sessionScope.admin_id } 로그아웃</a>
                   </div>
                 </li>
@@ -129,13 +132,20 @@
 <div class="offcanvas offcanvas-start" id="demo">
   <div class="offcanvas-header">
     <h1 class="offcanvas-title">Event</h1>
+    <a class="btn btn-secondary" href='/event/list_all.do' style="color: white; margin-top: 10px;">이벤트 목록</a>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
   </div>
   <hr>
   <div class="offcanvas-body">
-    <p>Some text lorem ipsum.</p>
-    <p>Some text lorem ipsum.</p>
-    <button class="btn btn-secondary" type="button">A Button</button>
+    <a href="/event/read.do?eventno=1">
+    <img src="/images/whiskyresize.jpg" style="width: 350px; height: 300px;">
+</a>
+
+<a href="/event/read.do?eventno=15">
+    <img src="/images/wineresize.jpg" style="width: 350px; height: 300px; margin-top: 20px;">
+</a>
+
+    
   </div>
 </div>
 

@@ -3,6 +3,8 @@ package dev.mvc.admin;
 import javax.servlet.http.HttpSession;
 
 public interface AdminProcInter {
+  
+  public int checkID(String id);
   /**
    * 로그인
    * @param AdminVO

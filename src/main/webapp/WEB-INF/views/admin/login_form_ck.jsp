@@ -54,7 +54,7 @@
       <div class="form_input_bottom">
         <button type="submit" class="btn btn-secondary">로그인</button>
         <button type="button" onclick="history.back();" class="btn btn-secondary">취소</button>
-        <button type='button' id='btn_loadDefault' class="btn btn-secondary btn-sm">테스트 계정</button>
+        <button type='button' id='btn_loadDefault' class="btn btn-secondary btn-sm">관리자 테스트 계정</button>
        
       </div>
       

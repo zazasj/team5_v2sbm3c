@@ -1,6 +1,8 @@
 package dev.mvc.admin;
 
 public interface AdminDAOInter {
+  
+  public int checkID(String id);
   /**
    * 로그인
    * @param AdminVO

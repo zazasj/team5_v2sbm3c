@@ -44,8 +44,7 @@
     </c:if>
     <a href="./list_all.do">목록</a>
     <span class='menu_divide' >│</span>
-    <a href="javascript:location.reload();">새로고침</a>
-    <span class='menu_divide' >│</span>    
+    <a href="javascript:location.reload();">새로고침</a>  
   </aside> 
   
   <DIV class='menu_line'></DIV>
