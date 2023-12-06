@@ -81,6 +81,7 @@
                     <a class="dropdown-item" href="#">비밀번호 찾기</a>
                   </c:when>
                   <c:otherwise>
+                    <a class="dropdown-item" href="http://localhost:8001/ais/recommend_form/?memberno=${sessionScope.memberno }">관심분야 등록하고 추천받기</a>
                     <a class="dropdown-item" href="/member/read.do">가입 정보</a>
                     <a class="dropdown-item" href="/member/passwd_update.do">비밀번호 변경</a>
                     <a class="dropdown-item" href="/member/read.do">회원 정보 수정</a>
