@@ -86,11 +86,20 @@ CREATE TABLE Orders(
 		memberno NUMERIC(10),
 		OrderDate DATE,
 		ProductID NUMERIC(20),
-		ShippingID VARCHAR(20),
   FOREIGN KEY (memberno) REFERENCES Member (memberno),
-  FOREIGN KEY (ProductID) REFERENCES Products (ProductID),
-  FOREIGN KEY (ShippingID) REFERENCES Shipping (ShippingID)
+  FOREIGN KEY (ProductID) REFERENCES Products (ProductID)
 );
+
+ALTER TABLE Orders
+ADD CONSTRAINT fk_ShippingID
+FOREIGN KEY (ShippingID)
+REFERENCES Shipping(ShippingID);  --ShipiingID 를 추가로 외래키 지정하여 양방향설정
+
+ALTER TABLE Orders
+DROP CONSTRAINT fk_ShippingID;
+
+ALTER TABLE Orders
+DROP COLUMN ShippingID;
 
 DROP SEQUENCE ORDERS_SEQ;
 
@@ -369,9 +378,12 @@ CREATE TABLE OrderDetails(
 		Price NUMERIC(10),
 		OrderID  NUMERIC(10),
 		ProductID NUMERIC(10),
+        		ShippingID NUMERIC(10),
   FOREIGN KEY (OrderID ) REFERENCES Orders (OrderID ),
-  FOREIGN KEY (ProductID) REFERENCES Products (ProductID)
+  FOREIGN KEY (ProductID) REFERENCES Products (ProductID),
+  FOREIGN KEY (ShippingID) REFERENCES Shipping (ShippingID)
 );
+
 DROP SEQUENCE ORDERDE_SEQ;
 CREATE SEQUENCE ORDERDE_SEQ
   START WITH 1              -- 시작 번호
@@ -473,7 +485,7 @@ CREATE SEQUENCE INVEN_SEQ
 /* Table Name: 배송 */
 /**********************************/
 CREATE TABLE Shipping(
-		ShippingID NUMERIC(10) PRIMARY KEY,
+		ShippingID NUMERIC(20) PRIMARY KEY,
 		OrderID  NUMERIC(10),
 		ShippingType VARCHAR(50),
 		Cost INT,
@@ -482,6 +494,13 @@ CREATE TABLE Shipping(
 		DeliveryStatus VARCHAR(20),
   FOREIGN KEY (OrderID ) REFERENCES Orders (OrderID )
 );
+ALTER TABLE Shipping
+ADD CONSTRAINT fk_OrderID
+FOREIGN KEY (OrderID)
+REFERENCES Orders(OrderID);
+
+commit;
+
 CREATE SEQUENCE SHIPPING_SEQ
   START WITH 1              -- 시작 번호
   INCREMENT BY 1            -- 증가값
