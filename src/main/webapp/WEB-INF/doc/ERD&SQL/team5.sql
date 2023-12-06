@@ -85,13 +85,12 @@ CREATE TABLE Orders(
 		OrderID  NUMERIC(10) PRIMARY KEY,
 		memberno NUMERIC(10),
 		OrderDate DATE,
-		TotalAmount NUMERIC(20),
-		Status VARCHAR(50),
-  FOREIGN KEY (memberno) REFERENCES Member (memberno)
+		ProductID NUMERIC(20),
+		ShippingID VARCHAR(20),
+  FOREIGN KEY (memberno) REFERENCES Member (memberno),
+  FOREIGN KEY (ProductID) REFERENCES Products (ProductID),
+  FOREIGN KEY (ShippingID) REFERENCES Shipping (ShippingID)
 );
-
-UPDATE Orders SET TotalAmount = NULL;
-ALTER TABLE Orders MODIFY TotalAmount NUMERIC(20);
 
 DROP SEQUENCE ORDERS_SEQ;
 
@@ -480,6 +479,7 @@ CREATE TABLE Shipping(
 		Cost INT,
 		EstimatedDeliveryDate DATE,
 		TrackingNumber VARCHAR(200),
+		DeliveryStatus VARCHAR(20),
   FOREIGN KEY (OrderID ) REFERENCES Orders (OrderID )
 );
 CREATE SEQUENCE SHIPPING_SEQ

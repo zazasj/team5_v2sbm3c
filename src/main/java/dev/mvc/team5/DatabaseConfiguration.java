@@ -18,7 +18,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @PropertySource("classpath:/application.properties")  // �꽕�젙 �뙆�씪 �쐞移�
-@MapperScan(basePackages= {"dev.mvc.category", "dev.mvc.mail","dev.mvc.admin", "dev.mvc.member", "dev.mvc.cateGroup", "dev.mvc.login", "dev.mvc.event", "dev.mvc.adminlog" }) // DAO interface瑜� 李얜뒗 �쐞移�
+@MapperScan(basePackages= {"dev.mvc.category", "dev.mvc.mail","dev.mvc.admin", "dev.mvc.member", "dev.mvc.cateGroup", "dev.mvc.login", "dev.mvc.event", "dev.mvc.adminlog", "dev.mvc.orders" }) // DAO interface瑜� 李얜뒗 �쐞移�
 public class DatabaseConfiguration {
     
     @Autowired
