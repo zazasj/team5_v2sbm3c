@@ -20,7 +20,7 @@
 <form name='frm' method='post' action='/category/create.do'>
     <div>
       <label>카테고리 이름</label>
-      <input type="text" name="name" value="" required="required" autofocus="autofocus" 
+      <input type="text" name="CategoryName" value="" required="required" autofocus="autofocus" 
                  class="form-control form-control-sm" style="width: 50%">
     </div>
     <div class="content_body_bottom">

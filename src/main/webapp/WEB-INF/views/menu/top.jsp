@@ -58,8 +58,9 @@
                     <c:forEach var="categoryVO" items="${list_top2}">
                         <c:set var="grpid" value="${categoryVO.grpID}" />
                         <c:set var="categoryName" value="${categoryVO.categoryName}" />
+                        <c:set var="categoryID" value="${categoryVO.categoryID}" />
                         <c:if test="${grpID eq grpid }">
-                            <a class="dropdown-item" href="#">${categoryVO.categoryName }</a>
+                            <a class="dropdown-item" href="/products/list_by_categoryID.do?categoryID=${categoryID }&now_page=1">${categoryVO.categoryName }</a>
                         </c:if>                  
                         
                     </c:forEach>
