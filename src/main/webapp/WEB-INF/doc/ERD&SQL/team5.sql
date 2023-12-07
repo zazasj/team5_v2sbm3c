@@ -323,6 +323,17 @@ CREATE TABLE Products(
   FOREIGN KEY (CategoryID) REFERENCES Category (CategoryID),
   FOREIGN KEY (SupplierID) REFERENCES Suppliers (SupplierID)
 );
+
+CREATE OR REPLACE TRIGGER trg_insert_recentrecom
+AFTER INSERT ON Products
+FOR EACH ROW
+BEGIN
+  INSERT INTO RecentRecom (RecentRecomID, ProductID, AddedDate)
+  VALUES (recentrecom_seq.nextval, :new.ProductID, SYSTIMESTAMP);
+END;
+
+DROP TRIGGER trg_insert_recentrecom;
+
 DROP  SEQUENCE PRODUCT_SEQ;
 
 CREATE SEQUENCE PRODUCT_SEQ
@@ -683,3 +694,26 @@ CREATE SEQUENCE LOGIN_SEQ
 
 SELECT * FROM Login;
 commit;
+
+DROP TABLE RecentRecom;
+CREATE TABLE RecentRecom (
+  RecentRecomID NUMBER(10) PRIMARY KEY,
+  ProductID NUMBER(10),
+  AddedDate TIMESTAMP,
+  FOREIGN KEY (ProductID) REFERENCES Products (ProductID)
+);
+
+CREATE SEQUENCE RecentRecom_SEQ
+  START WITH 1              -- 시작 번호
+  INCREMENT BY 1            -- 증가값
+  MAXVALUE 9999999999            -- 최대값: 9999999999 --> NUMBER(10) 대응
+  CACHE 2                   -- 2번은 메모리에서만 계산
+  NOCYCLE;                  -- 다시 1부터 생성되는 것을 방지
+
+SELECT RecentRecomID, ProductID, AddedDate
+      FROM (
+        SELECT RecentRecomID, ProductID, AddedDate, ROWNUM AS rnum
+        FROM RecentRecom
+        ORDER BY AddedDate DESC
+      )
+      WHERE rnum <= 5

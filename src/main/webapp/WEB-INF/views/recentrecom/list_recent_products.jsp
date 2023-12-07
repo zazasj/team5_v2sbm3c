@@ -13,15 +13,25 @@
 <link rel="shortcut icon" href="/images/whisky.png" /> <%-- /static 기준 --%>
 <link href="/css/style.css" rel="Stylesheet" type="text/css"> <!-- /static 기준 -->
 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+  
 </head>
 <body>
-<c:import url="/menu/top.do" />
 
-  <div style="width: 100%; margin: 30px auto; text-align: center;">
-    <img src="/images/alcohol.jpg" style="width: 60%;">
-    <c:import url="/recentrecom/list_recent_products.do" />
-  </div>
+<h2>회원님께 추천하는 가장 최근 상품들</h2>
 
-<jsp:include page="./menu/bottom.jsp" flush='false' /> 
+<div style="display: flex;">
+
+  <%-- 여기서 recentProducts는 Controller에서 전달한 최근 제품 리스트입니다. --%>
+  <c:forEach var="product" items="${recentProducts}">
+    <div style="margin-right: 20px;">
+      <img src="<c:url value='${product.imageFile}'/>" alt="${product.pname}" width="100" height="100">
+      <p>${product.pname}</p>
+    </div>
+  </c:forEach>
+
+</div>
+
 </body>
 </html>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dev.mvc.recentrecom.RecentRecomDAOInter">
+
+  <insert id="create" parameterType="dev.mvc.recentrecom.RecentRecomVO">
+    INSERT INTO RecentRecom (RecentRecomID, ProductID, AddedDate) 
+    VALUES (RecentRecom_SEQ.NEXTVAL, #{productID}, SYSTIMESTAMP)
+  </insert>
+
+  <select id="list_recent_products" resultType="dev.mvc.recentrecom.RecentRecomVO">
+    <![CDATA[
+      SELECT RecentRecomID, ProductID, AddedDate
+      FROM (
+        SELECT RecentRecomID, ProductID, AddedDate, ROWNUM AS rnum
+        FROM RecentRecom
+        ORDER BY AddedDate DESC
+      )
+      WHERE rnum <= 5
+    ]]>
+  </select>
+
+</mapper>
