@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="dev.mvc.orders.OrdersVO" %>
 
 <script type="text/JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
@@ -83,6 +84,7 @@
                   </c:when>
                   <c:otherwise>
                     <a class="dropdown-item" href="http://localhost:8001/ais/recommend_form/?memberno=${sessionScope.memberno }">관심분야 등록하고 추천받기</a>
+                    <a class="dropdown-item" href="/orders/orders.do?OrderID=${someOrderID}">임시 주문하기</a>
                     <a class="dropdown-item" href="/member/read.do">가입 정보</a>
                     <a class="dropdown-item" href="/member/passwd_update.do">비밀번호 변경</a>
                     <a class="dropdown-item" href="/member/read.do">회원 정보 수정</a>

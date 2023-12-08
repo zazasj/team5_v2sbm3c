@@ -81,25 +81,28 @@ SELECT * FROM Member ORDER BY memberno ASC;
 /* Table Name: 주문 */
 /**********************************/
 DROP TABLE Orders CASCADE CONSTRAINTS;
-CREATE TABLE Orders(
-		OrderID  NUMERIC(10) PRIMARY KEY,
-		memberno NUMERIC(10),
-		OrderDate DATE,
-		ProductID NUMERIC(20),
-  FOREIGN KEY (memberno) REFERENCES Member (memberno),
-  FOREIGN KEY (ProductID) REFERENCES Products (ProductID)
+CREATE TABLE Orders (
+  OrderID NUMBER(10) PRIMARY KEY,
+  OrderDate TIMESTAMP,
+  memberno NUMBER(10),
+  ProductID NUMBER(10),
+  Price NUMBER(10),
+  Mname VARCHAR(100), -- Member 테이블의 Mname 정보를 담을 컬럼 추가
+  CONSTRAINT fk_orders_member FOREIGN KEY (memberno) REFERENCES Member(memberno),
+  CONSTRAINT fk_orders_products FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );
 
 ALTER TABLE Orders
-ADD CONSTRAINT fk_ShippingID
-FOREIGN KEY (ShippingID)
-REFERENCES Shipping(ShippingID);  --ShipiingID 를 추가로 외래키 지정하여 양방향설정
+MODIFY OrderDate DATE;
 
-ALTER TABLE Orders
-DROP CONSTRAINT fk_ShippingID;
+UPDATE Orders
+SET OrderDate = TO_CHAR(OrderDate, 'YYYY-MM-DD HH24:MI');
 
-ALTER TABLE Orders
-DROP COLUMN ShippingID;
+INSERT INTO Orders (OrderID, OrderDate, memberno, ProductID, Price, Mname)
+VALUES (ORDERS_SEQ.nextval, sysdate, 1, 20, (SELECT Price FROM Products WHERE ProductID = 20),(SELECT Mname FROM Member WHERE memberno = 1));
+
+INSERT INTO Orders (OrderID, OrderDate, memberno, ProductID, Price, Mname)
+VALUES (ORDERS_SEQ.nextval, sysdate, 2, 21, (SELECT Price FROM Products WHERE ProductID = 21),(SELECT Mname FROM Member WHERE memberno = 2));
 
 DROP SEQUENCE ORDERS_SEQ;
 
@@ -375,6 +378,8 @@ VALUES(product_seq.nextval, 7 , 2 , '브리샤 까베르네쇼비뇽' , '칠레'
 
 INSERT INTO Products(ProductID, CategoryID, SupplierID, PName, Origin, Description, Volume, AlcoholContent, Price)
 VALUES(product_seq.nextval, 8 , 1 , '아리온 모스카토' , '이태리', '향기로운 과일 향(복숭아·아카시아)이 조화롭고 신선한 향 산뜻하고 부드러우며 약간의 달콤한 맛 그리고 감미가 함께 곁들여져 있다. 특히 여성들에게 인기가 많고 선물하기 좋다. ',750, 5 ,'25000');
+
+commit;
 
 SELECT * FROM Products;
 

@@ -7,6 +7,6 @@ public interface OrdersDAOInter {
    * @param ordersVO 객체
    * @return
    */
-  public int create(OrdersVO ordersVO);
+  public OrdersVO getOrderInfo(int OrderID);
   
 }
