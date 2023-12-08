@@ -13,24 +13,20 @@
 <link rel="shortcut icon" href="/images/whisky.png" /> <%-- /static 기준 --%>
 <link href="/css/style.css" rel="Stylesheet" type="text/css"> <!-- /static 기준 -->
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-  
 </head>
 <body>
 
-<h2>회원님께 추천하는 가장 최근 상품들</h2>
+  <h2>회원님께 추천하는 가장 최근 상품들</h2>
 
-<div style="display: flex;">
-
+  <div style="display: flex;">
   <%-- 여기서 recentProducts는 Controller에서 전달한 최근 제품 리스트입니다. --%>
   <c:forEach var="product" items="${recentProducts}">
-    <div style="margin-right: 20px;">
-      <img src="<c:url value='${product.imageFile}'/>" alt="${product.pname}" width="100" height="100">
+    <div style="margin: 30px auto; text-align: center;">
+      <c:out value="${product.imagefile}" /> <!-- 디버깅을 위한 출력 -->
+      <img src="<c:url value='${product.imagefile}'/>" alt="${product.pname}" width="100" height="100">
       <p>${product.pname}</p>
     </div>
   </c:forEach>
-
 </div>
 
 </body>

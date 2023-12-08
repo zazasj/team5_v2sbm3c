@@ -2,21 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="dev.mvc.recentrecom.RecentRecomDAOInter">
-
+  
+  <!-- ResultMap 설정 -->
+  <resultMap id="recentRecomResultMap" type="dev.mvc.recentrecom.RecentRecomVO">
+    <id property="recentRecomID" column="RecentRecomID"/>
+    <result property="productID" column="ProductID"/>
+    <result property="addedDate" column="AddedDate"/>
+    <result property="pname" column="PName"/>
+    <result property="imagefile" column="ImageFile"/> <!-- Add this line -->
+  </resultMap>
+  
   <insert id="create" parameterType="dev.mvc.recentrecom.RecentRecomVO">
     INSERT INTO RecentRecom (RecentRecomID, ProductID, AddedDate) 
     VALUES (RecentRecom_SEQ.NEXTVAL, #{productID}, SYSTIMESTAMP)
   </insert>
 
-  <select id="list_recent_products" resultType="dev.mvc.recentrecom.RecentRecomVO">
+  <!-- Join을 수행하는 SELECT 문 -->
+  <select id="list_recent_products" resultMap="recentRecomResultMap">
     <![CDATA[
-      SELECT RecentRecomID, ProductID, AddedDate
-      FROM (
-        SELECT RecentRecomID, ProductID, AddedDate, ROWNUM AS rnum
-        FROM RecentRecom
-        ORDER BY AddedDate DESC
-      )
-      WHERE rnum <= 5
+      SELECT * FROM (
+        SELECT rr.RecentRecomID, rr.ProductID, rr.AddedDate, p.PName, p.ImageFile
+        FROM RecentRecom rr
+        JOIN Products p ON rr.ProductID = p.ProductID
+        ORDER BY rr.AddedDate DESC
+      ) WHERE ROWNUM <= 5
     ]]>
   </select>
 

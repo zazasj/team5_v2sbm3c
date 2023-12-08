@@ -25,5 +25,4 @@ public class RecentRecomCont {
       return "/recentrecom/list_recent_products";
   }
   
-  
 }
