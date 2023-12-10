@@ -166,7 +166,7 @@ window.onload = function() {
       <label>전화 번호:
         <input type='text' class="form-control form-control-sm" name='tel' id='tel' value='${memberVO.tel }' required="required" placeholder="전화번호">
       </label>
-      예) 010-0000-0000
+      예) 01000000000
     </div>   
 
     <div class="form-group">

@@ -61,7 +61,7 @@
     });  
 
     // 처리중 출력
-    current_passwd_msg.innerHTML="<img src='/member/images/ani04.gif' style='width: 5%;'>"; // static 기준
+    current_passwd_msg.innerHTML="<img src='/member/images/Hourglass.gif' style='width: 10%;'>"; // static 기준
   }
   
 </script>

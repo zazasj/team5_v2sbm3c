@@ -118,6 +118,25 @@ public class MemberProc implements MemberProcInter {
     int cnt = this.memberDAO.login(map);
     return cnt;
   }
+
+  @Override
+  public int findid(HashMap<String, Object> map) {
+    int cnt = this.memberDAO.findid(map);
+    return cnt;
+  }
+
+  @Override
+  public int findpwd(HashMap<String, Object> map) {
+    int cnt = this.memberDAO.findpwd(map);
+    return cnt;
+  }
+
+  @Override
+  public MemberVO readBytel(String tel) {
+    MemberVO memberVO = this.memberDAO.readBytel(tel);
+    return memberVO;
+  }
+  
   
 }
 

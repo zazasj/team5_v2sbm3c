@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +27,8 @@ import dev.mvc.admin.AdminProcInter;
 import dev.mvc.admin.AdminVO;
 import dev.mvc.adminlog.AdlogService;
 import dev.mvc.login.LoginService;
+import dev.mvc.maillog.MailService;
+import dev.mvc.tool.MailTool;
 import dev.mvc.tool.Tool;
  
 @Controller
@@ -40,6 +43,9 @@ public class MemberCont {
   
   @Autowired
   private LoginService loginService;
+  
+  @Autowired
+  private MailService mailService;
   
   public MemberCont(){
     System.out.println("-> MemberCont created.");
@@ -140,6 +146,16 @@ public class MemberCont {
     return mav; // forward
   }
   
+  @RequestMapping(value="/member/msg2.do", method=RequestMethod.GET)
+  public ModelAndView msg2(HttpSession session){
+    ModelAndView mav = new ModelAndView();
+    mav.addObject("mname", session.getAttribute("mname"));
+    mav.addObject("fid", session.getAttribute("fid"));    
+    mav.setViewName("/member/msg2"); // /WEB-INF/views/member/create.jsp
+    return mav; // forward
+  }
+
+  
   /**
   * 紐⑸줉 異쒕젰 媛��뒫
   * @param session
@@ -235,10 +251,9 @@ public class MemberCont {
    * @return
    */
   @RequestMapping(value="/member/delete.do", method=RequestMethod.GET)
-  public ModelAndView delete(int memberno){
+  public ModelAndView delete(HttpSession session){
     ModelAndView mav = new ModelAndView();
-    
-    MemberVO memberVO = this.memberProc.read(memberno); // �궘�젣�븷 �젅肄붾뱶瑜� �궗�슜�옄�뿉寃� 異쒕젰�븯湲곗쐞�빐 �씫�쓬.
+    MemberVO memberVO = this.memberProc.read((int)session.getAttribute("memberno")); // �궘�젣�븷 �젅肄붾뱶瑜� �궗�슜�옄�뿉寃� 異쒕젰�븯湲곗쐞�빐 �씫�쓬.
     mav.addObject("memberVO", memberVO);
     
     mav.setViewName("/member/delete"); // /member/delete.jsp
@@ -252,19 +267,14 @@ public class MemberCont {
    * @return
    */
   @RequestMapping(value="/member/delete.do", method=RequestMethod.POST)
-  public ModelAndView delete_proc(int memberno){
+  public ModelAndView delete_proc(HttpSession session){
     ModelAndView mav = new ModelAndView();
-    
-    // System.out.println("id: " + memberVO.getId());
-    // �궘�젣�맂 �젙蹂대�� msg.jsp�뿉 異쒕젰�븯湲� �쐞�빐, �궘�젣�쟾�뿉 �쉶�썝 �젙蹂대�� �씫�쓬.
-    MemberVO memberVO = this.memberProc.read(memberno); 
-    
+    int memberno = (int)session.getAttribute("memberno");
+   
     int cnt= this.memberProc.delete(memberno);
 
     if (cnt == 1) {
       mav.addObject("code", "delete_success");
-      mav.addObject("mname", memberVO.getMname());  // �솉湲몃룞�떂(user4) �쉶�썝 �젙蹂대�� �궘�젣�뻽�뒿�땲�떎.
-      mav.addObject("id", memberVO.getId());
     } else {
       mav.addObject("code", "delete_fail");
     }
@@ -421,11 +431,11 @@ public class MemberCont {
     //System.out.println("-> ip: " + ip);
     map.put("id", id);
     map.put("passwd", passwd);
-   
     int cnt = memberProc.login(map);
-    if (cnt == 1) { // 濡쒓렇�씤 �꽦怨�
+    MemberVO memberVO = memberProc.readById(id);
+    if (cnt == 1 && memberProc.isMember(session) == true) { // 濡쒓렇�씤 �꽦怨�
       // System.out.println(id + " 濡쒓렇�씤 �꽦怨�");
-      MemberVO memberVO = memberProc.readById(id);
+      
       session.setAttribute("memberno", memberVO.getMemberno()); // �꽌踰꾩쓽 硫붾え由ъ뿉 湲곕줉
       session.setAttribute("id", id);
       session.setAttribute("mname", memberVO.getMname());
@@ -481,8 +491,13 @@ public class MemberCont {
       
       mav.setViewName("redirect:/index.do");  
     } else {
-      mav.addObject("url", "/member/login_fail_msg");
-      mav.setViewName("redirect:/member/msg.do"); 
+      if(memberVO.getGrade() == 99) {
+        mav.addObject("code", "deletemember_msg"); 
+        mav.setViewName("redirect:/member/msg.do");        
+      }else {
+        mav.addObject("url", "/member/login_fail_msg");
+        mav.setViewName("redirect:/member/msg.do"); 
+      }     
     }
        
     return mav;
@@ -580,6 +595,161 @@ public class MemberCont {
     return mav;
   }
   
+  @RequestMapping(value="/member/findid.do", method=RequestMethod.GET)
+  public ModelAndView findid(){
+    ModelAndView mav = new ModelAndView();
+    mav.setViewName("/member/findid"); 
+    
+    return mav;
+  }
+  
+  @RequestMapping(value="/member/findid.do", method=RequestMethod.POST)
+  public ModelAndView findid(HttpSession session, String name, String tel){
+    ModelAndView mav = new ModelAndView();
+
+  
+    //int memberno = (int)session.getAttribute("memberno");
+    
+    //MemberVO memberVO = this.memberProc.read(memberno);
+    //mav.addObject("mname", memberVO.getMname());  
+    //mav.addObject("id", memberVO.getId());
+    
+    HashMap<String, Object> map = new HashMap<String, Object>();
+    map.put("name", name);
+    map.put("tel", tel);    
+    int cnt = memberProc.findid(map);
+    MemberVO memberVO = memberProc.readBytel(tel);
+    if (cnt == 1) {             
+      session.setAttribute("memberno", memberVO.getMemberno()); 
+      session.setAttribute("mname", name);
+      //id라하면 로그인됨
+      session.setAttribute("fid", memberVO.getId());
+      String userid = memberVO.getId();
+      
+      mav.addObject("code", "findid_success"); 
+      mav.addObject("userid", userid); 
+      
+      
+           
+    } else {
+      mav.addObject("code", "findid_fail"); 
+    }
+
+    mav.addObject("cnt", cnt); 
+    mav.addObject("url", "/member/msg");  
+    
+    Random random = new Random();
+    StringBuilder verify_code = new StringBuilder();
+    for (int i = 0; i < 6; i++) {
+      verify_code.append(random.nextInt(10));
+    }   
+    session.setAttribute("verify_code", verify_code);
+    
+    //2줄 메일 로그 관련 
+    String actname = "Find ID /" + verify_code ;   
+    mailService.createMailRecord(memberVO.getMemberno(), memberVO.getId(), actname);
+    
+    MailTool mailTool = new MailTool();
+    String receiver = "zazang0503@naver.com";
+    String from = "zazang5@gmail.com";
+    String title = "아이디 찾기 확인 메일 : "+verify_code ;
+    String content = " <div style=\"text-align: left;\">\r\n"
+        + "    <b><u>아이디 찾기 안내</u><b><br>\r\n"
+        + "    <ul>\r\n"
+        + "        <li>인증번호 : "+verify_code+"</li>\r\n"      
+        + "    </ul>\r\n"   
+        + " </div>";
+    
+    mailTool.send(receiver, from, title, content); // 메일 전송  
+    
+    
+    
+    mav.setViewName("redirect:/member/msg.do");
+    
+    return mav;
+  }
+  
+  @RequestMapping(value="/member/findpwd.do", method=RequestMethod.GET)
+  public ModelAndView findpwd(){
+    ModelAndView mav = new ModelAndView();
+    mav.setViewName("/member/findpwd"); 
+    
+    return mav;
+  }
+  
+  @RequestMapping(value="/member/findpwd.do", method=RequestMethod.POST)
+  public ModelAndView findpwd(HttpSession session, String pid, String name){
+    ModelAndView mav = new ModelAndView();
+
+  
+    //int memberno = (int)session.getAttribute("memberno");
+    
+    //MemberVO memberVO = this.memberProc.read(memberno);
+    //mav.addObject("mname", memberVO.getMname());  
+    //mav.addObject("id", memberVO.getId());
+    
+    HashMap<String, Object> map = new HashMap<String, Object>();
+    map.put("id", pid);
+    map.put("name", name);    
+    int cnt = memberProc.findpwd(map);
+    MemberVO memberVO = memberProc.readById(pid);
+    if (cnt == 1) {          
+      session.setAttribute("memberno", memberVO.getMemberno()); 
+      session.setAttribute("mname", name);
+      //id라하면 로그인됨
+      session.setAttribute("fid", memberVO.getId());
+      String userid = memberVO.getId();
+      
+      mav.addObject("code", "findpwd_success"); 
+      mav.addObject("userid", userid); 
+      
+           
+    } else {
+      mav.addObject("code", "findid_fail"); 
+    }
+
+    mav.addObject("cnt", cnt); 
+    mav.addObject("url", "/member/msg");  
+   
+    Random random = new Random();
+    StringBuilder verifyCode = new StringBuilder();
+    String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; // 영어 대문자와 숫자를 포함한 문자열
+
+    for (int i = 0; i < 8; i++) {
+        int index = random.nextInt(characters.length());
+        verifyCode.append(characters.charAt(index));
+    }
+
+    String generatedCode = verifyCode.toString();
+    session.setAttribute("verify_code", generatedCode);
+    
+    //2줄 메일 로그 관련
+    String actname = "Find PWD /" + generatedCode ;
+    mailService.createMailRecord(memberVO.getMemberno(), memberVO.getId(), actname);
+    
+    MailTool mailTool = new MailTool();
+    String receiver = "zazang0503@naver.com";
+    String from = "zazang5@gmail.com";
+    String title = "비밀번호 재 설정 메일"; 
+    String content = " <div style=\"text-align: left;\">\r\n"
+        + "    <b><u>비밀번호 재 설정 안내</u><b><br>\r\n"
+        + "    <ul>\r\n"
+        + "        <li>새로운 임시 비밀번호 : "+generatedCode+"</li>\r\n"      
+        + "    </ul>\r\n"   
+        + " </div>";
+    
+    mailTool.send(receiver, from, title, content); // 메일 전송
+    
+    HashMap<String, Object> map2 = new HashMap<String, Object>();
+    map2.put("memberno", memberVO.getMemberno());
+    map2.put("passwd", generatedCode);
+    this.memberProc.passwd_update(map2); 
+    
+    
+    mav.setViewName("redirect:/member/msg.do");
+    
+    return mav;
+  }
   
 }
 

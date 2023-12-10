@@ -81,6 +81,27 @@
   </fieldset>
 
 </DIV>
+
+<div style="display: flex; align-items: center; margin-left: 100px; margin-right: 100px;">
+    <span style="font-size: 1.5em; font-weight: bold;">0개의 리뷰</span>
+</div>
+<br>
+<!-- 리뷰 입력 폼 -->
+<div style="display: flex; align-items: center; border: 1px solid #000; margin-left: 100px; margin-right: 100px;">
+    <fieldset class="fieldset_basic">
+    
+    <form action="/your_server_url/add_review" method="POST">
+        <textarea name="review_content" rows="6" cols="150" placeholder="        리뷰를 입력하세요. 
+        다른 사람에게 불쾌감을 주는 욕설, 혐오, 비하의 표현이나 타인의 권리를 침해하는 내용은 주의해주세요.
+        모든 작성자는 본인이 작성한 의견에 대해 법적인 책임을 갖는다는 점 유의하시기 바랍니다." ></textarea>
+        <input type="hidden" name="eventno" value="${eventno}"> <!-- 현재 이벤트의 ID를 전달 -->
+        <div style="text-align: right; margin-right: 50px;">
+        <button type="submit"  id = "sm_button" class="btn btn-secondary btn-sm" >입력</button>
+        </div>
+    </form>
+    </fieldset>
+</div>
+
  
 <jsp:include page="../menu/bottom.jsp" flush='false' />
 </body>

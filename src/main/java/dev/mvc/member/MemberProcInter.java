@@ -89,6 +89,12 @@ public interface MemberProcInter {
    */
   public int login(HashMap<String, Object> map);
   
+  public int findid(HashMap<String, Object> map);
+  
+  public int findpwd(HashMap<String, Object> map);
+  
+  public MemberVO readBytel(String tel);
+  
 }
 
 

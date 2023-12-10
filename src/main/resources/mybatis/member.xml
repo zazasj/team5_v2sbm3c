@@ -40,10 +40,11 @@
     WHERE memberno=#{memberno}
   </update>
   
-  <delete id="delete" parameterType="int">
-    DELETE FROM member
-    WHERE memberno=#{memberno}
-  </delete>
+  <update id="delete" parameterType="int">    
+    UPDATE member
+    SET grade = 99
+    WHERE memberno=#{memberno}   
+  </update>
 
   <!-- 로그인 -->
   <select id="login" resultType="int" parameterType="HashMap">
@@ -65,6 +66,27 @@
     SET passwd=#{passwd}
     WHERE memberno=#{memberno}
   </update>
+  
+  <!-- 아이디찾기 -->
+  <select id="findid" resultType="int" parameterType="HashMap">
+    SELECT COUNT(*) as cnt
+    FROM member
+    WHERE mname=#{name} AND tel=#{tel}
+  </select>
+  
+  <!-- tel로 회원 정보 조회 -->
+  <select id="readBytel" resultType="dev.mvc.member.MemberVO" parameterType="String">
+    SELECT memberno, id
+    FROM member
+    WHERE tel = #{tel}
+  </select>
+  
+  <!-- 비밀번호 찾기 -->
+  <select id="findpwd" resultType="int" parameterType="HashMap">
+    SELECT COUNT(*) as cnt
+    FROM Member
+    WHERE mname = #{name} AND id = #{id}
+  </select>
         
 </mapper> 
 

@@ -79,8 +79,8 @@
                 <c:choose>
                   <c:when test="${sessionScope.id == null }">
                     <a class="dropdown-item" href="/member/create.do">회원 가입</a>
-                    <a class="dropdown-item" href="#">아이디 찾기</a>
-                    <a class="dropdown-item" href="#">비밀번호 찾기</a>
+                    <a class="dropdown-item" href="/member/findid.do">아이디 찾기</a>
+                    <a class="dropdown-item" href="/member/findpwd.do">비밀번호 찾기</a>
                   </c:when>
                   <c:otherwise>
                     <a class="dropdown-item" href="http://localhost:8001/ais/recommend_form/?memberno=${sessionScope.memberno }">관심분야 등록하고 추천받기</a>
@@ -88,8 +88,7 @@
                     <a class="dropdown-item" href="/member/read.do">가입 정보</a>
                     <a class="dropdown-item" href="/member/passwd_update.do">비밀번호 변경</a>
                     <a class="dropdown-item" href="/member/read.do">회원 정보 수정</a>
-                    <a class="dropdown-item" href="javascript: alert('개발 예정')">로그인 내역</a>
-                    <a class="dropdown-item" href="#">회원 탈퇴</a>
+                    <a class="dropdown-item" href="/member/delete.do">회원 탈퇴</a>
                   </c:otherwise>
                 </c:choose>
               </div>
@@ -145,7 +144,7 @@
     <img src="/images/whiskyresize.jpg" style="width: 350px; height: 300px;">
 </a>
 
-<a href="/event/read.do?eventno=15">
+<a href="/event/read.do?eventno=2">
     <img src="/images/wineresize.jpg" style="width: 350px; height: 300px; margin-top: 20px;">
 </a>
 
