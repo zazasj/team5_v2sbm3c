@@ -3,6 +3,9 @@
 전세진 | 이정탁 | 황경태 | 홍재민 | 한창명
 :--:|:--:|:--:|:--:|:--:
 PL,DA | FE | DS | AI | Mobile
+<img src="https://avatars.githubusercontent.com/zazasj" width="60" height="60"> | <img src="https://avatars.githubusercontent.com/JTak2" width="60" height="60"> | <img src="https://avatars.githubusercontent.com/HwangReaper" width="60" height="60"> | <img src="https://avatars.githubusercontent.com/hongjm99" width="60" height="60">  | <img src="https://avatars.githubusercontent.com/ChangMyungGit" width="60" height="60">
+
+
 
 PL | Project Leader
 :--:|:--:
