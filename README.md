@@ -1,11 +1,19 @@
-
-팀원별 역할 
+**팀원별 역할**
+ 
 전세진 | 이정탁 | 황경태 | 홍재민 | 한창명
 :--:|:--:|:--:|:--:|:--:
 PL,DA | FE | DS | AI | Mobile
 
+PL | Project Leader
+:--:|:--:
+DA|Data Architecture 
+FE | FrontEnd
+DS | Data Science
+AI | Artificial Intelligence
+Mobile | Mobile Developer
 
-팀원별 테이블 
+
+**팀원별 테이블**
 전세진 | 이정탁 | 황경태 | 홍재민 | 한창명
 :--:|:--:|:--:|:--:|:--:
 관리자 | 카테고리 | 카테그룹 추천 | 챗봇 | .
