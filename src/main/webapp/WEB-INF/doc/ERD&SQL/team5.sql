@@ -76,6 +76,7 @@ commit;
 
 SELECT * FROM Member ORDER BY memberno ASC;
 
+SELECT memberno FROM Member WHERE grade = 99;
 
 /**********************************/
 /* Table Name: 주문 */
