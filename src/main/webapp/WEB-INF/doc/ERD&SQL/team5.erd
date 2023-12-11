@@ -2752,7 +2752,7 @@
             <targetConnections/>
             <error></error>
             <linkedPath></linkedPath>
-            <tableName>Withdrawal Application</tableName>
+            <tableName>MemberWithdraw</tableName>
             <logicalName>회원탈퇴신청</logicalName>
             <description></description>
             <columns>
@@ -3160,7 +3160,7 @@
   </children>
   <dommains/>
   <dialectName>hsqldb</dialectName>
-  <logicalMode>true</logicalMode>
+  <logicalMode>false</logicalMode>
   <jarFile></jarFile>
   <jdbcDriver>sun.jdbc.odbc.JdbcOdbc</jdbcDriver>
   <jdbcUrl></jdbcUrl>

@@ -701,6 +701,30 @@ CREATE SEQUENCE LOGIN_SEQ
 SELECT * FROM Login;
 commit;
 
+/**********************************/
+/* Table Name: 회원 탈퇴 내역 */
+/**********************************/
+DROP TABLE MemberWithdraw;
+
+CREATE TABLE MemberWithdraw(
+		withno NUMERIC(10) NOT NULL PRIMARY KEY,
+		memberno NUMERIC(10) NOT NULL,
+		id VARCHAR(50) NOT NULL,
+        grade NUMERIC(2) NOT NULL,
+		withdate DATE NOT NULL,
+  FOREIGN KEY (memberno) REFERENCES Member (memberno)
+);
+
+CREATE SEQUENCE MEMBERWITHDRAW_SEQ
+  START WITH 1              -- 시작 번호
+  INCREMENT BY 1            -- 증가값
+  MAXVALUE 9999999999            -- 최대값: 9999999999 --> NUMBER(10) 대응
+  CACHE 2                   -- 2번은 메모리에서만 계산
+  NOCYCLE;                  -- 다시 1부터 생성되는 것을 방지
+
+SELECT * FROM MemberWithdraw;
+commit;
+
 
 /**********************************/
 /* Table Name: 메일 로그 */
