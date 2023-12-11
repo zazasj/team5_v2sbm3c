@@ -456,8 +456,8 @@ CREATE TABLE Carts(
 		CreatedAt DATETIME,
 		cnt NUMERIC(10),
 		ProductID NUMERIC(10),		
-  FOREIGN KEY (ProductID) REFERENCES Products (ProductID),
-  FOREIGN KEY (memberno) REFERENCES Member (memberno)
+  FOREIGN KEY (ProductID) REFERENCES Products (ProductID) ON DELETE CASCADE,
+  FOREIGN KEY (memberno) REFERENCES Member (memberno) ON DELETE CASCADE
 );
 
 CREATE SEQUENCE CARTS_SEQ
@@ -470,23 +470,37 @@ CREATE SEQUENCE CARTS_SEQ
 /**********************************/
 /* Table Name: 리뷰 */
 /**********************************/
-CREATE TABLE Reviews(
-		ReviewID NUMERIC(10) PRIMARY KEY,
-        memberno NUMERIC(10),
-		ProductID NUMERIC(10),
-		Rating NUMERIC(3),
-		Comment VARCHAR(300),
-		ReviewDate DATETIME,		
-  FOREIGN KEY (ProductID) REFERENCES Products (ProductID),
-  FOREIGN KEY (memberno) REFERENCES Member (memberno)
-);
 
+DROP TABLE Reviews;
+CREATE TABLE Reviews(
+		reviewno NUMERIC(10) PRIMARY KEY,
+        memberno NUMERIC(10),
+		productid NUMERIC(10),
+        reuser  VARCHAR(100),
+        retitle VARCHAR(100),
+		rating NUMERIC(3),
+		recontent VARCHAR(1000),
+		reviewdate DATE,		
+  FOREIGN KEY (productid) REFERENCES Products (productid)ON DELETE CASCADE,
+  FOREIGN KEY (memberno) REFERENCES Member (memberno) ON DELETE CASCADE
+);
+DROP SEQUENCE REVIEWS_SEQ;
 CREATE SEQUENCE REVIEWS_SEQ
   START WITH 1              -- 시작 번호
   INCREMENT BY 1            -- 증가값
   MAXVALUE 9999999999            -- 최대값: 9999999999 --> NUMBER(10) 대응
   CACHE 2                   -- 2번은 메모리에서만 계산
   NOCYCLE;                  -- 다시 1부터 생성되는 것을 방지
+  
+  INSERT INTO Reviews(reviewno, memberno, reuser, productid, retitle, rating, recontent , reviewdate)
+  VALUES(reviews_seq.nextval, 1,'회원1', 1,'위스키 최고',9.5,'위스키가 싸고 맛있네요', sysdate);
+  
+  INSERT INTO Reviews(reviewno, memberno, reuser, productid, retitle, rating, recontent , reviewdate)
+  VALUES(reviews_seq.nextval, 2,'회원2', 1,'JMT',10.0,'너무 좋아요.' , sysdate);
+  
+  SELECT reviewno, memberno, productid, reuser, retitle, rating, recontent, reviewdate FROM Reviews
+  WHERE productid = 1;
+  commit;
 /**********************************/
 /* Table Name: 재고 */
 /**********************************/
@@ -565,7 +579,7 @@ CREATE TABLE Event(
 		size1 VARCHAR(1000),
 		rdate DATE,
 		Adminno NUMERIC(5),
-  FOREIGN KEY (Adminno) REFERENCES Admin (Adminno)
+  FOREIGN KEY (Adminno) REFERENCES Admin (Adminno) ON DELETE CASCADE
 );
 DROP SEQUENCE EVENT_SEQ;
 CREATE SEQUENCE EVENT_SEQ
@@ -610,8 +624,8 @@ CREATE TABLE FavProduct(
 		ProductID NUMERIC(10),
 		memberno NUMERIC(10),
 		CreatedAt DATE,
-  FOREIGN KEY (ProductID) REFERENCES Products (ProductID),
-  FOREIGN KEY (memberno) REFERENCES Member (memberno)
+  FOREIGN KEY (ProductID) REFERENCES Products (ProductID) ON DELETE CASCADE,
+  FOREIGN KEY (memberno) REFERENCES Member (memberno) ON DELETE CASCADE
 );
 
 CREATE SEQUENCE FAV_SEQ
@@ -653,7 +667,7 @@ CREATE TABLE AdminLog(
 		acttype VARCHAR(10),
 		actdate DATE,
 		Adminno NUMERIC(5),
-  FOREIGN KEY (Adminno) REFERENCES Admin (ADMINNO)
+  FOREIGN KEY (Adminno) REFERENCES Admin (ADMINNO) ON DELETE CASCADE
 );
 DROP SEQUENCE ADLOG_SEQ;
 
@@ -679,10 +693,10 @@ CREATE TABLE Login(
 		memberno NUMERIC(10),
 		ip VARCHAR(30) NOT NULL,
 		logindate DATE NOT NULL,
-  FOREIGN KEY (memberno) REFERENCES Member (memberno)
+  FOREIGN KEY (memberno) REFERENCES Member (memberno) ON DELETE CASCADE
 );
 
-
+DROP SEQUENCE LOGIN_SEQ;
 CREATE SEQUENCE LOGIN_SEQ
   START WITH 1              -- 시작 번호
   INCREMENT BY 1            -- 증가값
@@ -703,10 +717,9 @@ CREATE TABLE MemberWithdraw(
 		memberno NUMERIC(10) NOT NULL,
 		id VARCHAR(50) NOT NULL,
         grade NUMERIC(2) NOT NULL,
-		withdate DATE NOT NULL,
-  FOREIGN KEY (memberno) REFERENCES Member (memberno)
+		withdate DATE NOT NULL
 );
-
+DROP SEQUENCE MEMBERWITHDRAW_SEQ;
 CREATE SEQUENCE MEMBERWITHDRAW_SEQ
   START WITH 1              -- 시작 번호
   INCREMENT BY 1            -- 증가값
@@ -726,15 +739,15 @@ DROP TABLE MailLog;
 CREATE TABLE MailLog(
 		mailno NUMERIC(10) NOT NULL PRIMARY KEY,
 		memberno NUMERIC(10) NOT NULL,
-    id VARCHAR(50) NOT NULL,
+        id VARCHAR(50) NOT NULL,
 		actname VARCHAR(30) NOT NULL,
 		logindate DATE NOT NULL,
-    FOREIGN KEY (memberno) REFERENCES Member (memberno)
+    FOREIGN KEY (memberno) REFERENCES Member (memberno)ON DELETE CASCADE
 );
 
 ALTER TABLE MailLog
 RENAME COLUMN logindate TO maildate;
-
+DROP SEQUENCE MAILLOG_SEQ;
 CREATE SEQUENCE MAILLOG_SEQ
   START WITH 1              -- 시작 번호
   INCREMENT BY 1            -- 증가값

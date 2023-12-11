@@ -82,16 +82,42 @@
 
 </DIV>
 
+<c:set var="listSize" value="${list.size()}" />
 <div style="display: flex; align-items: center; margin-left: 100px; margin-right: 100px;">
-    <span style="font-size: 1.5em; font-weight: bold;">0개의 리뷰</span>
+    <span style="font-size: 1.5em; font-weight: bold;">${listSize}개의 리뷰</span>
 </div>
 <br>
+<DIV class='menu_line'></DIV>
+
 <!-- 리뷰 입력 폼 -->
 <div style="display: flex; align-items: center; border: 1px solid #000; margin-left: 100px; margin-right: 100px;">
     <fieldset class="fieldset_basic">
     
     <form action="/your_server_url/add_review" method="POST">
-        <textarea name="review_content" rows="6" cols="150" placeholder="        리뷰를 입력하세요. 
+        <label for="rating">별점 선택:</label>
+		<select id="rating" name="rating" size="5" style="overflow-y: auto;">
+		    <option value="1">1점</option>
+		    <option value="1.5">1.5점</option>
+		    <option value="2">2점</option>
+		    <option value="2.5">2.5점</option>
+		    <option value="3">3점</option>
+		    <option value="3.5">3.5점</option>
+		    <option value="4">4점</option>
+		    <option value="4.5">4.5점</option>
+		    <option value="5">5점</option>
+		    <option value="5.5">5.5점</option>
+		    <option value="6">6점</option>
+		    <option value="6.5">6.5점</option>
+		    <option value="7">7점</option>
+            <option value="7.5">7.5점</option>
+            <option value="8">8점</option>
+            <option value="8.5">8.5점</option>
+            <option value="9">9점</option>
+            <option value="9.5">9.5점</option>
+            <option value="10">10점</option>
+		    <!-- 추가적인 옵션들 -->
+	    </select>	       
+        <textarea name="review_content" rows="6" cols="150" style="margin-top: 20px;" placeholder="        리뷰를 입력하세요. 
         다른 사람에게 불쾌감을 주는 욕설, 혐오, 비하의 표현이나 타인의 권리를 침해하는 내용은 주의해주세요.
         모든 작성자는 본인이 작성한 의견에 대해 법적인 책임을 갖는다는 점 유의하시기 바랍니다." ></textarea>
         <input type="hidden" name="eventno" value="${eventno}"> <!-- 현재 이벤트의 ID를 전달 -->
@@ -101,7 +127,42 @@
     </form>
     </fieldset>
 </div>
+    
+        <table class="table table-hover">
+    <colgroup>
+      <col style="width: 10%;" />
+      <col style="width: 45%;" />
+      <col style="width: 10%;" />
+      <col style="width: 20%;" />
+      <col style="width: 15%;" />
+    </colgroup>
+    <thead>
+      <tr>
+        <th class="th_bs">작성자</th>
+        <th class="th_bs">리뷰</th>
+        <th class="th_bs">평점</th>
+        <th class="th_bs">등록일</th>
+        <th class="th_bs">기타</th>
+      </tr>
+    </thead>
 
+    <tbody>
+        <c:forEach var="ReviewVO" items="${list }" varStatus="info">
+          <c:set var="reviewno" value="${ReviewVO.reviewno }" />
+    
+          <tr>
+            <td class="td_bs">${info.count }</td>
+            <td> ${ReviewVO.reuser }</td>
+            <td class="td_bs">${ReviewVO.retitle }</td>
+        <td class="td_bs">${ReviewVO.rating }</td>
+            <td class="td_bs">${ReviewVO.reviewdate.substring(0, 10) }</td>
+            
+          </tr>
+        </c:forEach>
+      </tbody>
+
+  </table>
+      
  
 <jsp:include page="../menu/bottom.jsp" flush='false' />
 </body>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="dev.mvc.review.ReviewDAOInter">
+  <!-- 등록한 레코드 갯수 1 리턴, #{adminno}: public int getAdminno() 호출됨 -->
+  <insert id="create" parameterType="dev.mvc.review.ReviewVO">   
+    INSERT INTO Reviews(reviewno, memberno, reuser, productid, retitle, rating, recontent , reviewdate)
+    VALUES(reviews_seq.nextval, #{memberno}, #{reuser}, #{productid}, #{retitle} , #{rating}, #{recontent}, sysdate)
+  </insert>
+
+  <!-- 모든 카테고리의 등록된 글목록 -->
+  <select id="list_all" resultType="dev.mvc.review.ReviewVO" parameterType="int">
+    SELECT reviewno, memberno, productid, reuser, retitle, rating, recontent, reviewdate
+    FROM Reviews
+    WHERE productid = #{productid}
+    ORDER BY reviewno
+  </select>
+
+  <delete id="delete" parameterType="int">
+    DELETE FROM Reviews
+    WHERE reviewno=#{reviewno}
+  </delete>    
+</mapper> 
+
+

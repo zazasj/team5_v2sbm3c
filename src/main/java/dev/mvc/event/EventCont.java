@@ -15,6 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import dev.mvc.admin.AdminProcInter;
 import dev.mvc.adminlog.AdlogService;
+import dev.mvc.review.ReviewProcInter;
+import dev.mvc.review.ReviewCont;
+import dev.mvc.review.ReviewVO;
 import dev.mvc.tool.Tool;
 import dev.mvc.tool.Upload;
 
@@ -31,6 +34,11 @@ public class EventCont {
 	 
 	 @Autowired
 	  private AdlogService adlogservice;
+	 
+	 @Autowired
+   @Qualifier("dev.mvc.review.ReviewProc") 
+   private ReviewProcInter reviewProc;
+	 
 
 	 private String tablename = "Event";
 	
@@ -182,7 +190,12 @@ public class EventCont {
 	    String size1_label = Tool.unit(size1);
 	    eventVO.setSize1_label(size1_label);
 	    
+	 // ReviewService의 list_all 메서드 호출하여 결과 사용
+	    ArrayList<ReviewVO> reviewVO = this.reviewProc.list_all(eventno);
+	    mav.addObject("list", reviewVO);
+	    //System.out.println(reviewVO);
 	    mav.addObject("eventVO", eventVO);
+	    //System.out.println(eventVO);
 	    return mav;
 	  }
 	 
