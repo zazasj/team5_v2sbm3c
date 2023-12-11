@@ -74,6 +74,13 @@ ALTER TABLE Member ADD zipcode VARCHAR(5);
 
 commit;
 
+DELETE FROM Member
+WHERE memberno = 3;
+
+UPDATE Member
+SET grade = 15
+WHERE memberno = 2;
+
 SELECT * FROM Member ORDER BY memberno ASC;
 
 SELECT memberno FROM Member WHERE grade = 99;
@@ -542,24 +549,7 @@ CREATE SEQUENCE CHATBOT_SEQ
   MAXVALUE 9999999999            -- 최대값: 9999999999 --> NUMBER(10) 대응
   CACHE 2                   -- 2번은 메모리에서만 계산
   NOCYCLE;                  -- 다시 1부터 생성되는 것을 방지
-/**********************************/
-/* Table Name: 추천시스템 */
-/**********************************/
-CREATE TABLE Recommendations(
-		RID NUMERIC(10) PRIMARY KEY,
-		UserID NUMERIC(10),
-		ProductID NUMERIC(10),
-		CreatedAt DATETIME,
-		Userno NUMERIC(10),
-  FOREIGN KEY (ProductID) REFERENCES Products (ProductID),
-  FOREIGN KEY (Userno) REFERENCES Users (Userno)
-);
-CREATE SEQUENCE RECOM_SEQ
-  START WITH 1              -- 시작 번호
-  INCREMENT BY 1            -- 증가값
-  MAXVALUE 9999999999            -- 최대값: 9999999999 --> NUMBER(10) 대응
-  CACHE 2                   -- 2번은 메모리에서만 계산
-  NOCYCLE;                  -- 다시 1부터 생성되는 것을 방지
+
 /**********************************/
 /* Table Name: 이벤트 */
 /**********************************/
@@ -690,6 +680,7 @@ CREATE TABLE Login(
 		logindate DATE NOT NULL,
   FOREIGN KEY (memberno) REFERENCES Member (memberno)
 );
+
 
 CREATE SEQUENCE LOGIN_SEQ
   START WITH 1              -- 시작 번호

@@ -18,7 +18,7 @@
     });
 
     document.getElementById('btn_home').addEventListener('click', () => {
-      location.href="./index.do";
+      location.href="/";
     });
   }
 

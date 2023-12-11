@@ -40,11 +40,16 @@
     WHERE memberno=#{memberno}
   </update>
   
-  <update id="delete" parameterType="int">    
+  <!--<update id="delete" parameterType="int">    
     UPDATE member
     SET grade = 99
     WHERE memberno=#{memberno}   
-  </update>
+  </update>-->
+  
+  <delete id="delete" parameterType="int">
+    DELETE FROM member
+    WHERE memberno=#{memberno}
+  </delete>
 
   <!-- 로그인 -->
   <select id="login" resultType="int" parameterType="HashMap">

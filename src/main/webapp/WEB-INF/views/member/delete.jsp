@@ -37,7 +37,7 @@
       <input type='hidden' name='memberno' value='${memberVO.memberno}'>     
           
       <button type="submit" class="btn btn-primary btn-sm">삭제</button>
-      <button type="button" onclick="location.href='./list.do'" class="btn btn-primary btn-sm">취소(목록)</button>
+      <button type="button"  onclick="history.back();" class="btn btn-primary btn-sm">취소(목록)</button>
    
     </form>
   </div>

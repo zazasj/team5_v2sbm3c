@@ -28,6 +28,7 @@ import dev.mvc.admin.AdminVO;
 import dev.mvc.adminlog.AdlogService;
 import dev.mvc.login.LoginService;
 import dev.mvc.maillog.MailService;
+import dev.mvc.memberwithdraw.WithdrawService;
 import dev.mvc.tool.MailTool;
 import dev.mvc.tool.Tool;
  
@@ -43,6 +44,9 @@ public class MemberCont {
   
   @Autowired
   private LoginService loginService;
+  
+  @Autowired
+  private WithdrawService withservice;
   
   @Autowired
   private MailService mailService;
@@ -252,7 +256,7 @@ public class MemberCont {
    */
   @RequestMapping(value="/member/delete.do", method=RequestMethod.GET)
   public ModelAndView delete(HttpSession session){
-    ModelAndView mav = new ModelAndView();
+    ModelAndView mav = new ModelAndView();    
     MemberVO memberVO = this.memberProc.read((int)session.getAttribute("memberno")); // �궘�젣�븷 �젅肄붾뱶瑜� �궗�슜�옄�뿉寃� 異쒕젰�븯湲곗쐞�빐 �씫�쓬.
     mav.addObject("memberVO", memberVO);
     
@@ -268,10 +272,18 @@ public class MemberCont {
    */
   @RequestMapping(value="/member/delete.do", method=RequestMethod.POST)
   public ModelAndView delete_proc(HttpSession session){
-    ModelAndView mav = new ModelAndView();
-    int memberno = (int)session.getAttribute("memberno");
-   
+    ModelAndView mav = new ModelAndView();   
+    MemberVO memberVO = this.memberProc.read((int)session.getAttribute("memberno")); // �궘�젣�븷 �젅肄붾뱶瑜� �궗�슜�옄�뿉寃� 異쒕젰�븯湲곗쐞�빐 �씫�쓬.
+    mav.addObject("memberVO", memberVO);
+    int memberno = memberVO.getMemberno();
+    String id = memberVO.getId();
+    int grade = memberVO.getGrade();
+    
+    //탈퇴로그 
+    withservice.createWithdrawRecord(memberno, id, grade);
+    
     int cnt= this.memberProc.delete(memberno);
+    
 
     if (cnt == 1) {
       mav.addObject("code", "delete_success");
@@ -433,7 +445,8 @@ public class MemberCont {
     map.put("passwd", passwd);
     int cnt = memberProc.login(map);
     MemberVO memberVO = memberProc.readById(id);
-    if (cnt == 1 && memberProc.isMember(session) == true) { // 濡쒓렇�씤 �꽦怨�
+    
+    if (cnt == 1 && memberVO.getGrade() < 20) { // 濡쒓렇�씤 �꽦怨�
       // System.out.println(id + " 濡쒓렇�씤 �꽦怨�");
       
       session.setAttribute("memberno", memberVO.getMemberno()); // �꽌踰꾩쓽 硫붾え由ъ뿉 湲곕줉
@@ -491,13 +504,13 @@ public class MemberCont {
       
       mav.setViewName("redirect:/index.do");  
     } else {
-      if(memberVO.getGrade() == 99) {
-        mav.addObject("code", "deletemember_msg"); 
-        mav.setViewName("redirect:/member/msg.do");        
-      }else {
+      /*
+       * if(memberVO.getGrade() == 99) { mav.addObject("code", "deletemember_msg");
+       * mav.setViewName("redirect:/member/msg.do"); }else { }
+       */     
         mav.addObject("url", "/member/login_fail_msg");
         mav.setViewName("redirect:/member/msg.do"); 
-      }     
+         
     }
        
     return mav;
