@@ -2,7 +2,7 @@ package dev.mvc.products;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.List;
 
 /**
  * Spring Boot가 자동 구현
@@ -25,17 +25,17 @@ public interface ProductsDAOInter {
   
   /**
    * 카테고리별 등록된 글 목록
-   * @param CateogoryID
+   * @param categoryID
    * @return
    */
-  public ArrayList<ProductsVO> list_by_categoryID(int CateogoryID);
+  public ArrayList<ProductsVO> list_by_categoryID(int categoryID);
   
   /**
    * 조회
-   * @param ProductID
+   * @param productID
    * @return
    */
-  public ProductsVO read(int ProductID);
+  public ProductsVO read(int productID);
   
   /**
    * 카테고리별 검색 목록
@@ -74,24 +74,24 @@ public interface ProductsDAOInter {
  
   /**
    * 삭제
-   * @param ProductID
+   * @param productID
    * @return 삭제된 레코드 갯수
    */
   public int delete(int productID);
   
   /**
-   * FK CategoryID 값이 같은 레코드 갯수 산출
-   * @param CategoryID
+   * FK categoryID 값이 같은 레코드 갯수 산출
+   * @param categoryID
    * @return
    */
-  public int count_by_categoryID(int CategoryID);
+  public int count_by_categoryID(int categoryID);
  
   /**
    * 특정 카테고리에 속한 모든 레코드 삭제
-   * @param CategoryID
+   * @param categoryID
    * @return 삭제된 레코드 갯수
    */
-  public int delete_by_categoryID(int CategoryID);
+  public int delete_by_categoryID(int categoryID);
   
 }
 

@@ -81,15 +81,15 @@ public class CategoryCont {
 
   /**
    * 조회
-   * http://localhost:9093/category/read.do?CategoryID=1
+   * http://localhost:9093/category/read.do?categoryID=1
    * @return
    */
   @RequestMapping(value = "/category/read.do", method = RequestMethod.GET)
-  public ModelAndView read(int CategoryID) { // int CategoryID= (int)request.getParameter("CategoryID")
+  public ModelAndView read(int categoryID) { // int categoryID= (int)request.getParameter("categoryID")
     ModelAndView mav = new ModelAndView();
     mav.setViewName("/category/read"); // /WEB-INF/view/category/read
     
-    CategoryVO categoryVO = this.categoryProc.read(CategoryID);
+    CategoryVO categoryVO = this.categoryProc.read(categoryID);
     mav.addObject("categoryVO", categoryVO);
     
     return mav;
@@ -97,17 +97,17 @@ public class CategoryCont {
   
   /**
    * 수정폼
-   * http://localhost:9093/category/update.do?CategoryID=1
+   * http://localhost:9093/category/update.do?categoryID=1
    * @return
    */
   @RequestMapping(value="/category/update.do", method = RequestMethod.GET)
-  public ModelAndView update(HttpSession session, int CategoryID) { // int genreno = (int)request.getParameter("genreno");
+  public ModelAndView update(HttpSession session, int categoryID) { // int genreno = (int)request.getParameter("genreno");
     ModelAndView mav = new ModelAndView();
     // mav.setViewName("/category/update"); // /WEB-INF/views/category/update.jsp
     if (this.adminProc.isAdmin(session) == true) {
     mav.setViewName("/category/list_all_update"); // /WEB-INF/views/movieb/list_all_update.jsp
       
-    CategoryVO categoryVO = this.categoryProc.read(CategoryID);
+    CategoryVO categoryVO = this.categoryProc.read(categoryID);
     mav.addObject("categoryVO", categoryVO);
       
     ArrayList<CategoryVO> list = this.categoryProc.list_all();
@@ -148,18 +148,18 @@ public class CategoryCont {
   
   /**
    *  삭제FORM 
-   *  http://localhost:9093/category/delete.do?CategoryID=1
-   * @param CategoryID
+   *  http://localhost:9093/category/delete.do?categoryID=1
+   * @param categoryID
    * @return
    */
   @RequestMapping(value = "/category/delete.do", method = RequestMethod.GET)
-  public ModelAndView delete(HttpSession session, int CategoryID) { // int genreno= (int)request.getParameter("genreno")
+  public ModelAndView delete(HttpSession session, int categoryID) { // int genreno= (int)request.getParameter("genreno")
     ModelAndView mav = new ModelAndView();
     if (this.adminProc.isAdmin(session) == true) {
     mav.setViewName("/category/list_all_delete");
     //mav.setViewName("/category/delete"); // /WEB-INF/view/category/update.jsp
     
-    CategoryVO categoryVO = this.categoryProc.read(CategoryID);
+    CategoryVO categoryVO = this.categoryProc.read(categoryID);
     mav.addObject("categoryVO", categoryVO);
     
     ArrayList<CategoryVO> list = this.categoryProc.list_all();
@@ -174,11 +174,11 @@ public class CategoryCont {
   /**
    * 카테고리 삭제
    * @param session
-   * @param CategoryID 삭제할 카테고리 번호
+   * @param categoryID 삭제할 카테고리 번호
    * @return
    */
   @RequestMapping(value="/category/delete.do", method=RequestMethod.POST)
-  public ModelAndView delete_proc(HttpSession session, int CategoryID) { // <form> 태그의 값이 자동으로 저장됨
+  public ModelAndView delete_proc(HttpSession session, int categoryID) { // <form> 태그의 값이 자동으로 저장됨
 
     ModelAndView mav = new ModelAndView();
     
@@ -202,7 +202,7 @@ public class CategoryCont {
 //      
 //      this.contentsProc.delete_by_cateno(cateno); // 자식 레코드 삭제     
             
-      int cnt = this.categoryProc.delete(CategoryID); // 카테고리 삭제
+      int cnt = this.categoryProc.delete(categoryID); // 카테고리 삭제
       
       if (cnt == 1) {
         mav.setViewName("redirect:/category/list_all.do");       // 자동 주소 이동, Spring 재호출
@@ -227,10 +227,10 @@ public class CategoryCont {
    * @return
    */
   @RequestMapping(value="/category/update_seqno_forward.do", method = RequestMethod.GET)
-  public ModelAndView update_seqno_forward(int CategoryID) {
+  public ModelAndView update_seqno_forward(int categoryID) {
     ModelAndView mav = new ModelAndView();
     
-    int cnt = this.categoryProc.update_seqno_forward(CategoryID);
+    int cnt = this.categoryProc.update_seqno_forward(categoryID);
     System.out.println("-> cnt: " + cnt);
     
     if (cnt == 1) {
@@ -249,14 +249,14 @@ public class CategoryCont {
   
   /**
    * 우선 순위 낮춤, 1 등 -> 10 등, http://localhost:9093/category/update_seqno_backward.do?genreno=1
-   * @param CategoryID 수정할 레코드 PK 번호
+   * @param categoryID 수정할 레코드 PK 번호
    * @return
    */
   @RequestMapping(value="/category/update_seqno_backward.do", method = RequestMethod.GET)
-  public ModelAndView update_seqno_backward(int CategoryID) {
+  public ModelAndView update_seqno_backward(int categoryID) {
     ModelAndView mav = new ModelAndView();
     
-    int cnt = this.categoryProc.update_seqno_backward(CategoryID);
+    int cnt = this.categoryProc.update_seqno_backward(categoryID);
     System.out.println("-> cnt: " + cnt);
     
     if (cnt == 1) {
@@ -275,14 +275,14 @@ public class CategoryCont {
   
   /**
    * 카테고리 공개 설정, http://localhost:9093/category/update_visible_y.do?genreno=1
-   * @param CategoryID 수정할 레코드 PK 번호
+   * @param categoryID 수정할 레코드 PK 번호
    * @return
    */
   @RequestMapping(value="/category/update_visible_y.do", method = RequestMethod.GET)
-  public ModelAndView update_visible_y(int CategoryID) { 
+  public ModelAndView update_visible_y(int categoryID) { 
     ModelAndView mav = new ModelAndView();
     
-    int cnt = this.categoryProc.update_visible_y(CategoryID);
+    int cnt = this.categoryProc.update_visible_y(categoryID);
     System.out.println("-> cnt: " + cnt);
     
     if (cnt == 1) {
@@ -300,14 +300,14 @@ public class CategoryCont {
   
   /**
    * 카테고리 비공개 설정, http://localhost:9093/category/update_visible_n.do?genreno=1
-   * @param CategoryID 수정할 레코드 PK 번호
+   * @param categoryID 수정할 레코드 PK 번호
    * @return
    */
   @RequestMapping(value="/category/update_visible_n.do", method = RequestMethod.GET)
-  public ModelAndView update_visible_n(int CategoryID) { 
+  public ModelAndView update_visible_n(int categoryID) { 
     ModelAndView mav = new ModelAndView();
     
-    int cnt = this.categoryProc.update_visible_n(CategoryID);
+    int cnt = this.categoryProc.update_visible_n(categoryID);
     System.out.println("-> cnt: " + cnt);
     
     if (cnt == 1) {

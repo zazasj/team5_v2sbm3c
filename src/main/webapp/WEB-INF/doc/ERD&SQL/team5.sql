@@ -327,13 +327,14 @@ CREATE TABLE Products(
 		Price NUMERIC(30) NOT NULL,
 		ImageFile VARCHAR(50),
 		ImageFileSaved VARCHAR(50),
-		Thumbs VARCHAR(50), --이미지preview
+		thumb VARCHAR(50), --이미지preview
 		sizes NUMERIC(10), --이미지preview크기
 		Pcnt NUMERIC(9) DEFAULT 0 , --조회수
 		recom NUMERIC(8) DEFAULT 0, --추천수
   FOREIGN KEY (CategoryID) REFERENCES Category (CategoryID),
   FOREIGN KEY (SupplierID) REFERENCES Suppliers (SupplierID)
 );
+commit;
 
 CREATE OR REPLACE TRIGGER trg_insert_recentrecom
 AFTER INSERT ON Products

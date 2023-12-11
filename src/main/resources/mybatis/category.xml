@@ -5,17 +5,17 @@
 
   <!-- return : 등록한 레코드 갯수를 1을 리턴, parameterType : 전달받는 데이터 -->
   <insert id="create" parameterType="dev.mvc.category.CategoryVO">
-    INSERT INTO Category(CategoryID,GrpID, CategoryName, cnt, Rdate) VALUES(category_seq.nextval, #{GrpID}, #{CategoryName}, 0, sysdate)
+    INSERT INTO Category(categoryID,GrpID, CategoryName, cnt, Rdate) VALUES(category_seq.nextval, #{GrpID}, #{CategoryName}, 0, sysdate)
   </insert>
   
   <!-- 출력 모드 적용 -->
   <select id="list_all" resultType="dev.mvc.category.CategoryVO">
-    SELECT CategoryID, GrpID, CategoryName, Visible, Seqno, cnt, Rdate FROM Category ORDER BY seqno ASC
+    SELECT categoryID, GrpID, CategoryName, Visible, Seqno, cnt, Rdate FROM Category ORDER BY seqno ASC
   </select>
   
     <!-- 비회원/회원 SELECT LIST -->
   <select id="list_all_y" resultType="dev.mvc.category.CategoryVO">
-    SELECT CategoryID, GrpID, CategoryName, Visible, Seqno, cnt, Rdate 
+    SELECT categoryID, GrpID, CategoryName, Visible, Seqno, cnt, Rdate 
     FROM Category 
     WHERE visible='Y'
     ORDER BY seqno ASC
@@ -23,37 +23,37 @@
   
   <!-- 읽기, SQL -> CateVo return -->
   <select id="read" resultType="dev.mvc.category.CategoryVO" parameterType="int">
-    SELECT CategoryID, GrpID, CategoryName, cnt, Rdate FROM Category WHERE CategoryID = #{CategoryID}
+    SELECT categoryID, GrpID, CategoryName, cnt, Rdate FROM Category WHERE categoryID = #{categoryID}
   </select>
   
   <!-- return : 수정한 레코드 갯수를 1을 리턴, parameterType : 수정할 레코드 정보 -->
   <update id="update" parameterType="dev.mvc.category.CategoryVO">
-    UPDATE Category SET GrpID = #{GrpID}, CategoryName = #{CategoryName}, cnt = #{cnt} WHERE CategoryID = #{CategoryID}
+    UPDATE Category SET GrpID = #{GrpID}, CategoryName = #{CategoryName}, cnt = #{cnt} WHERE categoryID = #{categoryID}
   </update>
   
     <!-- return : 삭제된 레코드 갯수 리턴, parameterType : 삭제할 레코드 정보 -->
   <delete id="delete" parameterType="int">
-    DELETE FROM Category WHERE CategoryID = #{CategoryID}
+    DELETE FROM Category WHERE categoryID = #{categoryID}
   </delete>
   
     <!-- 우선 순위 높임, 10 등 -> 1 등 -->
   <update id="update_seqno_forward" parameterType="int">
-    UPDATE Category SET Seqno = Seqno - 1 WHERE CategoryID=#{CategoryID}
+    UPDATE Category SET Seqno = Seqno - 1 WHERE categoryID=#{categoryID}
   </update>
 
   <!-- 우선 순위 낮춤, 1 등 -> 10 등 -->
   <update id="update_seqno_backward" parameterType="int">
-    UPDATE Category SET Seqno = Seqno + 1 WHERE CategoryID=#{CategoryID}
+    UPDATE Category SET Seqno = Seqno + 1 WHERE categoryID=#{categoryID}
   </update>
   
   <!-- 카테고리 공개 설정 -->
   <update id="update_visible_y" parameterType="int">
-    UPDATE Category SET Visible='Y' WHERE CategoryID=#{CategoryID}
+    UPDATE Category SET Visible='Y' WHERE categoryID=#{categoryID}
   </update>
   
   <!-- 카테고리 비공개 설정 -->
   <update id="update_visible_n" parameterType="int">
-    UPDATE Category SET Visible='N' WHERE CategoryID=#{CategoryID}
+    UPDATE Category SET Visible='N' WHERE categoryID=#{categoryID}
   </update>
 
 </mapper>

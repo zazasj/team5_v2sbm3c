@@ -5,42 +5,42 @@
 <mapper namespace="dev.mvc.products.ProductsDAOInter">
   <!-- 등록한 레코드 갯수 1 리턴, #{adminno}: public int getAdminno() 호출됨 -->
   <insert id="create" parameterType="dev.mvc.products.ProductsVO">
-    INSERT INTO Products(ProductID, CategoryID, SupplierID, PName, Origin, Description, Volume, AlcoholContent, Price)
-    VALUES(product_seq.nextval, #{CategoryID}, #{SupplierID}, #{PName}, #{Origin}, #{Description}, #{Volume}, #{AlcogolContent}, #{Price})
+    INSERT INTO Products(ProductID, categoryID, SupplierID, PName, Origin, Description, Volume, AlcoholContent, Price)
+    VALUES(product_seq.nextval, #{categoryID}, #{SupplierID}, #{PName}, #{Origin}, #{Description}, #{Volume}, #{AlcogolContent}, #{Price})
   </insert>
 
   <!-- 모든 카테고리의 등록된 글목록 -->
   <select id="list_all" resultType="dev.mvc.products.ProductsVO">
-    SELECT ProductID, CategoryID, SupplierID, Origin, PName, Description, Volume, AlcoholContent, Price, ImageFile, ImageFileSaved, Thumbs, sizes, Pcnt, recom
+    SELECT ProductID, categoryID, SupplierID, Origin, PName, Description, Volume, AlcoholContent, Price, ImageFile, ImageFileSaved, thumb, sizes, Pcnt, recom
     FROM Products
     ORDER BY ProductID DESC
   </select>
   
   <!-- 특정 카테고리의 등록된 글목록 -->
   <select id="list_by_categoryID" resultType="dev.mvc.products.ProductsVO" parameterType="int">
-    SELECT ProductID, CategoryID, SupplierID, Origin, PName, Description, Volume, AlcoholContent, Price, ImageFile, ImageFileSaved, Thumbs, sizes, Pcnt, recom
+    SELECT ProductID, categoryID, SupplierID, Origin, PName, Description, Volume, AlcoholContent, Price, ImageFile, ImageFileSaved, thumb, sizes, Pcnt, recom
     FROM Products 
-    WHERE CategoryID = #{CategoryID}
+    WHERE categoryID = 2
     ORDER BY ProductID DESC
   </select> 
   
   <!-- 일반적인 조회 -->
   <select id="read" resultType="dev.mvc.products.ProductsVO" parameterType="int">
-    SELECT ProductID, CategoryID, SupplierID, Origin, PName, Description, Volume, AlcoholContent, Price, ImageFile, ImageFileSaved, Thumbs, sizes, Pcnt, recom
+    SELECT ProductID, categoryID, SupplierID, Origin, PName, Description, Volume, AlcoholContent, Price, ImageFile, ImageFileSaved, thumb, sizes, Pcnt, recom
     FROM Products 
     WHERE ProductID = #{ProductID}
   </select>
 
   <!-- 카테고리별 검색 목록 -->
   <select id="list_by_categoryID_search" resultType="dev.mvc.products.ProductsVO" parameterType="HashMap">
-    SELECT ProductID, CategoryID, SupplierID, Origin, PName, Description, Volume, AlcoholContent, Price, ImageFile, ImageFileSaved, Thumbs, sizes, Pcnt, recom
+    SELECT ProductID, categoryID, SupplierID, Origin, PName, Description, Volume, AlcoholContent, Price, ImageFile, ImageFileSaved, thumb, sizes, Pcnt, recom
     FROM Products
     <choose>
       <when test="word == null or word == ''"> <!-- 검색하지 않는 경우 -->
-        WHERE CategoryID=#{CategoryID}
+        WHERE categoryID=#{categoryID}
       </when>
       <otherwise> <!-- 검색하는 경우 -->
-        WHERE CategoryID=#{CategoryID} AND (UPPER(PName) LIKE '%' || UPPER(#{word}) || '%' 
+        WHERE categoryID=#{categoryID} AND (UPPER(PName) LIKE '%' || UPPER(#{word}) || '%' 
                                                   OR UPPER(Description) LIKE '%' || UPPER(#{word}) || '%' )
       </otherwise>
     </choose>
@@ -53,10 +53,10 @@
     FROM Products
     <choose>
       <when test="word == null or word == ''"> <!-- 검색하지 않는 경우의 레코드 갯수 -->
-        WHERE CategoryID=#{CategoryID}
+        WHERE categoryID=#{categoryID}
       </when>
       <otherwise> <!-- 검색하는 경우의 레코드 갯수 -->
-        WHERE CategoryID=#{CategoryID} AND (UPPER(PName) LIKE '%' || UPPER(#{word}) || '%' 
+        WHERE categoryID=#{categoryID} AND (UPPER(PName) LIKE '%' || UPPER(#{word}) || '%' 
                                                   OR UPPER(Description) LIKE '%' || UPPER(#{word}) || '%' )
       </otherwise>
     </choose>
@@ -64,19 +64,20 @@
 
   <!-- 카테고리별 검색 + 페이징 목록 -->
   <select id="list_by_categoryID_search_paging" resultType="dev.mvc.products.ProductsVO" parameterType="dev.mvc.products.ProductsVO">
-   SELECT ProductID, CategoryID, SupplierID, Origin, PName, Description, Volume, AlcoholContent, Price, ImageFile, ImageFileSaved, Thumbs, sizes, Pcnt, recom, r
+   SELECT ProductID, categoryID, SupplierID, Origin, PName, Description, Volume, AlcoholContent, Price, ImageFile, ImageFileSaved, thumb, sizes, Pcnt, recom, r
    FROM (
-              SELECT ProductID, CategoryID, SupplierID, Origin, PName, Description, Volume, AlcoholContent, Price, ImageFile, ImageFileSaved, Thumbs, sizes, Pcnt, recom, rownum as r
+              SELECT ProductID, categoryID, SupplierID, Origin, PName, Description, Volume, AlcoholContent, Price, ImageFile, ImageFileSaved, thumb, sizes, Pcnt, recom, rownum as r
               FROM (
-                        SELECT ProductID, CategoryID, SupplierID, Origin, PName, Description, Volume, AlcoholContent, Price, ImageFile, ImageFileSaved, Thumbs, sizes, Pcnt, recom
+                        SELECT ProductID, categoryID, SupplierID, Origin, PName, Description, Volume, AlcoholContent, Price, ImageFile, ImageFileSaved, thumb, sizes, Pcnt, recom
                         FROM Products
                         <choose>
                           <when test="word == null or word == ''"> <!-- 검색하지 않는 경우 -->
-                            WHERE CategoryID=#{CategoryID}
+                            WHERE categoryID=#{categoryID}
                           </when>
                           <otherwise>
-                            WHERE CategoryID=#{CategoryID} AND (UPPER(title) LIKE '%' || UPPER(#{word}) || '%' 
-                                                              OR UPPER(content) LIKE '%' || UPPER(#{word}) || '%' )
+                            WHERE categoryID=#{categoryID} AND (UPPER(title) LIKE '%' || UPPER(#{word}) || '%' 
+                                                              OR UPPER(content) LIKE '%' || UPPER(#{word}) || '%' 
+                                                              OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
                           </otherwise>
                         </choose>
                         ORDER BY ProductID DESC
@@ -100,7 +101,7 @@
   <!-- 파일 수정 -->
   <update id="update_file" parameterType="dev.mvc.products.ProductsVO">
     UPDATE Products
-    SET ImageFile=#{ImageFile}, ImageFileSaved=#{ImageFileSaved}, Thumbs=#{Thumbs}, sizes=#{sizes}
+    SET ImageFile=#{ImageFile}, ImageFileSaved=#{ImageFileSaved}, thumb=#{thumb}, sizes=#{sizes}
     WHERE ProductID = #{ProductID}
   </update>  
 
@@ -113,7 +114,7 @@
   <select id="count_by_categoryID" resultType="int" parameterType="int">
     SELECT COUNT(*) as cnt 
     FROM Products 
-    WHERE CategoryID=#{CategoryID}
+    WHERE categoryID=#{categoryID}
   </select>
   
   <!-- 특정 카테고리에 속한 모든 레코드 삭제 -->

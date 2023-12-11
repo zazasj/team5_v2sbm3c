@@ -7,8 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10.0, width=device-width" /> 
-<title> </title>
-<link rel="shortcut icon" href="/images/star.png" /> <%-- /static 기준 --%>
+<title>http://localhost:9093/products/list_all.do</title>
+<link rel="shortcut icon" href="/images/whisky.png" /> <%-- /static 기준 --%>
 <link href="/css/style.css" rel="Stylesheet" type="text/css"> <!-- /static 기준 -->
 
 </head>
@@ -38,29 +38,28 @@
     <tbody>
         <c:forEach var="productsVO" items="${list }" varStatus="info">
           <c:set var="productID" value="${productsVO.productID }" />
-          <c:set var="thumbs" value="${productsVO.thumbs }" />
-          <c:set var="description" value="${productsVO.description }"/>
+          <c:set var="thumb" value="${productsVO.thumb }" />
     
-          <tr onclick="location.href='./read.do?ProductID=${productID}'" style="cursor: pointer;">
+          <tr onclick="location.href='./read.do?productID=${productID}'" style="cursor: pointer;">
             <td>
               <c:choose>
-                <c:when test="${thumbs.endsWith('jpg') || thumbs.endsWith('png') || thumbs.endsWith('gif')}"> <%-- 이미지인지 검사 --%>
+                <c:when test="${thumb.endsWith('jpg') || thumb.endsWith('png') || thumb.endsWith('gif')}"> <%-- 이미지인지 검사 --%>
                   <%-- registry.addResourceHandler("/contents/storage/**").addResourceLocations("file:///" +  Contents.getUploadDir()); --%>
-                  <img src="/products/storage/${thumbs }" style="width: 120px; height: 90px;">
+                  <img src="/products/storage/${thumb }" style="width: 120px; height: 90px;">
                 </c:when>
                 <c:otherwise> <!-- 이미지가 없는 경우 기본 이미지 출력: /static/contents/images/none1.png -->
-                  <img src="/products/images/none1.png" style="width: 120px; height: 90px;">
+                  <img src="/prodcuts/images/none1.png" style="width: 120px; height: 90px;">
                 </c:otherwise>
               </c:choose>
             </td>
             <td class="td_bs_left">
-              <span style="font-weight: bold;">${productsVO.PName }</span><br>
+              <span style="font-weight: bold;">${productsVO.pName }</span><br>
               <c:choose>
-                <c:when test="${description.length() > 160 }">
-                  ${description.substring(0, 160) }...
+                <c:when test="${productsVO.description.length() > 160 }">
+                  ${productsVO.description.substring(0, 160) }...
                 </c:when>
                 <c:otherwise>
-                  ${description }
+                  ${productsVO.description }
                 </c:otherwise>
               </c:choose>
             </td>

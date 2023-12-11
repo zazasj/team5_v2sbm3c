@@ -2,78 +2,56 @@ package dev.mvc.products;
 
 import org.springframework.web.multipart.MultipartFile;
 
+
+//@Getter @Setter @ToString
 public class ProductsVO {
-    /** 주류 번호 */
-    private int ProductID;
-    
+    /** 제품 번호 */
+    private int productID;
     /** 카테고리 번호 */
-    private int CategoryID;
-    
+    private int categoryID;
     /** 공급자 번호 */
-    private int SupplierID;
-    
+    private int supplierID;
     /** 관리자 번호 */
     private int adminno;
-    
-    /** 국가 */
-    private String Origin = "";
-    
+    /** 나라 이름 */
+    private String origin;
     /** 이름 */
-    private String PName = "";
-    
+    private String pName = "";
+    /** 설명 */
+    private String description = "";
+    /** 용량 */
+    private int volume;
+    /** 알코올 도수 */
+    private int alcoholContent;
+    /** 가격 */
+    private int price;
+    /** 추천수 */
+    private int recom;
+    /** 조회수 */
+    private int pcnt = 0;
     /** 검색어 */
     private String word = "";
-    
-    /** 설명 */
-    private String Description = "";
-    
-    /** 용량 */
-    private int Volume;
-    
-    /** 알코올 도수 */
-    private int AlcoholContent;
-    
-    /** 가격 */
-    private int Price;
-    
-    /** 조회 수 */
-    private int Pcnt = 0;
-    
-    /** 추천 수 */
-    private int recom;
+
 
     // 파일 업로드 관련
     // -----------------------------------------------------------------------------------
     /**
     이미지 파일
     <input type='file' class="form-control" name='file1MF' id='file1MF' 
-               value='' placeholder="파일 선택"> */
-    
+               value='' placeholder="파일 선택">
+    */
     private MultipartFile fileMF;
     /** 메인 이미지 크기 단위, 파일 크기 */
-    private String sizes_label = "";
+    private String size_label = "";
     /** 메인 이미지 */
-    private String ImageFile = "";
+    private String imageFile = "";
     /** 실제 저장된 메인 이미지 */
-    private String ImageFileSaved = "";
+    private String imageFileSaved = "";
     /** 메인 이미지 preview */
-    private String Thumbs = "";
+    private String thumb = "";
     /** 메인 이미지 크기 */
     private long sizes;
 
-    // 쇼핑몰 상품 관련
-    // -----------------------------------------------------------------------------------
-//    /** 정가 */
-//    private int price;
-//    /** 할인률 */
-//    private int dc;
-//    /** 판매가 */
-//    private int saleprice;
-//    /** 포인트 */
-//    private int point;
-//    /** 재고 수량 */
-//    private int salecnt;
-    
     // 페이징 관련
     // -----------------------------------------------------------------------------------
     /** 시작 rownum */
@@ -83,23 +61,24 @@ public class ProductsVO {
     /** 현재 페이지 */
     private int now_page = 1;
     public int getProductID() {
-      return ProductID;
+      return productID;
     }
-    public void setProductID(int ProductID) {
-      this.ProductID = ProductID;
+    public void setProductID(int productID) {
+      this.productID = productID;
     }
     public int getCategoryID() {
-      return CategoryID;
+      return categoryID;
     }
-    public void setCategoryID(int CategoryID) {
-      this.CategoryID = CategoryID;
+    public void setCategoryID(int categoryID) {
+      this.categoryID = categoryID;
     }
     public int getSupplierID() {
-      return SupplierID;
+      return supplierID;
     }
-    public void setSupplierID(int SupplierID) {
-      this.SupplierID = SupplierID;
+    public void setSupplierID(int supplierID) {
+      this.supplierID = supplierID;
     }
+    
     public int getAdminno() {
       return adminno;
     }
@@ -107,52 +86,40 @@ public class ProductsVO {
       this.adminno = adminno;
     }
     public String getOrigin() {
-      return Origin;
+      return origin;
     }
-    public void setOrigin(String Origin) {
-      this.Origin = Origin;
+    public void setOrigin(String origin) {
+      this.origin = origin;
     }
-    public String getPName() {
-      return PName;
+    public String getpName() {
+      return pName;
     }
-    public void setPName(String PName) {
-      this.PName = PName;
-    }
-    public String getWord() {
-      return word;
-    }
-    public void setWord(String word) {
-      this.word = word;
+    public void setpName(String pName) {
+      this.pName = pName;
     }
     public String getDescription() {
-      return Description;
+      return description;
     }
-    public void setDescription(String Description) {
-      this.Description = Description;
+    public void setDescription(String description) {
+      this.description = description;
     }
     public int getVolume() {
-      return Volume;
+      return volume;
     }
-    public void setVolume(int Volume) {
-      this.Volume = Volume;
+    public void setVolume(int volume) {
+      this.volume = volume;
     }
     public int getAlcoholContent() {
-      return AlcoholContent;
+      return alcoholContent;
     }
-    public void setAlcoholContent(int AlcoholContent) {
-      this.AlcoholContent = AlcoholContent;
+    public void setAlcoholContent(int alcoholContent) {
+      this.alcoholContent = alcoholContent;
     }
     public int getPrice() {
-      return Price;
+      return price;
     }
-    public void setPrice(int Price) {
-      this.Price = Price;
-    }
-    public int getPcnt() {
-      return Pcnt;
-    }
-    public void setPcnt(int Pcnt) {
-      this.Pcnt = Pcnt;
+    public void setPrice(int price) {
+      this.price = price;
     }
     public int getRecom() {
       return recom;
@@ -160,35 +127,47 @@ public class ProductsVO {
     public void setRecom(int recom) {
       this.recom = recom;
     }
+    public int getPcnt() {
+      return pcnt;
+    }
+    public void setPcnt(int pcnt) {
+      this.pcnt = pcnt;
+    }
+    public String getWord() {
+      return word;
+    }
+    public void setWord(String word) {
+      this.word = word;
+    }
     public MultipartFile getFileMF() {
       return fileMF;
-    }
-    public String getSizes_label() {
-      return sizes_label;
-    }
-    public void setSizes_label(String sizes_label) {
-      this.sizes_label = sizes_label;
     }
     public void setFileMF(MultipartFile fileMF) {
       this.fileMF = fileMF;
     }
-    public String getImageFile() {
-      return ImageFile;
+    public String getSize_label() {
+      return size_label;
     }
-    public void setImageFile(String ImageFile) {
-      this.ImageFile = ImageFile;
+    public void setSize_label(String size_label) {
+      this.size_label = size_label;
+    }
+    public String getImageFile() {
+      return imageFile;
+    }
+    public void setImageFile(String imageFile) {
+      this.imageFile = imageFile;
     }
     public String getImageFileSaved() {
-      return ImageFileSaved;
+      return imageFileSaved;
     }
-    public void setImageFileSaved(String ImageFileSaved) {
-      this.ImageFileSaved = ImageFileSaved;
+    public void setImageFileSaved(String imageFileSaved) {
+      this.imageFileSaved = imageFileSaved;
     }
-    public String getThumbs() {
-      return Thumbs;
+    public String getThumb() {
+      return thumb;
     }
-    public void setThumbs(String Thumbs) {
-      this.Thumbs = Thumbs;
+    public void setThumb(String thumb) {
+      this.thumb = thumb;
     }
     public long getSizes() {
       return sizes;
@@ -215,17 +194,18 @@ public class ProductsVO {
       this.now_page = now_page;
     }
     
+    
     @Override
     public String toString() {
-      return "ProductsVO [ProductID=" + ProductID + ", CategoryID=" + CategoryID + ", SupplierID=" + SupplierID
-          + ", adminno=" + adminno + ", Origin=" + Origin + ", PName=" + PName + ", word=" + word + ", Description="
-          + Description + ", Volume=" + Volume + ", AlcoholContent=" + AlcoholContent + ", Price=" + Price + ", Pcnt="
-          + Pcnt + ", recom=" + recom + ", fileMF=" + fileMF + ", sizes_label=" + sizes_label + ", ImageFile="
-          + ImageFile + ", ImageFileSaved=" + ImageFileSaved + ", Thumbs=" + Thumbs + ", sizes=" + sizes
-          + ", start_num=" + start_num + ", end_num=" + end_num + ", now_page=" + now_page + "]";
+      return "ProductsVO [productID=" + productID + ", categoryID=" + categoryID + ", supplierID=" + supplierID
+          + ", adminno=" + adminno + ", origin=" + origin + ", pName=" + pName + ", description=" + description
+          + ", volume=" + volume + ", alcoholContent=" + alcoholContent + ", price=" + price + ", recom=" + recom
+          + ", pcnt=" + pcnt + ", word=" + word + ", fileMF=" + fileMF + ", size_label=" + size_label + ", imageFile="
+          + imageFile + ", imageFileSaved=" + imageFileSaved + ", thumb=" + thumb + ", sizes=" + sizes + ", start_num="
+          + start_num + ", end_num=" + end_num + ", now_page=" + now_page + "]";
     }
 
- 
+    
 }
 
 

@@ -7,7 +7,7 @@
 <meta charset="UTF-8"> 
 <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=3.0, width=device-width" /> 
 <title>Resort world</title>
-<link rel="shortcut icon" href="/images/whisky.png" /> <%-- /static 기준 --%>
+<link rel="shortcut icon" href="/images/star.png" /> <%-- /static 기준 --%>
 <link href="/css/style.css" rel="Stylesheet" type="text/css"> <!-- /static 기준 -->
 
 </head> 
@@ -18,7 +18,7 @@
 
 <c:set var="code" value="${param.code }" /> <%--mav.addObject("code", "create_success"); --%>
 <c:set var="cnt" value="${param.cnt }" />     <%-- mav.addObject("cnt", cnt); --%>
-<c:set var="CategoryID" value="${param.CategoryID }" /> <%-- mav.addObject("cateno", contentsVO.getCateno()); // redirect parameter 적용 --%>
+<c:set var="categoryID" value="${param.categoryID }" /> <%-- mav.addObject("cateno", contentsVO.getCateno()); // redirect parameter 적용 --%>
 
 <DIV class='message'>
   <fieldset class='fieldset_basic'>
@@ -84,9 +84,9 @@
             </c:when>
         </c:choose>
         
-        <button type='button' onclick="location.href='./create.do?CategoryID=${CategoryID}'" class="btn btn-secondary btn-sm">새로운 컨텐츠 등록</button>
-        <button type='button' onclick="location.href='./list_by_categoryID.do?CategoryID=${CategoryID}'" class="btn btn-secondary btn-sm">목록</button>
-        <button type='button' onclick="location.href='./list_by_categoryID_grid.do?CategoryID=${CategoryID}'" class="btn btn-secondary btn-sm">갤러리 목록</button>
+        <button type='button' onclick="location.href='./create.do?cateno=${cateno}'" class="btn btn-secondary btn-sm">새로운 컨텐츠 등록</button>
+        <button type='button' onclick="location.href='./list_by_cateno.do?cateno=${cateno}'" class="btn btn-secondary btn-sm">목록</button>
+        <button type='button' onclick="location.href='./list_by_cateno_grid.do?cateno=${cateno}'" class="btn btn-secondary btn-sm">갤러리 목록</button>
       </li>
     </UL>
   </fieldset>

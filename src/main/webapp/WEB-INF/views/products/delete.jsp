@@ -4,10 +4,10 @@
 
 <c:set var="productID" value="${productsVO.productID }" />
 <c:set var="categoryID" value="${productsVO.categoryID }" />
-<c:set var="pName" value="${productsVO.PName }" />
+<c:set var="pName" value="${productsVO.pName }" />
 <c:set var="imageFile" value="${productsVO.imageFile }" />
 <c:set var="imageFileSaved" value="${productsVO.imageFileSaved }" />
-<c:set var="thumbs" value="${productsVO.thumbs.toLowerCase() }" />
+<c:set var="thumb" value="${productsVO.thumb.toLowerCase() }" />
 <c:set var="sizes" value="${productsVO.sizes }" />
 
 <!DOCTYPE html>
@@ -22,21 +22,21 @@
 </head>
 <body>
 <c:import url="/menu/top.do" />
-  <DIV class='title_line'> ${categoryVO.CategoryName } > ${PName } > 삭제</DIV>
+  <DIV class='title_line'> ${categoryVO.categoryName } > ${pName } > 삭제</DIV>
   
   <aside class="aside_right">
-    <a href="./create.do?CategoryID=${CategoryID }">등록</a>
+    <a href="./create.do?categoryID=${categoryID }">등록</a>
     <span class='menu_divide' >│</span>
     <a href="javascript:location.reload();">새로고침</a>
     <span class='menu_divide' >│</span>    
-    <a href="./list_by_categoryID.do?CategoryID=${CategoryID }&now_page=${param.now_page}&word=${param.word }">목록형</a>    
+    <a href="./list_by_categoryID.do?categoryID=${categoryID }&now_page=${param.now_page}&word=${param.word }">목록형</a>    
     <span class='menu_divide' >│</span>
-    <a href="./list_by_categoryID_grid.do?CategoryID=${CategoryID }&now_page=${param.now_page}&word=${param.word }">갤러리형</a>
+    <a href="./list_by_categoryID_grid.do?categoryID=${categoryID }&now_page=${param.now_page}&word=${param.word }">갤러리형</a>
   </aside>
   
   <div style="text-align: right; clear: both;">  
     <form name='frm' id='frm' method='get' action='./list_by_categoryID_search_paging.do'>
-      <input type='hidden' name='CategoryID' value='${categoryVO.CategoryID }'>  <%-- 게시판의 구분 --%>
+      <input type='hidden' name='categoryID' value='${categoryVO.categoryID }'>  <%-- 게시판의 구분 --%>
       
       <c:choose>
         <c:when test="${param.word != '' }"> <%-- 검색하는 경우 --%>
@@ -49,7 +49,7 @@
       <button type='submit' class='btn btn-secondary btn-sm' style="padding: 2px 8px 3px 8px; margin: 0px 0px 2px 0px;">검색</button>
       <c:if test="${param.word.length() > 0 }">
         <button type='button' class='btn btn-secondary btn-sm' 
-                    onclick="location.href='./list_by_categoryID.do?CategoryID=${categoryVO.CategoryID}&word='" style="padding: 2px 8px 3px 8px; margin: 0px 0px 2px 0px;">검색 취소</button>  
+                    onclick="location.href='./list_by_categoryID.do?categoryID=${categoryVO.categoryID}&word='" style="padding: 2px 8px 3px 8px; margin: 0px 0px 2px 0px;">검색 취소</button>  
       </c:if>    
     </form>
   </div>
@@ -62,8 +62,8 @@
         <DIV style='text-align: center; width: 50%; float: left;'>
 
           <c:choose>
-            <c:when test="${Thumbs.endsWith('jpg') || Thumbs.endsWith('png') || Thumbs.endsWith('gif')}">
-              <img src="/contents/storage/${ImageFileSaved }" style='width: 90%;'> 
+            <c:when test="${thumb.endsWith('jpg') || thumb.endsWith('png') || thumb.endsWith('gif')}">
+              <img src="/products/storage/${imageFileSaved }" style='width: 90%;'> 
             </c:when>
             <c:otherwise> <!-- 이미지가 없는 경우 -->
               상품 관련 이미지가 없습니다.
@@ -72,14 +72,14 @@
         </DIV>
 
         <DIV style='text-align: left; width: 47%; float: left;'>
-          <span style='font-size: 1.5em;'>${PName}</span>
+          <span style='font-size: 1.5em;'>${title}</span>
           <c:if test="${sizes > 0 }">
-            <br>삭제되는 파일: ${ImageFile }
+            <br>삭제되는 파일: ${imageFile }
           </c:if>
           <br>
           <FORM name='frm' method='post' action='./delete.do'>
-              <input type='hidden' name='ProductID' value='${ProductID}'>
-              <input type='hidden' name='CategoryID' value='${CategoryID}'>
+              <input type='hidden' name='productID' value='${productID}'>
+              <input type='hidden' name='categoryID' value='${categoryID}'>
               <input type='hidden' name='now_page' value='${param.now_page}'>
               <br><br>
               <div style='text-align: center; margin: 10px auto;'>

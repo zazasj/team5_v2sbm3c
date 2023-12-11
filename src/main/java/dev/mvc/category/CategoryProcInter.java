@@ -22,7 +22,7 @@ public interface CategoryProcInter {
    * @param categoryID
    * @return
    */
-  public CategoryVO read(int CategoryID);
+  public CategoryVO read(int categoryID);
   
   /**
    * 수정
@@ -36,35 +36,35 @@ public interface CategoryProcInter {
    * @param categoryID 삭제할 레코드 번호
    * @return 삭제된 레코드 수
    */
-  public int delete(int CategoryID);
+  public int delete(int categoryID);
   
   /**
    * 우선 순위 높임, 10 등 -> 1 등   
    * @param categoryID
    * @return 수정된 레코드 갯수
    */
-  public int update_seqno_forward(int CategoryID);
+  public int update_seqno_forward(int categoryID);
 
   /**
    * 우선 순위 낮춤, 1 등 -> 10 등   
    * @param categoryID
    * @return 수정된 레코드 갯수
    */
-  public int update_seqno_backward(int CategoryID);
+  public int update_seqno_backward(int categoryID);
   
   /**
    * 카테고리 공개 설정
    * @param categoryID
    * @return
    */
-  public int update_visible_y(int CategoryID);
+  public int update_visible_y(int categoryID);
   
   /**
    * 카테고리 비공개 설정
    * @param categoryID
    * @return
    */
-  public int update_visible_n(int CategoryID);
+  public int update_visible_n(int categoryID);
   
   /**
    * 비회원/회원 SELECT LIST

@@ -35,12 +35,12 @@
            data-ratio="800/520"
            data-width="100%">
            
-      <c:forEach var="contentsVO" items="${list }" varStatus="info">
-        <c:set var="ImageFileSaved" value="${productsVO.ImageFileSaved }" />
+      <c:forEach var="productsVO" items="${list }" varStatus="info">
+        <c:set var="imageFileSaved" value="${productsVO.imageFileSaved }" />
         
-        <c:if test="${ImageFileSaved.endsWith('jpg') || ImageFileSaved.endsWith('png') || ImageFileSaved.endsWith('gif')}"> <%-- 이미지인지 검사 --%>
+        <c:if test="${imageFileSaved.endsWith('jpg') || imageFileSaved.endsWith('png') || imageFileSaved.endsWith('gif')}"> <%-- 이미지인지 검사 --%>
           <%-- registry.addResourceHandler("/contents/storage/**").addResourceLocations("file:///" +  Contents.getUploadDir()); --%>
-          <img src="/products/storage/${ImageFileSaved }">
+          <img src="/products/storage/${imageFileSaved }">
         </c:if>  
       
       </c:forEach>

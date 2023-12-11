@@ -28,7 +28,7 @@ public class ProductsCont {
   private AdminProcInter adminProc;
   
   @Autowired
-  @Qualifier("dev.mvc.category.CategoryProc")  // @Component("dev.mvc.cate.CateProc")
+  @Qualifier("dev.mvc.category.CategoryProc")  // @Component("dev.mvc.category.CategoryProc")
   private CategoryProcInter categoryProc;
   
   @Autowired
@@ -53,15 +53,13 @@ public class ProductsCont {
     return mav; // forward
   }
   
-  // 등록 폼
+  // 등록 폼, contents 테이블은 FK로 cateno를 사용함.
   @RequestMapping(value="/products/create.do", method = RequestMethod.GET)
-  public ModelAndView create(int CategoryID) {
-//  public ModelAndView create(HttpServletRequest request,  int CategoryID) {
+  public ModelAndView create(int categoryID) {
     ModelAndView mav = new ModelAndView();
 
-    CategoryVO categoryVO = this.categoryProc.read(CategoryID); // create.jsp에 카테고리 정보를 출력하기위한 목적
+    CategoryVO categoryVO = this.categoryProc.read(categoryID); // create.jsp에 카테고리 정보를 출력하기위한 목적
     mav.addObject("categoryVO", categoryVO);
-//    request.setAttribute("categoryVO", categoryVO);
     
     mav.setViewName("/products/create"); // /webapp/WEB-INF/views/products/create.jsp
     
@@ -69,7 +67,7 @@ public class ProductsCont {
   }
   
   /**
-   * 등록 처리 http://localhost:9091/products/create.do
+   * 등록 처리 http://localhost:9093/products/create.do
    * 
    * @return
    */
@@ -81,9 +79,9 @@ public class ProductsCont {
       // ------------------------------------------------------------------------------
       // 파일 전송 코드 시작
       // ------------------------------------------------------------------------------
-      String ImageFile = "";          // 원본 파일명 image
-      String ImageFileSaved = "";   // 저장된 파일명, image
-      String Thumbs = "";     // preview image
+      String imageFile = "";          // 원본 파일명 image
+      String imageFileSaved = "";   // 저장된 파일명, image
+      String thumb = "";     // preview image
 
       String upDir =  Products.getUploadDir(); // 파일을 업로드할 폴더 준비
       System.out.println("-> upDir: " + upDir);
@@ -93,54 +91,54 @@ public class ProductsCont {
       //           value='' placeholder="파일 선택">
       MultipartFile mf = productsVO.getFileMF();
       
-      ImageFile = mf.getOriginalFilename(); // 원본 파일명 산출, 01.jpg
-      System.out.println("-> 원본 파일명 산출 file1: " + ImageFile);
+      imageFile = mf.getOriginalFilename(); // 원본 파일명 산출, 01.jpg
+      System.out.println("-> 원본 파일명 산출 imageFile: " + imageFile);
       
-      if (Tool.checkUploadFile(ImageFile) == true) { // 업로드 가능한 파일인지 검사
+      if (Tool.checkUploadFile(imageFile) == true) { // 업로드 가능한 파일인지 검사
         long sizes = mf.getSize();  // 파일 크기
         
         if (sizes > 0) { // 파일 크기 체크
           // 파일 저장 후 업로드된 파일명이 리턴됨, spring.jsp, spring_1.jpg...
-          ImageFileSaved = Upload.saveFileSpring(mf, upDir); 
+          imageFileSaved = Upload.saveFileSpring(mf, upDir); 
           
-          if (Tool.isImage(ImageFileSaved)) { // 이미지인지 검사
+          if (Tool.isImage(imageFileSaved)) { // 이미지인지 검사
             // thumb 이미지 생성후 파일명 리턴됨, width: 200, height: 150
-            Thumbs = Tool.preview(upDir, ImageFileSaved, 200, 150); 
+            thumb = Tool.preview(upDir, imageFileSaved, 200, 150); 
           }
           
         }    
         
-        productsVO.setImageFile(ImageFile);   // 순수 원본 파일명
-        productsVO.setImageFileSaved(ImageFileSaved); // 저장된 파일명(파일명 중복 처리)
-        productsVO.setThumbs(Thumbs);      // 원본이미지 축소판
+        productsVO.setImageFile(imageFile);  // 순수 원본 파일명
+        productsVO.setImageFileSaved(imageFileSaved);; // 저장된 파일명(파일명 중복 처리)
+        productsVO.setThumb(thumb);      // 원본이미지 축소판
         productsVO.setSizes(sizes);  // 파일 크기
         // ------------------------------------------------------------------------------
         // 파일 전송 코드 종료
         // ------------------------------------------------------------------------------
         
         // Call By Reference: 메모리 공유, Hashcode 전달
-        int Adminno = (int)session.getAttribute("Adminno"); // adminno FK
-        productsVO.setAdminno(Adminno);
+        int adminno = (int)session.getAttribute("adminno"); // adminno FK
+        productsVO.setAdminno(adminno);
         int cnt = this.productsProc.create(productsVO); 
         
         // ------------------------------------------------------------------------------
         // PK의 return
         // ------------------------------------------------------------------------------
-        // System.out.println("--> ProductID: " + productsVO.getProductID());
-        // mav.addObject("ProductID", productsVO.getProductID()); // redirect parameter 적용
+        // System.out.println("--> contentsno: " + contentsVO.getContentsno());
+        // mav.addObject("contentsno", contentsVO.getContentsno()); // redirect parameter 적용
         // ------------------------------------------------------------------------------
         
         if (cnt == 1) {
             mav.addObject("code", "create_success");
-            // categoryProc.increaseCnt(productsVO.getCategoryID()); // 글수 증가
+            // cateProc.increaseCnt(contentsVO.getCateno()); // 글수 증가
         } else {
             mav.addObject("code", "create_fail");
         }
         mav.addObject("cnt", cnt); // request.setAttribute("cnt", cnt)
         
-        // System.out.println("--> CategoryID: " + productsVO.getCategoryID());
+        // System.out.println("--> cateno: " + contentsVO.getCateno());
         // redirect시에 hidden tag로 보낸것들이 전달이 안됨으로 request에 다시 저장
-        mav.addObject("CategoryID", productsVO.getCategoryID()); // redirect parameter 적용
+        mav.addObject("categoryID", productsVO.getCategoryID()); // redirect parameter 적용
         
         mav.addObject("url", "/products/msg"); // msg.jsp, redirect parameter 적용
         mav.setViewName("redirect:/products/msg.do"); // Post -> Get - param...        
@@ -160,7 +158,7 @@ public class ProductsCont {
 
   /**
    * 전체 목록, 관리자만 사용 가능
-   * http://localhost:9091/products/list_all.do
+   * http://localhost:9093/products/list_all.do
    * @return
    */
   @RequestMapping(value="/products/list_all.do", method = RequestMethod.GET)
@@ -168,20 +166,20 @@ public class ProductsCont {
     ModelAndView mav = new ModelAndView();
     
     if (this.adminProc.isAdmin(session) == true) {
-      mav.setViewName("/products/list_all"); // /WEB-INF/views/products/list_all.jsp
+      mav.setViewName("/products/list_all"); // /WEB-INF/views/contents/list_all.jsp
       
       ArrayList<ProductsVO> list = this.productsProc.list_all();
      
       // for문을 사용하여 객체를 추출, Call By Reference 기반의 원본 객체 값 변경
       for (ProductsVO productsVO : list) {
-        String PName = productsVO.getPName();
-        String Description = productsVO.getDescription();
+        String pName = productsVO.getpName();
+        String description = productsVO.getDescription();
         
-        PName = Tool.convertChar(PName);  // 특수 문자 처리
-        Description = Tool.convertChar(Description); 
+        pName = Tool.convertChar(pName);  // 특수 문자 처리
+        description = Tool.convertChar(description); 
         
-        productsVO.setPName(PName);
-        productsVO.setDescription(Description);  
+        productsVO.setpName(pName);
+        productsVO.setDescription(description);  
 
       }
       
@@ -197,39 +195,39 @@ public class ProductsCont {
   
 //  /**
 //   * 특정 카테고리의 검색 목록
-//   * http://localhost:9091/products/list_by_CategoryID.do?CategoryID=1
+//   * http://localhost:9091/contents/list_by_cateno.do?cateno=1
 //   * @return
 //   */
-//  @RequestMapping(value="/products/list_by_CategoryID.do", method = RequestMethod.GET)
-//  public ModelAndView list_by_CategoryID(int CategoryID, String word) {
+//  @RequestMapping(value="/contents/list_by_cateno.do", method = RequestMethod.GET)
+//  public ModelAndView list_by_cateno(int cateno, String word) {
 //    ModelAndView mav = new ModelAndView();
 //
-//    mav.setViewName("/products/list_by_CategoryID"); // /WEB-INF/views/products/list_by_CategoryID.jsp
+//    mav.setViewName("/contents/list_by_cateno"); // /WEB-INF/views/contents/list_by_cateno.jsp
 //    
-//    CategoryVO categoryVO = this.categoryProc.read(CategoryID); // create.jsp에 카테고리 정보를 출력하기위한 목적
-//    mav.addObject("categoryVO", categoryVO);
-//    // request.setAttribute("categoryVO", categoryVO);
+//    CateVO cateVO = this.cateProc.read(cateno); // create.jsp에 카테고리 정보를 출력하기위한 목적
+//    mav.addObject("cateVO", cateVO);
+//    // request.setAttribute("cateVO", cateVO);
 //    
 //    // 검색하지 않는 경우
-//    // ArrayList<ContentsVO> list = this.productsProc.list_by_CategoryID(CategoryID);
+//    // ArrayList<ContentsVO> list = this.contentsProc.list_by_cateno(cateno);
 //
 //    // 검색하는 경우
 //    HashMap<String, Object> hashMap = new HashMap<String, Object>();
-//    hashMap.put("CategoryID", CategoryID);
+//    hashMap.put("cateno", cateno);
 //    hashMap.put("word", word);
 //    
-//    ArrayList<ContentsVO> list = this.productsProc.list_by_CategoryID_search(hashMap);
+//    ArrayList<ContentsVO> list = this.contentsProc.list_by_cateno_search(hashMap);
 //    
 //    // for문을 사용하여 객체를 추출, Call By Reference 기반의 원본 객체 값 변경
-//    for (ContentsVO productsVO : list) {
-//      String title = productsVO.getTitle();
-//      String content = productsVO.getContent();
+//    for (ContentsVO contentsVO : list) {
+//      String title = contentsVO.getTitle();
+//      String content = contentsVO.getContent();
 //      
 //      title = Tool.convertChar(title);  // 특수 문자 처리
 //      content = Tool.convertChar(content); 
 //      
-//      productsVO.setTitle(title);
-//      productsVO.setContent(content);  
+//      contentsVO.setTitle(title);
+//      contentsVO.setContent(content);  
 //
 //    }
 //    
@@ -241,17 +239,17 @@ public class ProductsCont {
    /**
    * 목록 + 검색 + 페이징 지원
    * 검색하지 않는 경우
-   * http://localhost:9091/products/list_by_CategoryID.do?CategoryID=2&word=&now_page=1
+   * http://localhost:9093/products/list_by_categoryID.do?categoryID=2&word=&now_page=1
    * 검색하는 경우
-   * http://localhost:9091/products/list_by_CategoryID.do?CategoryID=2&word=탐험&now_page=1
+   * http://localhost:9091/products/list_by_categoryID.do?categoryID=2&word=탐험&now_page=1
    * 
-   * @param CategoryID
+   * @param categoryID
    * @param word
    * @param now_page
    * @return
    */
   @RequestMapping(value = "/products/list_by_categoryID.do", method = RequestMethod.GET)
-  public ModelAndView list_by_CategoryID(ProductsVO productsVO) {
+  public ModelAndView list_by_categoryID(ProductsVO productsVO) {
     ModelAndView mav = new ModelAndView();
   
     // 검색 목록
@@ -259,14 +257,14 @@ public class ProductsCont {
     
     // for문을 사용하여 객체를 추출, Call By Reference 기반의 원본 객체 값 변경
     for (ProductsVO vo : list) {
-      String PName = vo.getPName();
-      String Description = vo.getDescription();
+      String pName = productsVO.getpName();
+      String description = productsVO.getDescription();
       
-      PName = Tool.convertChar(PName);  // 특수 문자 처리
-      Description = Tool.convertChar(Description); 
+      pName = Tool.convertChar(pName);  // 특수 문자 처리
+      description = Tool.convertChar(description); 
       
-      vo.setPName(PName);
-      vo.setDescription(Description);  
+      productsVO.setpName(pName);
+      productsVO.setDescription(description);  
   
     }
     
@@ -285,7 +283,7 @@ public class ProductsCont {
     /*
      * SPAN태그를 이용한 박스 모델의 지원, 1 페이지부터 시작 현재 페이지: 11 / 22 [이전] 11 12 13 14 15 16 17
      * 18 19 20 [다음]
-     * @param CategoryID 카테고리번호
+     * @param cateno 카테고리번호
      * @param now_page 현재 페이지
      * @param word 검색어
      * @param list_file 목록 파일명
@@ -296,7 +294,7 @@ public class ProductsCont {
   
     // mav.addObject("now_page", now_page);
     
-    mav.setViewName("/products/list_by_categoryID");  // /products/list_by_CategoryID.jsp
+    mav.setViewName("/products/list_by_categoryID");  // /contents/list_by_cateno.jsp
   
     return mav;
   }
@@ -304,17 +302,17 @@ public class ProductsCont {
   /**
   * 목록 + 검색 + 페이징 지원 + Grid
   * 검색하지 않는 경우
-  * http://localhost:9091/products/list_by_CategoryID_grid.do?CategoryID=2&word=&now_page=1
+  * http://localhost:9093/products/list_by_categoryID_grid.do?categoryID=2&word=&now_page=1
   * 검색하는 경우
-  * http://localhost:9091/products/list_by_CategoryID_grid.do?CategoryID=2&word=탐험&now_page=1
+  * http://localhost:9093/products/list_by_categoryID_grid.do?categoryID=2&word=탐험&now_page=1
   * 
-  * @param CategoryID
+  * @param categoryID
   * @param word
   * @param now_page
   * @return
   */
   @RequestMapping(value = "/products/list_by_categoryID_grid.do", method = RequestMethod.GET)
-  public ModelAndView list_by_CategoryID_grid(ProductsVO productsVO) {
+  public ModelAndView list_by_categoryID_grid(ProductsVO productsVO) {
      ModelAndView mav = new ModelAndView();
    
      // 검색 목록
@@ -322,14 +320,14 @@ public class ProductsCont {
    
    // for문을 사용하여 객체를 추출, Call By Reference 기반의 원본 객체 값 변경
    for (ProductsVO vo : list) {
-     String PName = vo.getPName();
-     String Description = vo.getDescription();
+     String pName = vo.getpName();
+     String description = vo.getDescription();
      
-     PName = Tool.convertChar(PName);  // 특수 문자 처리
-     Description = Tool.convertChar(Description); 
-       
-       vo.setPName(PName);
-       vo.setDescription(Description);  
+     pName = Tool.convertChar(pName);  // 특수 문자 처리
+     description = Tool.convertChar(description); 
+     
+     vo.setpName(pName);
+     vo.setDescription(description);  
    
      }
      
@@ -348,7 +346,7 @@ public class ProductsCont {
      /*
   * SPAN태그를 이용한 박스 모델의 지원, 1 페이지부터 시작 현재 페이지: 11 / 22 [이전] 11 12 13 14 15 16 17
   * 18 19 20 [다음]
-  * @param CategoryID 카테고리번호
+  * @param cateno 카테고리번호
   * @param now_page 현재 페이지
   * @param word 검색어
   * @param list_file 목록 파일명
@@ -359,7 +357,7 @@ public class ProductsCont {
    
      // mav.addObject("now_page", now_page);
    
-   mav.setViewName("/products/list_by_categoryID_grid");  // /products/list_by_CategoryID_grid.jsp
+   mav.setViewName("/products/list_by_categoryID_grid");  // /contents/list_by_cateno_grid.jsp
    
      return mav;
    }
@@ -367,28 +365,28 @@ public class ProductsCont {
  
   /**
    * 조회
-   * http://localhost:9091/products/read.do?ProductID=17
+   * http://localhost:9093/products/read.do?productID=17
    * @return
    */
   @RequestMapping(value="/products/read.do", method = RequestMethod.GET)
-  public ModelAndView read(int ProductID) { // int CategoryID = (int)request.getParameter("CategoryID");
+  public ModelAndView read(int productID) { // int cateno = (int)request.getParameter("cateno");
     ModelAndView mav = new ModelAndView();
-    mav.setViewName("/products/read"); // /WEB-INF/views/products/read.jsp
+    mav.setViewName("/products/read"); // /WEB-INF/views/contents/read.jsp
     
-    ProductsVO productsVO = this.productsProc.read(ProductID);
+    ProductsVO productsVO = this.productsProc.read(productID);
     
-    String PName = productsVO.getPName();
-    String Description = productsVO.getDescription();
+    String pName = productsVO.getpName();
+    String description = productsVO.getDescription();
     
-    PName = Tool.convertChar(PName);  // 특수 문자 처리
-    Description = Tool.convertChar(Description); 
+    pName = Tool.convertChar(pName);  // 특수 문자 처리
+    description = Tool.convertChar(description); 
     
-    productsVO.setPName(PName);
-    productsVO.setDescription(Description);  
+    productsVO.setpName(pName);
+    productsVO.setDescription(description);  
     
-    long size = productsVO.getSizes();
-    String sizes_label = Tool.unit(size);
-    productsVO.setSizes_label(sizes_label);
+    long sizes = productsVO.getSizes();
+    String size_label = Tool.unit(sizes);
+    productsVO.setSize_label(size_label);
     
     mav.addObject("productsVO", productsVO);
     
@@ -400,22 +398,22 @@ public class ProductsCont {
   
   /**
    * 수정 폼
-   * http://localhost:9091/products/update_text.do?ProductID=1
+   * http://localhost:9093/products/update_text.do?productID=1
    * 
    * @return
    */
   @RequestMapping(value = "/products/update_text.do", method = RequestMethod.GET)
-  public ModelAndView update_text(HttpSession session, int ProductID) {
+  public ModelAndView update_text(HttpSession session, int productID) {
     ModelAndView mav = new ModelAndView();
     
     if (adminProc.isAdmin(session)) { // 관리자로 로그인한경우
-      ProductsVO productsVO = this.productsProc.read(ProductID);
+      ProductsVO productsVO = this.productsProc.read(productID);
       mav.addObject("productsVO", productsVO);
       
       CategoryVO categoryVO = this.categoryProc.read(productsVO.getCategoryID());
       mav.addObject("categoryVO", categoryVO);
       
-      mav.setViewName("/products/update_text"); // /WEB-INF/views/products/update_text.jsp
+      mav.setViewName("/products/update_text"); // /WEB-INF/views/contents/update_text.jsp
       // String content = "장소:\n인원:\n준비물:\n비용:\n기타:\n";
       // mav.addObject("content", content);
 
@@ -429,7 +427,7 @@ public class ProductsCont {
   
   /**
    * 수정 처리
-   * http://localhost:9091/products/update_text.do?ProductID=1
+   * http://localhost:9093/products/update_text.do?productID=1
    * 
    * @return
    */
@@ -437,45 +435,50 @@ public class ProductsCont {
   public ModelAndView update_text(HttpSession session, ProductsVO productsVO) {
     ModelAndView mav = new ModelAndView();
     
-    // System.out.println("-> word: " + productsVO.getWord());
+    // System.out.println("-> word: " + contentsVO.getWord());
     
     if (this.adminProc.isAdmin(session)) { // 관리자 로그인 확인
       HashMap<String, Object> hashMap = new HashMap<String, Object>();
-      hashMap.put("ProductID", productsVO.getProductID());
+      hashMap.put("productID", productsVO.getProductID());
+
       this.productsProc.update_text(productsVO); // 글수정  
        
       // mav 객체 이용
-      mav.addObject("ProductID", productsVO.getProductID());
-      mav.addObject("CategoryID", productsVO.getCategoryID());
+      mav.addObject("productID", productsVO.getProductID());
+      mav.addObject("categoryID", productsVO.getCategoryID());
       mav.setViewName("redirect:/products/read.do"); // 페이지 자동 이동
 
+    } else { // 정상적인 로그인이 아닌 경우 로그인 유도
+      mav.addObject("url", "/admin/login_need"); // /WEB-INF/views/admin/login_need.jsp
+      mav.setViewName("redirect:/products/msg.do"); 
+    }
     
     mav.addObject("now_page", productsVO.getNow_page()); // POST -> GET: 데이터 분실이 발생함으로 다시하번 데이터 저장 ★
-    }
+    
     // URL에 파라미터의 전송
-    // mav.setViewName("redirect:/products/read.do?ProductID=" + productsVO.getProductID() + "&CategoryID=" + productsVO.getCategoryID());             
+    // mav.setViewName("redirect:/contents/read.do?contentsno=" + contentsVO.getContentsno() + "&cateno=" + contentsVO.getCateno());             
     
     return mav; // forward
   }
 
   /**
    * 파일 수정 폼
-   * http://localhost:9091/products/update_file.do?ProductID=1
+   * http://localhost:9093/products/update_file.do?productID=1
    * 
    * @return
    */
   @RequestMapping(value = "/products/update_file.do", method = RequestMethod.GET)
-  public ModelAndView update_file(HttpSession session, int ProductID) {
+  public ModelAndView update_file(HttpSession session, int productID) {
     ModelAndView mav = new ModelAndView();
     
     if (adminProc.isAdmin(session)) { // 관리자로 로그인한경우
-      ProductsVO productsVO = this.productsProc.read(ProductID);
+      ProductsVO productsVO = this.productsProc.read(productID);
       mav.addObject("productsVO", productsVO);
       
       CategoryVO categoryVO = this.categoryProc.read(productsVO.getCategoryID());
       mav.addObject("categoryVO", categoryVO);
       
-      mav.setViewName("/products/update_file"); // /WEB-INF/views/products/update_file.jsp
+      mav.setViewName("/products/update_file"); // /WEB-INF/views/contents/update_file.jsp
       
     } else {
       mav.addObject("url", "/admin/login_need"); // /WEB-INF/views/admin/login_need.jsp
@@ -487,7 +490,7 @@ public class ProductsCont {
   }
   
   /**
-   * 파일 수정 처리 http://localhost:9091/products/update_file.do
+   * 파일 수정 처리 http://localhost:9093/products/update_file.do
    * 
    * @return
    */
@@ -502,14 +505,14 @@ public class ProductsCont {
       // -------------------------------------------------------------------
       // 파일 삭제 시작
       // -------------------------------------------------------------------
-      String ImageFileSaved = productsVO_old.getImageFileSaved();  // 실제 저장된 파일명
-      String Thumbs = productsVO_old.getThumbs();       // 실제 저장된 preview 이미지 파일명
+      String imageFileSaved = productsVO_old.getImageFileSaved();  // 실제 저장된 파일명
+      String thumb = productsVO_old.getThumb();       // 실제 저장된 preview 이미지 파일명
       long sizes = 0;
          
-      String upDir =  Products.getUploadDir(); // C:/kd/deploy/resort_v3sbm3c/products/storage/
+      String upDir =  Products.getUploadDir(); // C:/kd/deploy/resort_v3sbm3c/contents/storage/
       
-      Tool.deleteFile(upDir, ImageFileSaved);  // 실제 저장된 파일삭제
-      Tool.deleteFile(upDir, Thumbs);     // preview 이미지 삭제
+      Tool.deleteFile(upDir, imageFileSaved);  // 실제 저장된 파일삭제
+      Tool.deleteFile(upDir, thumb);     // preview 이미지 삭제
       // -------------------------------------------------------------------
       // 파일 삭제 종료
       // -------------------------------------------------------------------
@@ -517,35 +520,35 @@ public class ProductsCont {
       // -------------------------------------------------------------------
       // 파일 전송 시작
       // -------------------------------------------------------------------
-      String ImageFile = "";          // 원본 파일명 image
+      String imageFile = "";          // 원본 파일명 image
 
       // 전송 파일이 없어도 file1MF 객체가 생성됨.
       // <input type='file' class="form-control" name='file1MF' id='file1MF' 
       //           value='' placeholder="파일 선택">
       MultipartFile mf = productsVO.getFileMF();
           
-      ImageFile = mf.getOriginalFilename(); // 원본 파일명
+      imageFile = mf.getOriginalFilename(); // 원본 파일명
       sizes = mf.getSize();  // 파일 크기
           
       if (sizes > 0) { // 폼에서 새롭게 올리는 파일이 있는지 파일 크기로 체크 ★
         // 파일 저장 후 업로드된 파일명이 리턴됨, spring.jsp, spring_1.jpg...
-        ImageFileSaved = Upload.saveFileSpring(mf, upDir); 
+        imageFileSaved = Upload.saveFileSpring(mf, upDir); 
         
-        if (Tool.isImage(ImageFileSaved)) { // 이미지인지 검사
+        if (Tool.isImage(imageFileSaved)) { // 이미지인지 검사
           // thumb 이미지 생성후 파일명 리턴됨, width: 250, height: 200
-          Thumbs = Tool.preview(upDir, ImageFileSaved, 250, 200); 
+          thumb = Tool.preview(upDir, imageFileSaved, 250, 200); 
         }
         
       } else { // 파일이 삭제만 되고 새로 올리지 않는 경우
-        ImageFile="";
-        ImageFileSaved="";
-        Thumbs="";
+        imageFile="";
+        imageFileSaved="";
+        thumb="";
         sizes=0;
       }
           
-      productsVO.setImageFile(ImageFile);
-      productsVO.setImageFileSaved(ImageFileSaved);
-      productsVO.setThumbs(Thumbs);
+      productsVO.setImageFile(imageFile);
+      productsVO.setImageFileSaved(imageFileSaved);
+      productsVO.setThumb(thumb);
       productsVO.setSizes(sizes);
       // -------------------------------------------------------------------
       // 파일 전송 코드 종료
@@ -553,8 +556,8 @@ public class ProductsCont {
           
       this.productsProc.update_file(productsVO); // Oracle 처리
 
-      mav.addObject("ProductID", productsVO.getProductID());
-      mav.addObject("CategoryID", productsVO.getCategoryID());
+      mav.addObject("productID", productsVO.getProductID());
+      mav.addObject("categoryID", productsVO.getCategoryID());
       mav.setViewName("redirect:/products/read.do"); // request -> param으로 접근 전환
                 
     } else {
@@ -570,22 +573,22 @@ public class ProductsCont {
   
   /**
    * 파일 삭제 폼
-   * http://localhost:9091/products/delete.do?ProductID=1
+   * http://localhost:9093/products/delete.do?productID=1
    * 
    * @return
    */
   @RequestMapping(value = "/products/delete.do", method = RequestMethod.GET)
-  public ModelAndView delete(HttpSession session, int ProductID) {
+  public ModelAndView delete(HttpSession session, int productID) {
     ModelAndView mav = new ModelAndView();
     
     if (adminProc.isAdmin(session)) { // 관리자로 로그인한경우
-      ProductsVO productsVO = this.productsProc.read(ProductID);
+      ProductsVO productsVO = this.productsProc.read(productID);
       mav.addObject("productsVO", productsVO);
       
       CategoryVO categoryVO = this.categoryProc.read(productsVO.getCategoryID());
       mav.addObject("categoryVO", categoryVO);
       
-      mav.setViewName("/products/delete"); // /WEB-INF/views/products/delete.jsp
+      mav.setViewName("/products/delete"); // /WEB-INF/views/contents/delete.jsp
       
     } else {
       mav.addObject("url", "/admin/login_need"); // /WEB-INF/views/admin/login_need.jsp
@@ -597,7 +600,7 @@ public class ProductsCont {
   }
   
   /**
-   * 삭제 처리 http://localhost:9091/products/delete.do
+   * 삭제 처리 http://localhost:9093/products/delete.do
    * 
    * @return
    */
@@ -611,12 +614,12 @@ public class ProductsCont {
     // 삭제할 파일 정보를 읽어옴.
     ProductsVO productsVO_read = productsProc.read(productsVO.getProductID());
         
-    String ImageFileSaved = productsVO.getImageFileSaved();
-    String Thumbs = productsVO.getThumbs();
+    String imageFileSaved = productsVO.getImageFileSaved();
+    String thumb = productsVO.getThumb();
     
     String uploadDir = Products.getUploadDir();
-    Tool.deleteFile(uploadDir, ImageFileSaved);  // 실제 저장된 파일삭제
-    Tool.deleteFile(uploadDir, Thumbs);     // preview 이미지 삭제
+    Tool.deleteFile(uploadDir, imageFileSaved);  // 실제 저장된 파일삭제
+    Tool.deleteFile(uploadDir, thumb);     // preview 이미지 삭제
     // -------------------------------------------------------------------
     // 파일 삭제 종료
     // -------------------------------------------------------------------
@@ -632,7 +635,7 @@ public class ProductsCont {
     int now_page = productsVO.getNow_page();
     
     HashMap<String, Object> hashMap = new HashMap<String, Object>();
-    hashMap.put("CategoryID", productsVO.getCategoryID());
+    hashMap.put("categoryID", productsVO.getCategoryID());
     hashMap.put("word", productsVO.getWord());
     
     if (productsProc.search_count(hashMap) % Products.RECORD_PER_PAGE == 0) {
@@ -643,35 +646,35 @@ public class ProductsCont {
     }
     // -------------------------------------------------------------------------------------
 
-    mav.addObject("CategoryID", productsVO.getCategoryID());
+    mav.addObject("categoryID", productsVO.getCategoryID());
     mav.addObject("now_page", now_page);
-    mav.setViewName("redirect:/products/list_by_CategoryID.do"); 
+    mav.setViewName("redirect:/products/list_by_category.do"); 
     
     return mav;
   }   
       
-  // http://localhost:9091/products/delete_by_CategoryID.do?CategoryID=1
+  // http://localhost:9093/products/delete_by_categoryID.do?categoryID=1
   // 파일 삭제 -> 레코드 삭제
-  @RequestMapping(value = "/products/delete_by_CategoryID.do", method = RequestMethod.GET)
-  public String delete_by_CategoryID(int CategoryID) {
-    ArrayList<ProductsVO> list = this.productsProc.list_by_categoryID(CategoryID);
+  @RequestMapping(value = "/products/delete_by_categoryID.do", method = RequestMethod.GET)
+  public String delete_by_categoryID(int categoryID) {
+    ArrayList<ProductsVO> list = this.productsProc.list_by_categoryID(categoryID);
     
     for(ProductsVO productsVO : list) {
       // -------------------------------------------------------------------
       // 파일 삭제 시작
       // -------------------------------------------------------------------
-      String ImageFileSaved = productsVO.getImageFileSaved();
-      String Thumbs = productsVO.getThumbs();
+      String imageFileSaved = productsVO.getImageFileSaved();
+      String thumb = productsVO.getThumb();
       
       String uploadDir = Products.getUploadDir();
-      Tool.deleteFile(uploadDir, ImageFileSaved);  // 실제 저장된 파일삭제
-      Tool.deleteFile(uploadDir, Thumbs);     // preview 이미지 삭제
+      Tool.deleteFile(uploadDir, imageFileSaved);  // 실제 저장된 파일삭제
+      Tool.deleteFile(uploadDir, thumb);     // preview 이미지 삭제
       // -------------------------------------------------------------------
       // 파일 삭제 종료
       // -------------------------------------------------------------------
     }
     
-    int cnt = this.productsProc.delete_by_categoryID(CategoryID);
+    int cnt = this.productsProc.delete_by_categoryID(categoryID);
     System.out.println("-> count: " + cnt);
     
     return "";
@@ -680,7 +683,7 @@ public class ProductsCont {
   
   /**
    * Gallery 전체 이미지 출력
-   * http://localhost:9091/products/list_all_gallery.do
+   * http://localhost:9093/products/list_all_gallery.do
    * @return
    */
   @RequestMapping(value="/products/list_all_gallery.do", method = RequestMethod.GET)
@@ -688,7 +691,7 @@ public class ProductsCont {
     ModelAndView mav = new ModelAndView();
     
     if (this.adminProc.isAdmin(session) == true) {
-      mav.setViewName("/products/list_all_gallery"); // /WEB-INF/views/products/list_all_gallery.jsp
+      mav.setViewName("/products/list_all_gallery"); // /WEB-INF/views/contents/list_all_gallery.jsp
       
       ArrayList<ProductsVO> list = this.productsProc.list_all();
       mav.addObject("list", list);

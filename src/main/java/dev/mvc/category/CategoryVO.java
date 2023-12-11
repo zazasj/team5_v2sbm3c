@@ -15,7 +15,7 @@ CREATE TABLE Category(
 
 public class CategoryVO {
 
-  private int CategoryID;
+  private int categoryID;
   private int GrpID;
   private String CategoryName;
   private int cnt;
@@ -24,10 +24,10 @@ public class CategoryVO {
   private String Visible;
   
   public int getCategoryID() {
-    return CategoryID;
+    return categoryID;
   }
-  public void setCategoryID(int CategoryID) {
-    this.CategoryID = CategoryID;
+  public void setCategoryID(int categoryID) {
+    this.categoryID = categoryID;
   }
   public int getGrpID() {
     return GrpID;
@@ -69,7 +69,7 @@ public class CategoryVO {
   
   @Override
   public String toString() {
-    return "CategoryVO [CategoryID=" + CategoryID + ", GrpID=" + GrpID + ", CategoryName=" + CategoryName + ", cnt="
+    return "CategoryVO [categoryID=" + categoryID + ", GrpID=" + GrpID + ", CategoryName=" + CategoryName + ", cnt="
         + cnt + ", Rdate=" + Rdate + ", Seqno=" + Seqno + ", Visible=" + Visible + "]";
   }
   

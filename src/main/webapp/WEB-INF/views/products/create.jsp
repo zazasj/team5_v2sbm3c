@@ -16,13 +16,13 @@
   <div class='title_line'>${categoryVO.categoryName } > 글 등록</div>
   
   <aside class="aside_right">
-    <a href="./create.do?CategoryID=${categoryVO.categoryID }">등록</a>
+    <a href="./create.do?categoryID =${categoryVO.categoryID }">등록</a>
     <span class='menu_divide' >│</span>
     <a href="javascript:location.reload();">새로고침</a>
     <span class='menu_divide' >│</span>
-    <a href="./list_by_categoryID_search_paging.do?CategoryID=${categoryVO.categoryID }">기본 목록형</a>    
+    <a href="./list_by_categoryID_search_paging.do?categoryID=${categoryVO.categoryID }">기본 목록형</a>    
     <span class='menu_divide' >│</span>
-    <a href="./list_by_categoryID_grid.do?CategoryID=${categoryVO.categoryID }">갤러리형</a>
+    <a href="./list_by_categoryID_grid.do?categoryID=${categoryVO.categoryID }">갤러리형</a>
   </aside>
   
   <div style="text-align: right; clear: both;">  
@@ -40,7 +40,7 @@
       <button type='submit' class='btn btn-info btn-sm'>검색</button>
       <c:if test="${param.word.length() > 0 }">
         <button type='button' class='btn btn-info btn-sm' 
-                    onclick="location.href='./list_by_categoryID.do?CategoryID=${categoryVO.categoryID}&word='">검색 취소</button>  
+                    onclick="location.href='./list_by_categoryID.do?categoryID=${categoryVO.categoryID}&word='">검색 취소</button>  
       </c:if>    
     </form>
   </div>
@@ -48,30 +48,29 @@
   <div class='menu_line'></div>
   
   <form name='frm' method='post' action='./create.do' enctype="multipart/form-data">
-    <input type="hidden" name="categoryID" value="${param.categoryID }">
+    <input type="hidden" name="cateno" value="${param.cateno }">
     
     <div>
        <label>제목</label>
-       <input type='text' name='PName' value='술 1' required="required" 
+       <input type='text' name='pName' value='술 이름' required="required" 
                  autofocus="autofocus" class="form-control" style='width: 100%;'>
     </div>
     <div>
        <label>내용</label>
-       <textarea name='Description' required="required" class="form-control" rows="12" style='width: 100%;'>테스트입니다! </textarea>
+       <textarea name='description' required="required" class="form-control" rows="12" style='width: 100%;'>술 설명 </textarea>
     </div>
     <div>
        <label>검색어</label>
-       <input type='text' name='word' value='주류' required="required" 
+       <input type='text' name='word' value='술, 알코올' required="required" 
                  class="form-control" style='width: 100%;'>
     </div>   
     <div>
        <label>이미지</label>
        <input type='file' class="form-control" name='fileMF' id='fileMF' value='' placeholder="파일 선택">
     </div>   
-   
     <div class="content_body_bottom">
       <button type="submit" class="btn btn-secondary btn-sm">등록</button>
-      <button type="button" onclick="location.href='./list_by_categoryID_search_paging.do?CategoryID=${param.categoryID}'" class="btn btn-secondary btn-sm">목록</button>
+      <button type="button" onclick="location.href='./list_by_categoryID_search_paging.do?categoryID=${param.cateno}'" class="btn btn-secondary btn-sm">목록</button>
     </div>
   
   </form>
