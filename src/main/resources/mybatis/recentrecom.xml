@@ -20,13 +20,17 @@
   <!-- Join을 수행하는 SELECT 문 -->
   <select id="list_recent_products" resultMap="recentRecomResultMap">
     <![CDATA[
-      SELECT * FROM (
-        SELECT rr.RecentRecomID, rr.ProductID, rr.AddedDate, p.PName, p.ImageFile
-        FROM RecentRecom rr
-        JOIN Products p ON rr.ProductID = p.ProductID
-        ORDER BY rr.AddedDate DESC
-      ) WHERE ROWNUM <= 5
-    ]]>
+    SELECT RecentRecomID, ProductID, AddedDate, PName, ImageFile
+    FROM (
+      SELECT RecentRecomID, ProductID, AddedDate, PName, ImageFile, ROWNUM AS rnum
+      FROM (
+        SELECT RecentRecomID, ProductID, AddedDate, PName, ImageFile
+        FROM RecentRecom
+        ORDER BY AddedDate DESC
+      )
+    )
+    WHERE rnum <= 5
+  ]]>
   </select>
 
 </mapper>

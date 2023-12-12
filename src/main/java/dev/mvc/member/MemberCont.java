@@ -764,5 +764,29 @@ public class MemberCont {
     return mav;
   }
   
+  /**
+   * Ajax 기반 회원 조회
+   * http://localhost:9091/member/read_ajax.do
+   * @param memberno
+   * @return
+   */
+  @RequestMapping(value="/member/read_ajax.do", method=RequestMethod.GET)
+  @ResponseBody
+  public String read_ajax(HttpSession session){
+    int memberno = (int)session.getAttribute("memberno");
+    
+    MemberVO memberVO = this.memberProc.read(memberno);
+    
+    JSONObject json = new JSONObject();
+    json.put("rname", memberVO.getMname());
+    json.put("rtel", memberVO.getTel());
+    json.put("rzipcode", memberVO.getZipcode());
+    json.put("raddress1", memberVO.getAddress1());
+    json.put("raddress2", memberVO.getAddress2());
+    
+    return json.toString();
+  }
+  
+  
 }
 

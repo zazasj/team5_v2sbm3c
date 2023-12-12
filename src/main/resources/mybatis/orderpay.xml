@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="dev.mvc.orderpay.OrderpayDAOInter">
+
+  <!-- 주문 결재 등록 -->
+  <!-- 
+  <insert id="create" parameterType="dev.mvc.order_pay.Order_payVO">
+    INSERT INTO order_pay(order_payno, memberno, rname, rtel, rzipcode,
+                                     raddress1, raddress2, paytype, amount, rdate)
+    VALUES (order_pay_seq.nextval, #{memberno}, #{rname}, #{rtel}, #{rzipcode},
+                                     #{raddress1}, #{raddress2}, #{paytype}, #{amount}, sysdate)
+  </insert> 
+   -->
+   
+  <!-- 주문 결재 등록 전 order_payno를 Order_payVO에 저장  -->
+  <insert id="create" parameterType="dev.mvc.orderpay.OrderpayVO">
+    <selectKey keyProperty="order_payno" resultType="int" order="BEFORE">
+      SELECT order_pay_seq.nextval FROM dual
+    </selectKey>
+    
+    INSERT INTO order_pay(order_payno, memberno, rname, rtel, rzipcode,
+                                     raddress1, raddress2, paytype, amount, rdate)
+    VALUES (#{order_payno}, #{memberno}, #{rname}, #{rtel}, #{rzipcode},
+                                     #{raddress1}, #{raddress2}, #{paytype}, #{amount}, sysdate)
+  </insert> 
+
+</mapper>

@@ -193,49 +193,6 @@ public class ProductsCont {
     return mav;
   }
   
-//  /**
-//   * 특정 카테고리의 검색 목록
-//   * http://localhost:9091/contents/list_by_cateno.do?cateno=1
-//   * @return
-//   */
-//  @RequestMapping(value="/contents/list_by_cateno.do", method = RequestMethod.GET)
-//  public ModelAndView list_by_cateno(int cateno, String word) {
-//    ModelAndView mav = new ModelAndView();
-//
-//    mav.setViewName("/contents/list_by_cateno"); // /WEB-INF/views/contents/list_by_cateno.jsp
-//    
-//    CateVO cateVO = this.cateProc.read(cateno); // create.jsp에 카테고리 정보를 출력하기위한 목적
-//    mav.addObject("cateVO", cateVO);
-//    // request.setAttribute("cateVO", cateVO);
-//    
-//    // 검색하지 않는 경우
-//    // ArrayList<ContentsVO> list = this.contentsProc.list_by_cateno(cateno);
-//
-//    // 검색하는 경우
-//    HashMap<String, Object> hashMap = new HashMap<String, Object>();
-//    hashMap.put("cateno", cateno);
-//    hashMap.put("word", word);
-//    
-//    ArrayList<ContentsVO> list = this.contentsProc.list_by_cateno_search(hashMap);
-//    
-//    // for문을 사용하여 객체를 추출, Call By Reference 기반의 원본 객체 값 변경
-//    for (ContentsVO contentsVO : list) {
-//      String title = contentsVO.getTitle();
-//      String content = contentsVO.getContent();
-//      
-//      title = Tool.convertChar(title);  // 특수 문자 처리
-//      content = Tool.convertChar(content); 
-//      
-//      contentsVO.setTitle(title);
-//      contentsVO.setContent(content);  
-//
-//    }
-//    
-//    mav.addObject("list", list);
-//    
-//    return mav;
-//  }
-  
    /**
    * 목록 + 검색 + 페이징 지원
    * 검색하지 않는 경우
