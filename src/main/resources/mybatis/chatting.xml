@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="dev.mvc.chatting.ChattingDAOInter">
+  
+  <insert id="create" parameterType="dev.mvc.chatting.ChattingVO">
+    INSERT INTO chatting(chattingno, memberno, msg, rdate) 
+    VALUES(chatting_seq.nextval, #{memberno}, #{msg}, sysdate)
+  </insert>
+  
+  <!-- 챗봇 목록 -->
+  <select id="list_all" resultType="dev.mvc.chatting.ChattingVO">
+    SELECT chattingno, memberno, msg, rdate 
+    FROM chatting 
+    ORDER BY chattingno DESC
+  </select>
+  
+  <!-- 챗봇 조회 -->
+  <select id="read" resultType="dev.mvc.chatting.ChattingVO" parameterType="int">
+    SELECT chattingno, memberno, msg, rdate
+    FROM chatting
+    WHERE chattingno=#{chattingno}
+  </select>
+  
+  
+    <!-- 조건 삭제 -->
+    <delete id="delete" parameterType="int">
+    DELETE FROM chatting
+    WHERE chattingno=#{chattingno}
+  </delete>
+</mapper>
