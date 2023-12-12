@@ -32,6 +32,10 @@
   <a href="/"><img src="/css/images/logo4.jpg"></a>
   <input type="text" placeholder="검색할 제품을 입력해주세요." style = "width : 300px; margin-left: 350px; " >
   <input type = "button" value="검색">
+  <a class="navbar-brand" href="http://localhost:5000/chatbot?memberno=${sessionScope.memberno} " style="display: inline-block;">
+  	<img src='/css/images/chatbot.jpg' title="채팅 상담" style='display: block; padding-left: 5px;'>
+  </a>
+  
   <!-- <aside class="aside_right">
   <a href="">로그인</a> <span
     class='menu_divide'>│</span> <a href="">회원가입</a>
