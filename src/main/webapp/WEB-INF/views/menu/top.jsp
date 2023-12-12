@@ -129,6 +129,10 @@
                       <a class="nav-link top_menu_link" href='/member/logout.do'>${sessionScope.id } 로그아웃</a>
                   </c:otherwise>
               </c:choose>
+            </li>
+            
+            <li class="nav-item"> <%-- 서브 메뉴가 없는 독립메뉴 --%>
+                 <a class="nav-link top_menu_link" href="/chatting/list_all.do">chat</a>
             </li>     
           </ul>
       </div>    
