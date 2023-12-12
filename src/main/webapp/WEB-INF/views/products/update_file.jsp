@@ -8,7 +8,7 @@
 <c:set var="imageFile" value="${productsVO.imageFile }" />
 <c:set var="imageFileSaved" value="${productsVO.imageFileSaved }" />
 <c:set var="thumb" value="${productsVO.thumb.toLowerCase() }" />
-<c:set var="sizes" value="${contentsVO.sizes }" />
+<c:set var="sizes" value="${productsVO.sizes }" />
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -22,7 +22,7 @@
 </head>
 <body>
 <c:import url="/menu/top.do" />
-  <DIV class='title_line'> ${categoryVO.category/Name } > ${pName } >파일 수정</DIV>
+  <DIV class='title_line'> ${categoryVO.categoryName } > ${pName } >파일 수정</DIV>
   
   <aside class="aside_right">
     <a href="./create.do?categoryID=${categoryID }">등록</a>
