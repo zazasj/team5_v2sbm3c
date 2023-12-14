@@ -113,6 +113,7 @@
                   <div class="dropdown-menu">
                     <a class="dropdown-item" href='/cateGroup/list_all.do'>카테고리그룹 전체 목록</a>
                     <a class="dropdown-item" href='/member/list.do'>회원 목록</a>
+                    <a class="dropdown-item" href='/supplier/list_all_adminno.do'>공급 업체</a>
                     <a class="dropdown-item" href='/admin/logout.do'>관리자 ${sessionScope.admin_id } 로그아웃</a>
                   </div>
                 </li>
