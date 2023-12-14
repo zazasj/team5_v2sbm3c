@@ -22,7 +22,6 @@
   <%-- 여기서 recentProducts는 Controller에서 전달한 최근 제품 리스트입니다. --%>
   <c:forEach var="product" items="${recentProducts}">
     <div style="margin: 30px auto; text-align: center;">
-      <c:out value="${product.imagefile}" /> <!-- 디버깅을 위한 출력 -->
       <%-- <img src="/products/storage/${product.imagefile}" style='width: 50%; float: left; margin-top: 0.5%; margin-right: 1%;'>--%>
       <img src="/products/storage/${product.imagefile}" alt="${product.pname}" width="100" height="100">
       <p>${product.pname}</p>
