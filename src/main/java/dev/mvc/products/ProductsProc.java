@@ -260,6 +260,26 @@ public class ProductsProc implements ProductsProcInter {
       int cnt = this.productsDAO.delete_by_categoryID(categoryID);
       return cnt;
     }
+
+    /**
+     * 리뷰 수 증가
+     * @param 
+     * @return
+     */ 
+    public int increaseReviewcnt(int productid) {
+      int cnt = this.productsDAO.increaseReviewcnt(productid);
+      return cnt;
+    }
+   
+    /**
+     * 리뷰 수 감소
+     * @param 
+     * @return
+     */   
+    public int decreaseReviewcnt(int productid) {
+      int cnt = this.productsDAO.decreaseReviewcnt(productid);
+      return cnt;
+    }
   
 }
 

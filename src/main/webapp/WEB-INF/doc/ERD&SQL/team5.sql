@@ -616,6 +616,9 @@ COMMIT;
 
 UPDATE Event SET thumb1='' WHERE eventno=5;
 
+-- 추가한 부분 세진 1213-- 
+ALTER TABLE Event ADD word VARCHAR(200);
+
 /**********************************/
 /* Table Name: 관심상품 */
 /**********************************/
@@ -758,6 +761,37 @@ CREATE SEQUENCE MAILLOG_SEQ
 SELECT * FROM MailLog;
 commit;
 
+
+/**********************************/
+/* Table Name: 좋아요 */
+/**********************************/
+DROP TABLE Like;
+
+CREATE TABLE Plike(
+		plikeno NUMERIC(10) NOT NULL PRIMARY KEY,
+		memberno NUMERIC(10),
+		productid NUMERIC(10) NOT NULL,
+		ldate DATE NOT NULL,
+        FOREIGN KEY (memberno) REFERENCES Member (memberno) ON DELETE CASCADE,
+        FOREIGN KEY (productid) REFERENCES Products (productid) ON DELETE CASCADE
+);
+
+DROP SEQUENCE PLIKE_SEQ;
+CREATE SEQUENCE PLIKE_SEQ
+  START WITH 1              -- 시작 번호
+  INCREMENT BY 1            -- 증가값
+  MAXVALUE 9999999999            -- 최대값: 9999999999 --> NUMBER(10) 대응
+  CACHE 2                   -- 2번은 메모리에서만 계산
+  NOCYCLE;                  -- 다시 1부터 생성되는 것을 방지
+
+SELECT * FROM Plike;
+
+DELETE FROM Plike
+WHERE plikeno >= 0;
+
+/**********************************/
+/* Table Name: 추천테이블 */
+/**********************************/
 
 
 DROP TABLE RecentRecom;

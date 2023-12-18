@@ -84,7 +84,7 @@
         </c:choose>
         
         <button type='button' onclick="location.href='./create.do'" class="btn btn-secondary btn-sm">새로운 컨텐츠 등록</button>
-        <button type='button' onclick="location.href='./list_all.do'" class="btn btn-secondary btn-sm">목록</button>
+        <button type='button' onclick="location.href='./list_by_eventno.do?now_page=${param.now_page == null ? 1 : param.now_page }&word=${param.word }'" class="btn btn-secondary btn-sm">목록</button>
         </li>
     </UL>
   </fieldset>

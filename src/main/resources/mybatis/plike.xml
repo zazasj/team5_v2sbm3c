@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "dev.mvc.like.LikeDAOInter">
+ <insert id="create" parameterType="HashMap">
+    INSERT INTO Plike(plikeno, memberno, productid, ldate)
+    VALUES(plike_seq.nextval, #{memberno}, #{productid}, sysdate)
+  </insert>
+  
+  <select id="like_check" parameterType="HashMap" resultType="int">
+    SELECT COUNT(*) as cnt 
+    FROM Plike
+    WHERE memberno=#{memberno} AND productid=#{productid}
+  </select>
+  
+  <select id="read" parameterType="int">
+    SELECT recom 
+    FROM Products
+    WHERE productid=#{productid}
+  </select>
+  
+  <!-- 좋아요 수 증가 -->
+   <update id="in_recom" parameterType="int">
+     UPDATE Products
+     SET recom = recom + 1
+     WHERE productid = #{productid}
+   </update>
+
+   <!-- 좋아요 수 감소 -->
+   <update id="de_recom" parameterType="int">
+     UPDATE Products
+     SET recom = recom - 1
+     WHERE productid = #{productid}
+   </update>
+   
+   <delete id="delete" parameterType="HashMap">
+    DELETE FROM Plike
+    WHERE memberno=#{memberno} AND productid=#{productid}
+  </delete>
+
+</mapper> 
+
+

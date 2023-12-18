@@ -93,6 +93,7 @@
                     <a class="dropdown-item" href="#">주문 결제</a>
                     <a class="dropdown-item" href="/member/passwd_update.do">비밀번호 변경</a>
                     <a class="dropdown-item" href="/member/read.do">회원 정보 수정</a>
+                    <a class="dropdown-item" href="/review/list_join.do">리뷰 내역</a>
                     <a class="dropdown-item" href="/member/delete.do">회원 탈퇴</a>
                   </c:otherwise>
                 </c:choose>
@@ -115,6 +116,7 @@
                   <div class="dropdown-menu">
                     <a class="dropdown-item" href='/cateGroup/list_all.do'>카테고리그룹 전체 목록</a>
                     <a class="dropdown-item" href='/member/list.do'>회원 목록</a>
+                    <a class="dropdown-item" href='/review/list.do'>리뷰 전체 목록</a>
                     <a class="dropdown-item" href='/supplier/list_all_adminno.do'>공급 업체</a>
                     <a class="dropdown-item" href='/admin/logout.do'>관리자 ${sessionScope.admin_id } 로그아웃</a>
                   </div>

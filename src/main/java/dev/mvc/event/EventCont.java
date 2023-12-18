@@ -1,6 +1,7 @@
 package dev.mvc.event;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -189,10 +190,7 @@ public class EventCont {
 	    long size1 = eventVO.getSize1();
 	    String size1_label = Tool.unit(size1);
 	    eventVO.setSize1_label(size1_label);
-	    
-	 // ReviewService의 list_all 메서드 호출하여 결과 사용
-	    ArrayList<ReviewVO> reviewVO = this.reviewProc.list_all(eventno);
-	    mav.addObject("list", reviewVO);
+	     
 	    //System.out.println(reviewVO);
 	    mav.addObject("eventVO", eventVO);
 	    //System.out.println(eventVO);
@@ -356,6 +354,44 @@ public class EventCont {
 	    
 	    return mav; // forward
 	  }     
+	  
+	  @RequestMapping(value="/event/list_by_eventno.do", method = RequestMethod.GET)
+	  public ModelAndView list_by_eventno(EventVO eventVO) {
+	    ModelAndView mav = new ModelAndView();
+
+	    
+	    //mav.setViewName("/event/list_by_eventno"); // /WEB-INF/views/contents/list_by_cateno.jsp	    	        
+	    ArrayList<EventVO> list = eventProc.list_by_eventno_search_paging(eventVO);	 
+	    // 검색하는 경우	    
+	    // for문을 사용하여 객체를 추출, Call By Reference 기반의 원본 객체 값 변경
+	    for (EventVO eventVO2 : list) {
+	      String title = eventVO2.getTitle();
+	      String content = eventVO2.getContents();
+	      
+	      title = Tool.convertChar(title);  // 특수 문자 처리
+	      content = Tool.convertChar(content); 
+	      
+	      eventVO2.setTitle(title);
+	      eventVO2.setContents(content);  
+	    }
+	    
+	    mav.addObject("list", list);
+	    
+	    HashMap<String, Object> hashMap = new HashMap<String, Object>();	     
+	    hashMap.put("word", eventVO.getWord());
+	    int search_count = this.eventProc.search_count(hashMap);  // 검색된 레코드 갯수 ->  전체 페이지 규모 파악
+	    mav.addObject("search_count", search_count);
+	     
+	    String paging = eventProc.pagingBox(eventVO.getNow_page(), eventVO.getWord(), "list_by_eventno.do", search_count);
+	    mav.addObject("paging", paging);
+	  
+	    // mav.addObject("now_page", now_page);
+	    
+	    mav.setViewName("/event/list_by_eventno");  // /contents/list_by_cateno.jsp
+	    
+	    
+	    return mav;
+	  }  
 	
 
 }

@@ -5,16 +5,65 @@
 <mapper namespace="dev.mvc.review.ReviewDAOInter">
   <!-- 등록한 레코드 갯수 1 리턴, #{adminno}: public int getAdminno() 호출됨 -->
   <insert id="create" parameterType="dev.mvc.review.ReviewVO">   
-    INSERT INTO Reviews(reviewno, memberno, reuser, productid, retitle, rating, recontent , reviewdate)
-    VALUES(reviews_seq.nextval, #{memberno}, #{reuser}, #{productid}, #{retitle} , #{rating}, #{recontent}, sysdate)
+    INSERT INTO Reviews(reviewno,productid, memberno, reuser, retitle, rating, recontent , reviewdate)
+    VALUES(reviews_seq.nextval, #{productid}, #{memberno}, #{reuser}, #{retitle} , #{rating}, #{recontent}, sysdate)
   </insert>
 
   <!-- 모든 카테고리의 등록된 글목록 -->
-  <select id="list_all" resultType="dev.mvc.review.ReviewVO" parameterType="int">
+  <select id="list" resultType="dev.mvc.review.ReviewVO">
+    SELECT reviewno, memberno, productid, reuser, retitle, rating, recontent, reviewdate
+    FROM Reviews
+    ORDER BY reviewno DESC
+  </select>
+  
+  <select id="list_by_productid_join_add" resultType="dev.mvc.review.ReviewVO" parameterType="int">
+    SELECT id, reviewno, productid, memberno, recontent, reuser, retitle, rating, reviewdate, r
+    FROM (
+        SELECT id, reviewno, productid, memberno, recontent, reuser, retitle, rating, reviewdate, rownum as r
+        FROM (
+            SELECT m.id, r.reviewno, r.productid, r.memberno, r.reuser, r.retitle, r.rating, r.recontent, r.reviewdate
+            FROM member m,  Reviews r
+            WHERE (m.memberno = r.memberno) AND (r.productid=#{productid})
+            ORDER BY r.reviewno DESC
+        )
+    )
+    WHERE  <![CDATA[  r &= 1000 ]]> 
+  </select>
+  
+  <select id="list_memberno" resultType="dev.mvc.review.ReviewVO" parameterType="int">
+    SELECT reviewno, memberno, productid, reuser, retitle, rating, recontent, reviewdate
+    FROM Reviews
+    WHERE memberno = #{memberno}
+    ORDER BY reviewno DESC
+  </select>
+  
+  <select id="list_by_productid" resultType="dev.mvc.review.ReviewVO" parameterType="int">
     SELECT reviewno, memberno, productid, reuser, retitle, rating, recontent, reviewdate
     FROM Reviews
     WHERE productid = #{productid}
-    ORDER BY reviewno
+    ORDER BY reviewno DESC
+  </select>
+  
+  <select id="list_member_join" resultType="dev.mvc.review.ReviewMemberVO" parameterType="int">
+    SELECT m.id,
+               r.reviewno, r.productid, r.memberno, r.retitle, r.rating, r.recontent, r.reviewdate
+    FROM member m,  Reviews r
+    WHERE (m.memberno = r.memberno) AND (r.memberno = #{memberno})
+    ORDER BY r.reviewno DESC
+  </select>
+  
+  <select id="list_by_productid_join" resultType="dev.mvc.review.ReviewMemberVO" parameterType="int">
+    SELECT m.id,
+               r.reviewno, r.productid, r.memberno, r.retitle, r.rating, r.recontent, r.reviewdate
+    FROM member m,  Reviews r
+    WHERE (m.memberno = r.memberno) AND (r.productid=#{productid})
+    ORDER BY r.reviewno DESC
+  </select>
+  
+  <select id="checkPasswd" parameterType="Map" resultType="int">
+    SELECT COUNT(*) as cnt
+    FROM Reviews
+    WHERE reviewno=#{reviewno} AND memberno=#{memberno}
   </select>
 
   <delete id="delete" parameterType="int">

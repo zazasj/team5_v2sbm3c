@@ -33,7 +33,7 @@
     </div>     
     <div class="content_body_bottom">
       <button type="submit" class="btn btn-secondary btn-sm">등록</button>
-      <button type="button" onclick="location.href='./list_all.do'" class="btn btn-secondary btn-sm">목록</button>
+      <button type="button" onclick="location.href='./list_by_eventno.do?now_page=${param.now_page == null ? 1 : param.now_page }&word=${param.word }'" class="btn btn-secondary btn-sm">목록</button>
     </div>
   
   </form>

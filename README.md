@@ -30,7 +30,8 @@ Mobile | Mobile Developer
 
 
 # DB Logical ERD Table
-![log](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/05356a54-f4ae-46e8-bc20-c51eb28f3849)
+![논리](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/6b678a4b-5235-4dce-9a3e-5c9a9d233973)
 
 # DB Physical ERD Table
-![phy](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/add164af-db7b-44bc-98d2-f1d176badcc7)
+![물리](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/4e1cb96e-8355-494c-a021-0e4dc7e6e721)
+

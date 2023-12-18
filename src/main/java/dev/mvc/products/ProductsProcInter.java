@@ -105,6 +105,20 @@ public interface ProductsProcInter {
    * @return 삭제된 레코드 갯수
    */
   public int delete_by_categoryID(int categoryID);
+
+  /**
+   * 리뷰 수 증가
+   * @param 
+   * @return
+   */ 
+  public int increaseReviewcnt(int productid);
+ 
+  /**
+   * 리뷰 수 감소
+   * @param 
+   * @return
+   */   
+  public int decreaseReviewcnt(int productid);
   
 }
 

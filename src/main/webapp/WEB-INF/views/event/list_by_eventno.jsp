@@ -15,7 +15,12 @@
 <body>
 <c:import url="/menu/top.do" />
 
-  <div class='title_line'>이벤트 목록</div>
+  <div class='title_line'>이벤트 목록
+	   <c:if test="${param.word.length() > 0 }">
+	      > 「${param.word }」 검색 ${search_count } 건
+	   </c:if> 
+   </div>
+  
   
   <aside class="aside_right">
     <c:if test="${sessionScope.admin_id != null }">
@@ -25,7 +30,7 @@
     <a href="javascript:location.reload();">새로고침</a>
   </aside>
   <div style="text-align: right; clear: both;">  
-    <form name='frm' id='frm' method='get' action='./list_by_eventno.do'>     
+    <form name='frm' id='frm' method='get' action='./list_by_eventno.do'>
       
       <c:choose>
         <c:when test="${param.word != '' }"> <%-- 검색하는 경우는 검색어를 출력 --%>
@@ -74,6 +79,9 @@
     </tbody>
       
   </table>
+  
+  <!-- 페이지 목록 출력 부분 시작 -->
+  <DIV class='bottom_menu'>${paging }</DIV> <%-- 페이지 리스트 --%>
  
 <jsp:include page="../menu/bottom.jsp" flush='false' /> 
 </body>

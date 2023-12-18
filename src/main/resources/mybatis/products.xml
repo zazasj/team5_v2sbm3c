@@ -124,6 +124,21 @@
     DELETE FROM Products
     WHERE productID=#{productID}
   </delete>
+
+<!--세진 추가(리뷰 관련)-->
+  <!-- 댓글 수 증가 -->
+   <update id="increaseReviewcnt" parameterType="int">
+     UPDATE Products
+     SET reviewcnt = reviewcnt + 1
+     WHERE productid = #{productid}
+   </update>
+
+   <!-- 댓글 수 감소 -->
+   <update id="decreaseReviewcnt" parameterType="int">
+     UPDATE Products
+     SET reviewcnt = reviewcnt - 1
+     WHERE productid = #{productid}
+   </update>
           
 </mapper> 
 

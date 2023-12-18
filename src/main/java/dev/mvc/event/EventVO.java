@@ -21,8 +21,37 @@ public class EventVO {
     private long size1;
     private String rdate = "";
     private int adminno; 
+    private String word = "";
+    private int now_page = 1;
+    private int start_num;     
+    private int end_num; 
     
-	public int getEventno() {
+    
+    public int getStart_num() {
+      return start_num;
+    }
+    public void setStart_num(int start_num) {
+      this.start_num = start_num;
+    }
+    public int getEnd_num() {
+      return end_num;
+    }
+    public void setEnd_num(int end_num) {
+      this.end_num = end_num;
+    } 
+	public int getNow_page() {
+      return now_page;
+    }
+    public void setNow_page(int now_page) {
+      this.now_page = now_page;
+    }
+  public String getWord() {
+      return word;
+    }
+    public void setWord(String word) {
+      this.word = word;
+    }
+  public int getEventno() {
 		return eventno;
 	}
 	public void setEventno(int eventno) {

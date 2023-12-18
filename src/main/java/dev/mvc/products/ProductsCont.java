@@ -434,7 +434,7 @@ public class ProductsCont {
   @RequestMapping(value="/products/read.do", method = RequestMethod.GET)
   public ModelAndView read(int productID) { // int categoryID = (int)request.getParameter("categoryID");
     ModelAndView mav = new ModelAndView();
-    mav.setViewName("/products/read"); // /WEB-INF/views/contents/read.jsp
+    //mav.setViewName("/products/read"); // /WEB-INF/views/contents/read.jsp
     
     ProductsVO productsVO = this.productsProc.read(productID);
     
@@ -455,6 +455,10 @@ public class ProductsCont {
     
     CategoryVO categoryVO = this.categoryProc.read(productsVO.getCategoryID());
     mav.addObject("categoryVO", categoryVO);
+
+    /* 1214 세진 추가(리뷰관련) */
+    // 댓글 기능 추가 
+    mav.setViewName("/products/read_review_add");
     
     return mav;
   }
