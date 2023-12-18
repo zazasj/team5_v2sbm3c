@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="dev.mvc.carts.CartsDAOInter">
+
+  <insert id="create" parameterType="dev.mvc.carts.CartsVO">
+    INSERT INTO carts(cartID, productID, memberno, cnt, cdate)
+    VALUES(carts_seq.nextval, #{productID}, #{memberno}, #{cnt}, sysdate)
+  </insert> 
+  
+  <!-- memberno 회원 번호별 쇼핑카트 목록 출력 -->
+  <select id="list_by_memberno" resultType="dev.mvc.carts.CartsVO" parameterType="int">
+    SELECT t.cartID, p.productID, p.pName, p.thumb, p.price, t.memberno, t.cnt, t.cdate 
+    FROM products p, carts t
+    WHERE (p.productID = t.productID) AND t.memberno = #{memberno}
+    ORDER BY cartID ASC
+  </select>
+  
+  <!-- 삭제 처리, id=delete, 입력: PK, 리턴: 삭제된 갯수 int -->
+  <delete id="delete" parameterType="int">
+    DELETE FROM carts
+    WHERE cartID=#{cartID}
+  </delete>
+  
+  <!-- 수량 수정, id: update, 입력: CartsVO, 리턴: int -->
+  <update id="update_cnt" parameterType="dev.mvc.carts.CartsVO">
+    UPDATE carts
+    SET cnt=#{cnt}
+    WHERE cartID=#{cartID}
+  </update>
+
+</mapper>
