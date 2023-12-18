@@ -19,19 +19,19 @@ Mobile | Mobile Developer
 **팀원별 테이블**
 전세진 | 이정탁 | 황경태 | 홍재민 | 한창명
 :--:|:--:|:--:|:--:|:--:
-관리자 | 카테고리 | 카테그룹 추천 | 챗봇 | .
-사용자 | 카테고리그룹 | 최신상품 추천 |  | 
-로그인 |  | 주문 |  |
-관리자로그 |  |  |  |
+관리자 | 카테고리 | 카테그룹 추천 | 챗봇 | 재고
+사용자 | 카테고리그룹 | 최신상품 추천 | 공급업체  | 배송
+로그인 | 제품 | 주문/결제 | 관심상품 |
+관리자로그 | 장바구니 | 주문상세 |  |
 이벤트 |  |  |  |
 메일로그 |  |  |  |
-|  |  |  |
-
-
+회원탈퇴 |  |  |  |
+리뷰 |  |  |  |
+좋아요 |  |  |  |
+9개  | 4개 | 4개  | 3개 | 2개
 
 # DB Logical ERD Table
-![논리](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/6b678a4b-5235-4dce-9a3e-5c9a9d233973)
+![논리](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/91ec498d-3555-42f6-8c4a-60c8e3700022)
 
 # DB Physical ERD Table
-![물리](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/4e1cb96e-8355-494c-a021-0e4dc7e6e721)
-
+![물리](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/ed78357e-f272-4d0e-8fbf-77fea727cfd8)

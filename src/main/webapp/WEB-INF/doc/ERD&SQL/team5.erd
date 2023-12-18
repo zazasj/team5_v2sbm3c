@@ -1085,8 +1085,8 @@
                                                       <indices/>
                                                       <backgroundColor>
                                                         <red>128</red>
-                                                        <green>255</green>
-                                                        <blue>0</blue>
+                                                        <green>128</green>
+                                                        <blue>192</blue>
                                                       </backgroundColor>
                                                       <sql></sql>
                                                     </source>
@@ -3418,7 +3418,7 @@
   </children>
   <dommains/>
   <dialectName>hsqldb</dialectName>
-  <logicalMode>true</logicalMode>
+  <logicalMode>false</logicalMode>
   <jarFile></jarFile>
   <jdbcDriver>sun.jdbc.odbc.JdbcOdbc</jdbcDriver>
   <jdbcUrl></jdbcUrl>
