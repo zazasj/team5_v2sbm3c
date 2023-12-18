@@ -31,9 +31,6 @@
   <a href="/"><img src="/css/images/logo4.jpg"></a>
   <input type="text" placeholder="검색할 제품을 입력해주세요." style = "width : 300px; margin-left: 350px; " >
   <input type = "button" value="검색">
-  <a class="navbar-brand" href="http://localhost:5000/chatbot?memberno=${sessionScope.memberno} " style="display: inline-block;">
-  	<img src='/css/images/chatbot.jpg' title="채팅 상담" style='display: block; padding-left: 5px;'>
-  </a>
   
   <!-- <aside class="aside_right">
   <a href="">로그인</a> <span
@@ -73,7 +70,10 @@
         </c:forEach>
         
             <li class="nav-item"> <%-- 서브 메뉴가 없는 독립메뉴 --%>
-              <a class="nav-link top_menu_link" href="/event/list_all.do">이벤트</a>
+              <a class="nav-link top_menu_link" href="/event/list_by_eventno.do">이벤트</a>
+            </li>
+            <li class="nav-item"> <%-- 서브 메뉴가 없는 독립메뉴 --%>
+              <a class="nav-link top_menu_link" href="/chatting/list_all.do">챗봇 기록</a>
             </li>
         
             <li class="nav-item dropdown"> <%-- 회원 서브 메뉴 --%>
@@ -117,7 +117,7 @@
                     <a class="dropdown-item" href='/cateGroup/list_all.do'>카테고리그룹 전체 목록</a>
                     <a class="dropdown-item" href='/member/list.do'>회원 목록</a>
                     <a class="dropdown-item" href='/review/list.do'>리뷰 전체 목록</a>
-                    <a class="dropdown-item" href='/supplier/list_all_adminno.do'>공급 업체</a>
+                    <a class="dropdown-item" href='/supplier/list_all_adminno.do'>공급 업체</a>                  
                     <a class="dropdown-item" href='/admin/logout.do'>관리자 ${sessionScope.admin_id } 로그아웃</a>
                   </div>
                 </li>
@@ -133,11 +133,7 @@
                       <a class="nav-link top_menu_link" href='/member/logout.do'>${sessionScope.id } 로그아웃</a>
                   </c:otherwise>
               </c:choose>
-            </li>
-            
-            <li class="nav-item"> <%-- 서브 메뉴가 없는 독립메뉴 --%>
-                 <a class="nav-link top_menu_link" href="/chatting/list_all.do">chat</a>
-            </li>     
+            </li>  
           </ul>
       </div>    
   </nav>
@@ -147,7 +143,7 @@
 <div class="offcanvas offcanvas-start" id="demo">
   <div class="offcanvas-header">
     <h1 class="offcanvas-title">Event</h1>
-    <a class="btn btn-secondary" href='/event/list_all.do' style="color: white; margin-top: 10px;">이벤트 목록</a>
+    <a class="btn btn-secondary" href='/event/list_by_eventno.do' style="color: white; margin-top: 10px;">이벤트 목록</a>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
   </div>
   <hr>

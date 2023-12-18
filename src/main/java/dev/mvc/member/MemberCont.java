@@ -586,6 +586,8 @@ public class MemberCont {
                              @RequestParam(value="return_url", defaultValue="") String return_url) {
     ModelAndView mav = new ModelAndView();
     HashMap<String, Object> map = new HashMap<String, Object>();
+    // client ip
+    String memberip=request.getRemoteAddr();
     map.put("id", id);
     map.put("passwd", passwd);
     
@@ -597,7 +599,7 @@ public class MemberCont {
       session.setAttribute("id", id);
       session.setAttribute("mname", memberVO.getMname());
       session.setAttribute("grade", memberVO.getGrade());
-      
+      int mno =memberVO.getMemberno();
       // -------------------------------------------------------------------
       // id 관련 쿠기 저장
       // -------------------------------------------------------------------
@@ -639,6 +641,7 @@ public class MemberCont {
       ck_passwd_save.setMaxAge(60 * 60 * 72 * 10); // 30 day
       response.addCookie(ck_passwd_save);
       // -------------------------------------------------------------------
+      loginService.createLoginRecord(mno, memberip);
       
       System.out.println("-> return_url: " + return_url);
       

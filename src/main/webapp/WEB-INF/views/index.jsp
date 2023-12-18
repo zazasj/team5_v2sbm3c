@@ -14,13 +14,15 @@
 <link href="/css/style.css" rel="Stylesheet" type="text/css"> <!-- /static 기준 -->
 
 </head>
-<body>
-<c:import url="/menu/top.do" />
+<body> 
+<c:import url="/menu/top.do" /> 
+    <div class="container p-5 my-5 border" style="width: 75%; margin: 30px auto; text-align: center;">
+       <c:import url="/recentrecom/list_recent_products.do" />
+   </div>  
+   <div  style="width: 100%; margin: 30px auto; text-align: center;">  
+        <img src="/images/alcohol.jpg" style="width: 60%;">
+   </div>
 
-  <div style="width: 100%; margin: 30px auto; text-align: center;">
-    <img src="/images/alcohol.jpg" style="width: 60%;">
-    <c:import url="/recentrecom/list_recent_products.do" />
-  </div>
 
 <jsp:include page="./menu/bottom.jsp" flush='false' /> 
 </body>

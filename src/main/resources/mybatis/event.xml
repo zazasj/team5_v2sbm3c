@@ -17,6 +17,64 @@
     ORDER BY eventno
   </select>
   
+  <!-- 카테고리별 검색 목록 -->
+  <select id="list_by_eventno_search" resultType="dev.mvc.event.EventVO" parameterType="HashMap">
+    SELECT eventno, title, contents , file1, file1saved, thumb1, size1, word, rdate
+    FROM Event
+    <choose>
+      <when test="word == null or word == ''"> <!-- 검색하지 않는 경우 -->        
+      </when>
+      <otherwise> <!-- 검색하는 경우 -->
+        WHERE (UPPER(title) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(contents) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+      </otherwise>
+    </choose>
+    ORDER BY eventno ASC   
+  </select>
+   
+  <!-- 카테고리별 검색 레코드 갯수 -->
+  <select id="search_count" resultType="int" parameterType="HashMap">
+    SELECT COUNT(*) as cnt
+    FROM Event
+    <choose>
+      <when test="word == null or word == ''"> <!-- 검색하지 않는 경우의 레코드 갯수 -->       
+      </when>
+      <otherwise> <!-- 검색하는 경우의 레코드 갯수 -->
+        WHERE (UPPER(title) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(contents) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+      </otherwise>
+    </choose>
+  </select> 
+  
+  <!-- 카테고리별 검색 + 페이징 목록 -->
+  <select id="list_by_eventno_search_paging" resultType="dev.mvc.event.EventVO" parameterType="dev.mvc.event.EventVO">
+   SELECT eventno, title, contents , file1, file1saved, thumb1, size1, word, rdate, r
+   FROM (
+              SELECT eventno, title, contents , file1, file1saved, thumb1, size1, word, rdate, rownum as r
+              FROM (
+                        SELECT eventno, title, contents , file1, file1saved, thumb1, size1, word, rdate
+                        FROM Event
+                        <choose>
+                          <when test="word == null or word == ''"> <!-- 검색하지 않는 경우 -->                          
+                          </when>
+                          <otherwise>
+                            WHERE (UPPER(title) LIKE '%' || UPPER(#{word}) || '%' 
+                                                              OR UPPER(contents) LIKE '%' || UPPER(#{word}) || '%' 
+                                                              OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+                          </otherwise>
+                        </choose>
+                        ORDER BY eventno
+               )
+    )
+    WHERE <![CDATA[ r >= #{start_num} AND r <= #{end_num} ]]>
+     
+    <!-- 1 page: WHERE r >= 1 AND r <= 10; 
+          2 page: WHERE r >= 11 AND r <= 20;
+          3 page: WHERE r >= 21 AND r <= 30; -->
+  </select>
+  
   <!-- 일반적인 조회 -->
   <select id="read" resultType="dev.mvc.event.EventVO" parameterType="int">
     SELECT eventno, title, contents , file1, file1saved, thumb1, size1, rdate

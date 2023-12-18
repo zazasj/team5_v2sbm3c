@@ -12,13 +12,11 @@ public class MailService {
   private MailDAOInter mailDAO;
   
   public void createMailRecord(int memberno, String id, String actname) {
-    // LoginVO ����
     MailVO mailVO = new MailVO();
     mailVO.setMemberno(memberno);
     mailVO.setId(id);
     mailVO.setActname(actname);
 
-    // DAO�� ���� �α��� ��� ����
     mailDAO.create(mailVO);
   }
 }
