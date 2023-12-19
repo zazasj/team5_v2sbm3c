@@ -104,7 +104,7 @@
       });      
           
       // 처리중 출력
-      id_msg.innerHTML="<img src='/member/images/ani04.gif' style='width: 5%;'>"; // static 기준
+      id_msg.innerHTML="<img src='/member/images/Spinner-2.gif' style='width: 5%;'>"; // static 기준
       
     }
   }
@@ -142,6 +142,16 @@
       mname_msg.innerHTML= '이름 입력은 필수입니다.';
       mname_msg.classList.add('span_warning');    // class 적용
       mname.focus();
+
+      return false;  // 회원 가입 진행 중지
+    }
+    let tel = document.getElementById('tel');
+    let tel_msg = document.getElementById('tel_msg');
+
+    if (mname.value.length == 0) {
+      tel_msg.innerHTML= '전화번호 입력은 필수입니다. 아이디 분실 시 사용됩니다.';
+      tel_msg.classList.add('span_warning');    // class 적용
+      tel.focus();
 
       return false;  // 회원 가입 진행 중지
     }
@@ -193,16 +203,17 @@
     
     <div class="form-group">
       <label>성명*:
-        <input type='text' class="form-control form-control-sm" name='mname' id='mname' value='하정우' required="required" placeholder="성명">
+        <input type='text' class="form-control form-control-sm" name='mname' id='mname' value='' required="required" placeholder="성명">
       </label>
       <span id='mname_msg'></span>
     </div>   
 
     <div class="form-group">
-      <label>전화 번호:
-        <input type='text' class="form-control form-control-sm" name='tel' id='tel' value='010-0000-0000' required="required" placeholder="전화번호">
+      <label>전화 번호*:
+        <input type='text' class="form-control form-control-sm" name='tel' id='tel' value='' required="required" placeholder="전화번호">
       </label>
-      예) 010-0000-0000
+      예) 01000000000
+      <span id='tel_msg'></span>
     </div>   
 
     <div class="form-group"> 

@@ -10,8 +10,7 @@
 <title>상품 목록, Carts</title>
 <link rel="shortcut icon" href="/images/whisky.png" /> <%-- /static 기준 --%>
 <link href="/css/style.css" rel="Stylesheet" type="text/css"> <!-- /static 기준 -->
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
-  
+<c:import url="/menu/top.do" /> 
 <script type="text/javascript">
 
   $(function() {
@@ -169,7 +168,6 @@
 </head> 
   
 <body>
-<jsp:include page="../menu/top.jsp" />
  
 <DIV class='title_line'>
   <A href="../cateGroup/list.do" class='title_link'>카테고리 그룹</A> > 

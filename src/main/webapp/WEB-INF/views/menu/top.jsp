@@ -27,15 +27,10 @@
   }
 </style> 
 
-<div id="logo">
+<div id="logo" style="display: flex; align-items: center;">
   <a href="/"><img src="/css/images/logo4.jpg"></a>
-  <input type="text" placeholder="검색할 제품을 입력해주세요." style = "width : 300px; margin-left: 350px; border: 2px solid black;" >
-  <input type = "button" value="검색">
-  
-  <!-- <aside class="aside_right">
-  <a href="">로그인</a> <span
-    class='menu_divide'>│</span> <a href="">회원가입</a>
-  </aside> -->
+  <input type="text" placeholder="검색할 제품을 입력해주세요." style = "width : 40%; height : 50px;  margin-left: 350px; border: 5px solid black; font-size: 20px; font-weight: bold;" >
+  <input type = "button"  class="btn btn-dark" value="검색"  style="width: 100px; height: 50px; font-size: 18px; font-weight: bold;  ">
 </div>
 
 <div class='container_main'>
@@ -188,7 +183,7 @@
     currentImageIndex = (currentImageIndex + 1) % images.length;
   }
 
-  setInterval(changeImage, 10000); // 10초마다 이미지 변경
+  setInterval(changeImage, 8000); // 10초마다 이미지 변경
 </script>
 
   <div class='content_body'> <!--  내용 시작 -->
