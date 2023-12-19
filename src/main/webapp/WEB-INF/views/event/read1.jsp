@@ -100,6 +100,8 @@
               <jsp:include page="../menu/wineevent.jsp" flush='true' />
             </c:when>
        </c:choose>
+      
+      <jsp:include page="../menu/whiskyevent.jsp" flush='false' />
 
       <li class="li_none">
         <div>

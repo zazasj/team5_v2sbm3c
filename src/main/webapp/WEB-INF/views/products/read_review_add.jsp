@@ -227,7 +227,7 @@
                     msg += " <A href='javascript:review_delete("+row.reviewno+")'><IMG src='/review/delete.png'></A>";
                   }
                   msg += " " + "<br>";
-                  msg += "<h4>"+row.retitle+ "</h4>";
+                  msg += "<h4>"+row.retitle+ "</h4>" + "  (평점 : " + row.rating + ")" + "<br>";
                   msg += row.recontent;
                   msg += "</DIV>";
                 }
@@ -510,10 +510,11 @@
         <input type='hidden' name='word ' id='word ' value='${word }'>
         <input type='hidden' name='categoryID' id='categoryID' value='${categoryID }'>
               
-        <DIV style='text-decoration: none;'>      
-          <br>
-          좋아요 
-          <button type='submit' name='likebtn' id='likebtn' class='btn btn-secondary' style="padding: 2px 8px 3px 8px; margin: 0px 0px 2px 0px;">♥(${recom })</button>
+        <DIV style='text-align: center; text-decoration: none;'>               
+          <button type='submit' name='likebtn' id='likebtn' class='btn btn-outline-danger' 
+          style="padding: 2px 8px 3px 8px; margin: 0px 0px 2px 0px; 
+          width: 100px; height: 50px; font-size: 18px; font-weight: bold; ">
+          ♥(${recom })</button>
         </DIV>
  </form>
   
