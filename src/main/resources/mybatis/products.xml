@@ -9,10 +9,50 @@
     VALUES(product_seq.nextval, #{categoryID}, #{supplierID}, #{pName}, #{origin}, #{description}, #{volume}, #{alcoholContent}, #{price})
   </insert>
 
-  <!-- 모든 카테고리의 등록된 글목록 -->
+  <!-- 모든 카테고리의 등록된 상품목록 -->
   <select id="list_all" resultType="dev.mvc.products.ProductsVO">
     SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom
     FROM Products
+    ORDER BY productID DESC
+  </select>
+  
+  <!-- 위스키 카테고리의 등록된 상품목록 -->
+  <select id="list_all_1" resultType="dev.mvc.products.ProductsVO">
+    SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom
+    FROM Products
+    WHERE categoryID BETWEEN 1 AND 5
+    ORDER BY productID DESC
+  </select>
+  
+  <!-- 브랜디/꼬냑 카테고리의 등록된 상품목록 -->
+  <select id="list_all_2" resultType="dev.mvc.products.ProductsVO">
+    SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom
+    FROM Products
+    WHERE categoryID BETWEEN 30 AND 31
+    ORDER BY productID DESC
+  </select>
+  
+    <!-- 와인 카테고리의 등록된 상품목록 -->
+  <select id="list_all_3" resultType="dev.mvc.products.ProductsVO">
+    SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom
+    FROM Products
+    WHERE categoryID BETWEEN 6 AND 15
+    ORDER BY productID DESC
+  </select>
+  
+    <!-- 리큐르 카테고리의 등록된 상품목록 -->
+  <select id="list_all_4" resultType="dev.mvc.products.ProductsVO">
+    SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom
+    FROM Products
+    WHERE categoryID BETWEEN 16 AND 21
+    ORDER BY productID DESC
+  </select>
+  
+    <!-- 전통주 카테고리의 등록된 상품목록 -->
+  <select id="list_all_5" resultType="dev.mvc.products.ProductsVO">
+    SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom
+    FROM Products
+    WHERE categoryID BETWEEN 23 AND 25
     ORDER BY productID DESC
   </select>
   

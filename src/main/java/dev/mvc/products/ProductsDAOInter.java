@@ -24,6 +24,36 @@ public interface ProductsDAOInter {
   public ArrayList<ProductsVO> list_all();
   
   /**
+   * 위스키에 등록된 상품목록
+   * @return
+   */
+  public ArrayList<ProductsVO> list_all_1();
+  
+  /**
+   * 브랜디/꼬냑에 등록된 상품목록
+   * @return
+   */
+  public ArrayList<ProductsVO> list_all_2();
+  
+  /**
+   * 와인에 등록된 상품목록
+   * @return
+   */
+  public ArrayList<ProductsVO> list_all_3();
+  
+  /**
+   * 리큐르에 등록된 상품목록
+   * @return
+   */
+  public ArrayList<ProductsVO> list_all_4();
+  
+  /**
+   * 전통주에 등록된 상품목록
+   * @return
+   */
+  public ArrayList<ProductsVO> list_all_5();
+  
+  /**
    * 카테고리별 등록된 글 목록
    * @param categoryID
    * @return

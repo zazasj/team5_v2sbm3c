@@ -25,6 +25,36 @@ public class ProductsProc implements ProductsProcInter {
     ArrayList<ProductsVO> list = this.productsDAO.list_all();
     return list;
   }
+  
+  @Override
+  public ArrayList<ProductsVO> list_all_1() {
+    ArrayList<ProductsVO> list = this.productsDAO.list_all_1();
+    return list;
+  }
+  
+  @Override
+  public ArrayList<ProductsVO> list_all_2() {
+    ArrayList<ProductsVO> list = this.productsDAO.list_all_2();
+    return list;
+  }
+
+  @Override
+  public ArrayList<ProductsVO> list_all_3() {
+    ArrayList<ProductsVO> list = this.productsDAO.list_all_3();
+    return list;
+  }
+
+  @Override
+  public ArrayList<ProductsVO> list_all_4() {
+    ArrayList<ProductsVO> list = this.productsDAO.list_all_4();
+    return list;
+  }
+
+  @Override
+  public ArrayList<ProductsVO> list_all_5() {
+    ArrayList<ProductsVO> list = this.productsDAO.list_all_5();
+    return list;
+  }
 
   @Override
   public ArrayList<ProductsVO> list_by_categoryID(int categoryID) {

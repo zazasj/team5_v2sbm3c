@@ -281,6 +281,12 @@ VALUES(category_seq.nextval, 6 , '기업대량구매',  0 ,sysdate, 104);
 INSERT INTO Category(CategoryID,GrpID, CategoryName, CNT, RDATE, Seqno)
 VALUES(category_seq.nextval, 6 , '고객센터',  0 ,sysdate, 105);
 
+INSERT INTO Category(CategoryID,GrpID, CategoryName, CNT, RDATE, Seqno)
+VALUES(category_seq.nextval, 2 , '브랜디',  0 ,sysdate, 106);
+
+INSERT INTO Category(CategoryID,GrpID, CategoryName, CNT, RDATE, Seqno)
+VALUES(category_seq.nextval, 2 , '꼬냑',  0 ,sysdate, 107);
+
 SELECT * FROM Category;
 
 commit;

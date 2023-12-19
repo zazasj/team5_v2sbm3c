@@ -48,21 +48,31 @@
             <c:set var="grpID" value="${cateGroupVO.grpID}" />
             <c:set var="gname" value="${cateGroupVO.gname}" />
                               
-            <li class="nav-item dropdown">
-                <a class="nav-link top_menu_link dropdown-toggle" data-bs-toggle="dropdown" href="#">${cateGroupVO.gname}</a>               
-                    <div class="dropdown-menu">
-                    <c:forEach var="categoryVO" items="${list_top2}">
-                        <c:set var="grpid" value="${categoryVO.grpID}" />
-                        <c:set var="categoryName" value="${categoryVO.categoryName}" />
-                        <c:set var="categoryID" value="${categoryVO.categoryID}" />
-                        <c:if test="${grpID eq grpid }">
-                            <a class="dropdown-item" href="/products/list_by_categoryID.do?categoryID=${categoryID }&now_page=1">${categoryVO.categoryName }</a>
-                        </c:if>                  
-                        
-                    </c:forEach>
-                </div>
+            <li class="nav-item">
+              <c:choose>
+                <c:when test="${grpID ge 1 and grpID le 5}">
+                  <a class="nav-link top_menu_link" href="/products/list_all_${grpID}.do">${gname}</a>
+                </c:when>
+              </c:choose>
             </li>
-        </c:forEach>
+            <li class = "nav-item dropdown">
+              <c:choose>
+                <c:when test="${grpID eq 6}">
+                  <a class="nav-link top_menu_link dropdown-toggle" data-bs-toggle="dropdown" href="#">${gname}</a>
+                  <div class="dropdown-menu">
+                    <c:forEach var="categoryVO" items="${list_top2}">
+                      <c:set var="categoryGrpID" value="${categoryVO.grpID}" />
+                      <c:set var="categoryName" value="${categoryVO.categoryName}" />
+                      <c:set var="categoryID" value="${categoryVO.categoryID}" />
+                      <c:if test="${categoryGrpID eq 6}">
+                        <a class="dropdown-item" href="/products/list_by_categoryID.do?categoryID=${categoryID}&now_page=1">${categoryName}</a>
+                      </c:if>
+                    </c:forEach>
+                  </div>
+                </c:when>
+              </c:choose>
+            </li>
+            </c:forEach>
         
             <li class="nav-item"> <%-- 서브 메뉴가 없는 독립메뉴 --%>
               <a class="nav-link top_menu_link" href="/event/list_by_eventno.do">이벤트</a>

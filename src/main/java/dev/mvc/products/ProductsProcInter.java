@@ -31,6 +31,36 @@ public interface ProductsProcInter {
   public ArrayList<ProductsVO> list_by_categoryID(int categoryID);
   
   /**
+   * 위스키에 등록된 상품목록
+   * @return
+   */
+  public ArrayList<ProductsVO> list_all_1();
+  
+  /**
+   * 브랜디/꼬냑에 등록된 상품목록
+   * @return
+   */
+  public ArrayList<ProductsVO> list_all_2();
+  
+  /**
+   * 와인에 등록된 상품목록
+   * @return
+   */
+  public ArrayList<ProductsVO> list_all_3();
+  
+  /**
+   * 리큐르에 등록된 상품목록
+   * @return
+   */
+  public ArrayList<ProductsVO> list_all_4();
+  
+  /**
+   * 전통주에 등록된 상품목록
+   * @return
+   */
+  public ArrayList<ProductsVO> list_all_5();
+  
+  /**
    * 조회
    * @param productID
    * @return

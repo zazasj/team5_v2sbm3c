@@ -18,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import dev.mvc.admin.AdminProcInter;
-import dev.mvc.cateGroup.CateGroupProc;
 import dev.mvc.cateGroup.CateGroupProcInter;
 import dev.mvc.cateGroup.CateGroupVO;
 import dev.mvc.category.CategoryProcInter;
@@ -193,6 +192,203 @@ public class ProductsCont {
       }
       
       mav.addObject("list", list);
+
+      
+    } else {
+      mav.setViewName("/admin/login_need"); // /WEB-INF/views/admin/login_need.jsp
+      
+    }
+    
+    return mav;
+  }
+  
+  /**
+   * 위스키 전체 목록
+   * http://localhost:9093/products/list_all_1.do
+   * @return
+   */
+  @RequestMapping(value="/products/list_all_1.do", method = RequestMethod.GET)
+  public ModelAndView list_all_1(HttpSession session) {
+    ModelAndView mav = new ModelAndView();
+    
+    if (this.adminProc.isAdmin(session) == true) {
+      mav.setViewName("/products/list_all_1"); // /WEB-INF/views/contents/list_all_1.jsp
+      
+      ArrayList<ProductsVO> list = this.productsProc.list_all_1();
+     
+      // for문을 사용하여 객체를 추출, Call By Reference 기반의 원본 객체 값 변경
+      for (ProductsVO productsVO : list) {
+        String pName = productsVO.getpName();
+        String description = productsVO.getDescription();
+        
+        pName = Tool.convertChar(pName);  // 특수 문자 처리
+        description = Tool.convertChar(description); 
+        
+        productsVO.setpName(pName);
+        productsVO.setDescription(description);  
+
+      }
+      
+      mav.addObject("list", list);
+      
+      ArrayList<CategoryVO> list_1 = categoryProc.list_all();
+      mav.addObject("list_1", list_1);
+      
+    } else {
+      mav.setViewName("/admin/login_need"); // /WEB-INF/views/admin/login_need.jsp
+      
+    }
+    
+    return mav;
+  }
+  /**
+   * 브랜디/꼬냑 전체 목록
+   * http://localhost:9093/products/list_all_2.do
+   * @return
+   */
+  @RequestMapping(value="/products/list_all_2.do", method = RequestMethod.GET)
+  public ModelAndView list_all_2(HttpSession session) {
+    ModelAndView mav = new ModelAndView();
+    
+    if (this.adminProc.isAdmin(session) == true) {
+      mav.setViewName("/products/list_all_2"); // /WEB-INF/views/contents/list_all_2.jsp
+      
+      ArrayList<ProductsVO> list = this.productsProc.list_all_2();
+     
+      // for문을 사용하여 객체를 추출, Call By Reference 기반의 원본 객체 값 변경
+      for (ProductsVO productsVO : list) {
+        String pName = productsVO.getpName();
+        String description = productsVO.getDescription();
+        
+        pName = Tool.convertChar(pName);  // 특수 문자 처리
+        description = Tool.convertChar(description); 
+        
+        productsVO.setpName(pName);
+        productsVO.setDescription(description);  
+
+      }
+      
+      mav.addObject("list", list);
+      
+      ArrayList<CategoryVO> list_2 = categoryProc.list_all();
+      mav.addObject("list_2", list_2);
+      
+    } else {
+      mav.setViewName("/admin/login_need"); // /WEB-INF/views/admin/login_need.jsp
+      
+    }
+    
+    return mav;
+  }
+  /**
+   * 와인 전체 목록
+   * http://localhost:9093/products/list_all_3.do
+   * @return
+   */
+  @RequestMapping(value="/products/list_all_3.do", method = RequestMethod.GET)
+  public ModelAndView list_all_3(HttpSession session) {
+    ModelAndView mav = new ModelAndView();
+    
+    if (this.adminProc.isAdmin(session) == true) {
+      mav.setViewName("/products/list_all_3"); // /WEB-INF/views/contents/list_all_1.jsp
+      
+      ArrayList<ProductsVO> list = this.productsProc.list_all_3();
+     
+      // for문을 사용하여 객체를 추출, Call By Reference 기반의 원본 객체 값 변경
+      for (ProductsVO productsVO : list) {
+        String pName = productsVO.getpName();
+        String description = productsVO.getDescription();
+        
+        pName = Tool.convertChar(pName);  // 특수 문자 처리
+        description = Tool.convertChar(description); 
+        
+        productsVO.setpName(pName);
+        productsVO.setDescription(description);  
+
+      }
+      
+      mav.addObject("list", list);
+      
+      ArrayList<CategoryVO> list_3 = categoryProc.list_all();
+      mav.addObject("list_3", list_3);
+      
+    } else {
+      mav.setViewName("/admin/login_need"); // /WEB-INF/views/admin/login_need.jsp
+      
+    }
+    
+    return mav;
+  }
+  /**
+   * 리큐르 전체 목록
+   * http://localhost:9093/products/list_all_4.do
+   * @return
+   */
+  @RequestMapping(value="/products/list_all_4.do", method = RequestMethod.GET)
+  public ModelAndView list_all_4(HttpSession session) {
+    ModelAndView mav = new ModelAndView();
+    
+    if (this.adminProc.isAdmin(session) == true) {
+      mav.setViewName("/products/list_all_4"); // /WEB-INF/views/contents/list_all_1.jsp
+      
+      ArrayList<ProductsVO> list = this.productsProc.list_all_4();
+     
+      // for문을 사용하여 객체를 추출, Call By Reference 기반의 원본 객체 값 변경
+      for (ProductsVO productsVO : list) {
+        String pName = productsVO.getpName();
+        String description = productsVO.getDescription();
+        
+        pName = Tool.convertChar(pName);  // 특수 문자 처리
+        description = Tool.convertChar(description); 
+        
+        productsVO.setpName(pName);
+        productsVO.setDescription(description);  
+
+      }
+      
+      mav.addObject("list", list);
+      
+      ArrayList<CategoryVO> list_4 = categoryProc.list_all();
+      mav.addObject("list_4", list_4);
+      
+    } else {
+      mav.setViewName("/admin/login_need"); // /WEB-INF/views/admin/login_need.jsp
+      
+    }
+    
+    return mav;
+  }
+  /**
+   * 전통주 전체 목록
+   * http://localhost:9093/products/list_all_5.do
+   * @return
+   */
+  @RequestMapping(value="/products/list_all_5.do", method = RequestMethod.GET)
+  public ModelAndView list_all_5(HttpSession session) {
+    ModelAndView mav = new ModelAndView();
+    
+    if (this.adminProc.isAdmin(session) == true) {
+      mav.setViewName("/products/list_all_5"); // /WEB-INF/views/contents/list_all_1.jsp
+      
+      ArrayList<ProductsVO> list = this.productsProc.list_all_5();
+     
+      // for문을 사용하여 객체를 추출, Call By Reference 기반의 원본 객체 값 변경
+      for (ProductsVO productsVO : list) {
+        String pName = productsVO.getpName();
+        String description = productsVO.getDescription();
+        
+        pName = Tool.convertChar(pName);  // 특수 문자 처리
+        description = Tool.convertChar(description); 
+        
+        productsVO.setpName(pName);
+        productsVO.setDescription(description);  
+
+      }
+      
+      mav.addObject("list", list);
+      
+      ArrayList<CategoryVO> list_5 = categoryProc.list_all();
+      mav.addObject("list_5", list_5);
       
     } else {
       mav.setViewName("/admin/login_need"); // /WEB-INF/views/admin/login_need.jsp
