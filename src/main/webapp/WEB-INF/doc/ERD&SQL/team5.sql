@@ -26,7 +26,7 @@ INSERT INTO admin(adminno, id, passwd, mname, mdate, grade)
 VALUES(admin_seq.nextval, 'admin1', '1234', '관리자1', sysdate, 1);
 
 INSERT INTO admin(adminno, id, passwd, mname, mdate, grade)
-VALUES(admin_seq.nextval, 'admin2', '2345', '관리자2', sysdate, 1);
+VALUES(admin_seq.nextval, 'admin2', '1234', '관리자2', sysdate, 1);
 
 INSERT INTO admin(adminno, id, passwd, mname, mdate, grade)
 VALUES(admin_seq.nextval, 'admin3', '3456', '관리자3', sysdate, 1);
@@ -65,10 +65,10 @@ CREATE SEQUENCE MEMBER_SEQ
   NOCYCLE;                  -- 다시 1부터 생성되는 것을 방지
 
 INSERT INTO Member(memberno, id, passwd,mname,tel, Age, address1,mdate,grade)
-VALUES(member_seq.nextval, 'user1@naver.com', '1234','회원1','01099887766',24,'경기도 안양시', sysdate,1);
+VALUES(member_seq.nextval, 'user1@naver.com', '1234','회원1','01099887766',24,'경기도 안양시', sysdate,15);
 
 INSERT INTO Member(memberno, id, passwd,mname,tel, Age, address1,mdate,grade)
-VALUES(member_seq.nextval, 'user2@gmail.com', '1234','회원2','01038384848',26,'경기도 수원시', sysdate,1);
+VALUES(member_seq.nextval, 'user2@gmail.com', '1234','회원2','01038384848',26,'경기도 수원시', sysdate,15);
 
 ALTER TABLE Member ADD zipcode VARCHAR(5);
 
@@ -79,7 +79,7 @@ WHERE memberno = 3;
 
 UPDATE Member
 SET grade = 15
-WHERE memberno = 2;
+WHERE memberno = 1;
 
 SELECT * FROM Member ORDER BY memberno ASC;
 
@@ -167,15 +167,16 @@ VALUES(categroup_seq.nextval, '전통주',sysdate);
 INSERT INTO CateGroup(GrpID, gname, rdate)
 VALUES(categroup_seq.nextval, '커뮤니티',sysdate);
 
-UPDATE CateGroup SET Seqno=95 WHERE GrpID=6;
+UPDATE CateGroup SET Seqno=90 WHERE GrpID=6;
 
 SELECT * FROM CateGroup;
 
+commit;
 /**********************************/
 /* Table Name: 카테고리 */
 /**********************************/
 CREATE TABLE Category(
-		CategoryID NUMERIC(10) PRIMARY KEY,
+		categoryID NUMERIC(10) PRIMARY KEY,
 		GrpID NUMERIC(10),
 		CategoryName VARCHAR(100),
 		cnt NUMERIC(7) NOT NULL,
@@ -281,21 +282,26 @@ INSERT INTO Category(CategoryID,GrpID, CategoryName, CNT, RDATE, Seqno)
 VALUES(category_seq.nextval, 6 , '고객센터',  0 ,sysdate, 105);
 
 SELECT * FROM Category;
+
+commit;
 /**********************************/
 /* Table Name: 공급업체 */
 /**********************************/
-DROP TABLE Suppliers CASCADE CONSTRAINTS;
-CREATE TABLE Suppliers(
-		SupplierID NUMERIC(10) PRIMARY KEY,
-        Adminno    NUMBER(5),
-		SName VARCHAR(100) NOT NULL,
-		ContactInfo VARCHAR(200) NOT NULL,
-		SAddress VARCHAR(200) NOT NULL,
-        Rdate DATE,
-        FOREIGN KEY (Adminno) REFERENCES Admin (Adminno)
+DROP TABLE suppliers CASCADE CONSTRAINTS;
+CREATE TABLE suppliers(
+      supplierID NUMERIC(10) PRIMARY KEY,
+      adminno    NUMBER(5),
+      sName VARCHAR(100) NOT NULL,
+      contactInfo VARCHAR(200) NOT NULL,
+      saddress VARCHAR(200) NOT NULL,
+      rdate DATE,
+      FOREIGN KEY (adminno) REFERENCES Admin (adminno)
 );
-DROP SEQUENCE SUPPLY_SEQ;
-CREATE SEQUENCE SUPPLY_SEQ
+
+
+
+DROP SEQUENCE supply_seq;
+CREATE SEQUENCE supply_seq
   START WITH 1              -- 시작 번호
   INCREMENT BY 1            -- 증가값
   MAXVALUE 9999999999            -- 최대값: 9999999999 --> NUMBER(10) 대응
@@ -303,36 +309,37 @@ CREATE SEQUENCE SUPPLY_SEQ
   NOCYCLE;                  -- 다시 1부터 생성되는 것을 방지
 
 
-INSERT INTO Suppliers(SupplierID, Adminno, SName, ContactInfo, SAddress, Rdate)
+INSERT INTO suppliers(supplierID, adminno, sName, contactInfo, sAddress, rdate)
 VALUES(supply_seq.nextval,1, '[주]주류사업장' , '연락처 : 010-1234-5678 이메일: abcd123@naver.com', '경기도 수원시' , sysdate);
 
-INSERT INTO Suppliers(SupplierID, Adminno, SName, ContactInfo, SAddress, Rdate)
+INSERT INTO suppliers(supplierID, adminno, sName, contactInfo, sAddress, rdate)
 VALUES(supply_seq.nextval,1, '공식 주류 특판장', '연락처 : 010-1111-2233 이메일: abcd123@naver.com', '서울시 강남구' , sysdate);
 
-SELECT * FROM Suppliers;
+SELECT * FROM suppliers;
 /**********************************/
 /* Table Name: 제품 */
 /**********************************/
-DROP TABLE Products;
+DROP TABLE Products CASCADE CONSTRAINTS;
 
 CREATE TABLE Products(
-		ProductID NUMERIC(10) PRIMARY KEY,
-		CategoryID NUMERIC(10) NOT NULL,
-		SupplierID NUMERIC(10) NOT NULL,
-        Origin VARCHAR(20) NOT NULL,
-		PName VARCHAR(200) NOT NULL,
-		Description VARCHAR(1000),
-		Volume NUMERIC(30) NOT NULL,
-		AlcoholContent NUMERIC(4) NOT NULL,
-		Price NUMERIC(30) NOT NULL,
-		ImageFile VARCHAR(50),
-		ImageFileSaved VARCHAR(50),
+		productID NUMERIC(10) PRIMARY KEY,
+		categoryID NUMERIC(10) NOT NULL,
+		supplierID NUMERIC(10) NOT NULL,
+		pName VARCHAR(200) NOT NULL,
+        origin VARCHAR(30) NOT NULL, 
+		description VARCHAR(1000),
+		volume NUMERIC(30) NOT NULL,
+		alcoholContent NUMERIC(4) NOT NULL,
+		price NUMERIC(30) NOT NULL,
+		imageFile VARCHAR(50),
+		imageFileSaved VARCHAR(50),
 		thumb VARCHAR(50), --이미지preview
 		sizes NUMERIC(10), --이미지preview크기
 		Pcnt NUMERIC(9) DEFAULT 0 , --조회수
 		recom NUMERIC(8) DEFAULT 0, --추천수
+        word VARCHAR(100),
   FOREIGN KEY (CategoryID) REFERENCES Category (CategoryID),
-  FOREIGN KEY (SupplierID) REFERENCES Suppliers (SupplierID)
+  FOREIGN KEY (supplierID) REFERENCES Suppliers (supplierID)
 );
 commit;
 
@@ -356,37 +363,34 @@ CREATE SEQUENCE PRODUCT_SEQ
   NOCYCLE;                  -- 다시 1부터 생성되는 것을 방지
   
   
-INSERT INTO Products(ProductID, CategoryID, SupplierID, PName, Origin, Description, Volume, AlcoholContent, Price)
-VALUES(product_seq.nextval, 1 , 1 , '발렌타인 17년' , '영국', '발렌타인은 19세기 George Ballantine씨가 블랜딩 해 팔기 시작한 블랜디드 스카치 위스키 입니다. 발렌다인은 향이 강하지 않게 블랜딩하고 블랜딩후 추가로 숙성시켜 목넘김이 부드럽습니다. 그렇기 때문에 한국인들에게 가장 선호하는 술로 알려져 있고 한국에서 가장 많이 팔리는 외국 브랜디 위스키 입니다11
+INSERT INTO Products(productID, categoryID, supplierID, pName, origin, description, volume, alcoholContent, price)
+VALUES(product_seq.nextval, 1 , 1 , '발렌타인 17년' ,'영국', '발렌타인은 19세기 George Ballantine씨가 블랜딩 해 팔기 시작한 블랜디드 스카치 위스키 입니다. 발렌다인은 향이 강하지 않게 블랜딩하고 블랜딩후 추가로 숙성시켜 목넘김이 부드럽습니다. 그렇기 때문에 한국인들에게 가장 선호하는 술로 알려져 있고 한국에서 가장 많이 팔리는 외국 브랜디 위스키 입니다11
 발렌타인 17년은 황금빛 색깔과 바닐라 느낌의 우아한 향이 나고 오크와 피트의 스모크한 향의 달콤한 맛이 느껴집니다.',700,40,'125000');
 
-INSERT INTO Products(ProductID, CategoryID, SupplierID, PName, Origin, Description, Volume, AlcoholContent, Price)
+INSERT INTO Products(productID, categoryID, supplierID, pName, origin, description, volume, alcoholContent, price)
 VALUES(product_seq.nextval, 2 , 2 , '잭다니엘 허니' , '미국', '잭 허니는 잭 다니엘 특유의 클래식한 풍미에 천연 벌꿀에서 느껴지는 부드러운 달콤함, 풍부한 견과류의 향을 더한 것이 특징인 제품이다. 기존 잭 다니엘스(40도)에 비해 낮아진 35도의 저도수 알코올로 기존 잭 다니엘스 마니아 뿐만 아니라 여성들에게까지 큰 사랑을 받고 있다.',700,35,'43000');
 
-INSERT INTO Products(ProductID, CategoryID, SupplierID, PName, Origin, Description, Volume, AlcoholContent, Price)
+INSERT INTO Products(productID, categoryID, supplierID, pName, origin, description, volume, alcoholContent, price)
 VALUES(product_seq.nextval, 3 , 1 , '그린자켓 17년' , '캐나다', '그린 자켓 17년은 먼저 캐러멜과 같은 풍부하고 달콤한 향이 진한 과일과 오크 향과 균형을 이룹니다. 깊은 바닐라의 달콤함이 산딸기의 맛과 구운 아몬드의 고소한 맛, 참나무의 은은한 오크향이 함께 완벽한 조화를 이룹니다.',700, 36.5 ,'56000');
 
-INSERT INTO Products(ProductID, CategoryID, SupplierID, PName, Origin, Description, Volume, AlcoholContent, Price)
+INSERT INTO Products(productID, categoryID, supplierID, pName, origin, description, volume, alcoholContent, price)
 VALUES(product_seq.nextval, 4 , 2 , '산토리 가쿠빈' , '일본', '가쿠빈은 산토리의 다채로운 원주 가운데서 엄선된 몰트와 그레인 원주를 브렌딩하여 한국 소비자의 입맛에 맞게 만든 제품 입니다.
 1937년 가쿠빈(角瓶)탄생 이후 70년이 넘도록 지속된 네모진 병모양과 거북이 등조각 모양이 변치 않은 확실한 품질을 말해주고 있습니다.
 SUNTORY 가쿠빈은 키몰트의 야마자키 버본준원주 및 미디엄타입 그레인에서 유래하는 달짝지근한 향기나, 도톰하고 둥글둥글한 깊은 맛이 특징으로 가정의 어떤 요리와도 잘 어울리므로 반주로 더없이 훌륭한 제품입니다.',700, 40 ,'45000');
 
-INSERT INTO Products(ProductID, CategoryID, SupplierID, PName, Origin, Description, Volume, AlcoholContent, Price)
+INSERT INTO Products(productID, categoryID, supplierID, pName, origin, description, volume, alcoholContent, price)
 VALUES(product_seq.nextval, 5 , 1 , '카발란 클래식' , '대만', '카발란 클래식은 세심하게 고른 여러 캐스크에서 숙성된 결과물로, 풍부하면서도 부드러운 맛과 향이 특징입니다. 먼저 향을 맡아보면 난초와 열대과일 향이 부드럽게 나면서 꿀, 망고, 배, 바닐라, 코코넛의 향이 잔잔하게 남아있어 깨끗하고 우아한 느낌을 느낄 수 있습니다.
 그리고 첫 모금을 마셔보면 따뜻하고 부드러운 텍스쳐가 느껴지고, 망고 주스의 달콤함과 스파이시함이 절묘하게 어우러지면서 마지막에 시트러스함이 입안을 감도는 피니쉬를 선사합니다.',700, 40 ,'208000');
 
-INSERT INTO Products(ProductID, CategoryID, SupplierID, PName, Origin, Description, Volume, AlcoholContent, Price)
-VALUES(product_seq.nextval, 5 , 1 , '카발란 클래식' , '대만', '',700, 40 ,'208000');
-
-INSERT INTO Products(ProductID, CategoryID, SupplierID, PName, Origin, Description, Volume, AlcoholContent, Price)
-VALUES(product_seq.nextval, 6 , 1 , '샤또 보류어 보르도 슈페리어' , '프랑스', '색 향: 루비레드컬러. 과일향과 바닐라향
+INSERT INTO Products(productID, categoryID, supplierID, pName, origin, description, volume, alcoholContent, price)
+VALUES(product_seq.nextval, 6 , 1 , '샤또 보류어 보르도 슈페리어' ,'프랑스', '색 향: 루비레드컬러. 과일향과 바닐라향
 잘익은 과일향과 바닐라 향이 오크부케와 멋진 조화를 이루고 타닌맛이 중량감을 주는 풀바디 와인 입니다. 오크통에서 24개월 숙성시킨 제품으로 세련된 고급와인 입니다.',750, 14 ,'37000');
 
-INSERT INTO Products(ProductID, CategoryID, SupplierID, PName, Origin, Description, Volume, AlcoholContent, Price)
-VALUES(product_seq.nextval, 7 , 2 , '브리샤 까베르네쇼비뇽' , '칠레', '수상경력:2010,2018 실버메달등 다수수상. 달콤하고 촉촉하며 생동감이 넘쳐 언제 어디서나 즐길 수 있는 미디움 바디 와인 입니다',750, 13 ,'16000');
+INSERT INTO Products(productID, categoryID, supplierID, pName, origin, description, volume, alcoholContent, price)
+VALUES(product_seq.nextval, 7 , 2 , '브리샤 까베르네쇼비뇽' , '칠레',  '수상경력:2010,2018 실버메달등 다수수상. 달콤하고 촉촉하며 생동감이 넘쳐 언제 어디서나 즐길 수 있는 미디움 바디 와인 입니다',750, 13 ,'16000');
 
-INSERT INTO Products(ProductID, CategoryID, SupplierID, PName, Origin, Description, Volume, AlcoholContent, Price)
-VALUES(product_seq.nextval, 8 , 1 , '아리온 모스카토' , '이태리', '향기로운 과일 향(복숭아·아카시아)이 조화롭고 신선한 향 산뜻하고 부드러우며 약간의 달콤한 맛 그리고 감미가 함께 곁들여져 있다. 특히 여성들에게 인기가 많고 선물하기 좋다. ',750, 5 ,'25000');
+INSERT INTO Products(productID, categoryID, supplierID, pName, origin, description, volume, alcoholContent, price)
+VALUES(product_seq.nextval, 8 , 1 , '아리온 모스카토' , '이태리',  '향기로운 과일 향(복숭아·아카시아)이 조화롭고 신선한 향 산뜻하고 부드러우며 약간의 달콤한 맛 그리고 감미가 함께 곁들여져 있다. 특히 여성들에게 인기가 많고 선물하기 좋다. ',750, 5 ,'25000');
 
 commit;
 
@@ -453,10 +457,10 @@ SELECT * FROM OrderDetails;
 CREATE TABLE Carts(
 		CartID NUMERIC(10) PRIMARY KEY,
         memberno NUMERIC(10),
-		CreatedAt DATETIME,
+		cdate DATE,
 		cnt NUMERIC(10),
-		ProductID NUMERIC(10),		
-  FOREIGN KEY (ProductID) REFERENCES Products (ProductID) ON DELETE CASCADE,
+		productid NUMERIC(10),		
+  FOREIGN KEY (productid) REFERENCES Products (productid) ON DELETE CASCADE,
   FOREIGN KEY (memberno) REFERENCES Member (memberno) ON DELETE CASCADE
 );
 
@@ -504,42 +508,47 @@ CREATE SEQUENCE REVIEWS_SEQ
 /**********************************/
 /* Table Name: 재고 */
 /**********************************/
+DROP TABLE Inventory;
 CREATE TABLE Inventory(
-		InventoryID VARCHAR(10) PRIMARY KEY,
-		ProductID NUMERIC(10),
-        SupplierID NUMERIC(10),
-		Quantity NUMERIC(10),
-		LastUpdated DATETIME,
-  FOREIGN KEY (ProductID) REFERENCES Products (ProductID),
-  FOREIGN KEY (SupplierID) REFERENCES Suppliers (SupplierID)
+      inventoryID NUMERIC(10) PRIMARY KEY, --재고상태
+        inventoryStatus VARCHAR(30),
+      productID NUMERIC(10),
+        pName VARCHAR(20),
+        word VARCHAR(100),
+        supplierID NUMERIC(10),
+      quantity NUMERIC(10),
+        addQuantity NUMERIC(10),
+      lastUpdated DATE
+        
+  --FOREIGN KEY (productID) REFERENCES Products (productID),
+  --FOREIGN KEY (pName) REFERENCES Products (pNAme),
+  --FOREIGN KEY (supplierID) REFERENCES Suppliers (supplierID)
 );
+
+DROP SEQUENCE INVEN_SEQ;
 CREATE SEQUENCE INVEN_SEQ
   START WITH 1              -- 시작 번호
   INCREMENT BY 1            -- 증가값
   MAXVALUE 9999999999            -- 최대값: 9999999999 --> NUMBER(10) 대응
   CACHE 2                   -- 2번은 메모리에서만 계산
   NOCYCLE;                  -- 다시 1부터 생성되는 것을 방지
-  
 /**********************************/
 /* Table Name: 배송 */
 /**********************************/
+DROP TABLE Shipping;
 CREATE TABLE Shipping(
-		ShippingID NUMERIC(20) PRIMARY KEY,
-		OrderID  NUMERIC(10),
-		ShippingType VARCHAR(50),
-		Cost INT,
-		EstimatedDeliveryDate DATE,
-		TrackingNumber VARCHAR(200),
-		DeliveryStatus VARCHAR(20),
-  FOREIGN KEY (OrderID ) REFERENCES Orders (OrderID )
+      shippingID NUMERIC(20) PRIMARY KEY,
+      order_payno  NUMERIC(10),
+      shippingType VARCHAR(50),
+      deliveryPrice NUMERIC(10),
+      estimatedDeliveryDate DATE,
+      trackingNumber VARCHAR(200),
+      deliveryStatus VARCHAR(20)
+  --FOREIGN KEY (OrderID ) REFERENCES Orders (OrderID )
 );
-ALTER TABLE Shipping
-ADD CONSTRAINT fk_OrderID
-FOREIGN KEY (OrderID)
-REFERENCES Orders(OrderID);
 
-commit;
 
+DROP SEQUENCE SHIPPING_SEQ;
 CREATE SEQUENCE SHIPPING_SEQ
   START WITH 1              -- 시작 번호
   INCREMENT BY 1            -- 증가값
@@ -549,21 +558,69 @@ CREATE SEQUENCE SHIPPING_SEQ
 /**********************************/
 /* Table Name: 챗봇 */
 /**********************************/
-CREATE TABLE ChatbotSessions(
-		SessionID INT PRIMARY KEY,
-		Userno NUMERIC(10),
-		SessionStart DATETIME,
-		SessionEnd DATETIME,
-		UserQuery VARCHAR(500),
-		BotResponse VARCHAR(500),
-  FOREIGN KEY (Userno) REFERENCES Users (Userno)
+DROP TABLE chatting;
+
+CREATE TABLE chatting(
+    chattingno  NUMBER(8)       NOT NULL PRIMARY KEY,
+    memberno    NUMBER(10)      NOT NULL,
+    msg         VARCHAR(1000)    NOT NULL,
+    rdate      DATE            NOT NULL,
+    FOREIGN KEY (memberno) REFERENCES member(memberno)
 );
-CREATE SEQUENCE CHATBOT_SEQ
+
+COMMENT ON TABLE CHATTING is '채팅';
+COMMENT ON COLUMN CHATTING.CHATTINGNO is '채팅 번호';
+COMMENT ON COLUMN CHATTING.MEMBERNO is '회원 번호';
+COMMENT ON COLUMN CHATTING.MSG is '채팅 메시지';
+COMMENT ON COLUMN CHATTING.RDATE is '등록일';
+
+DROP SEQUENCE chatting_seq;
+
+CREATE SEQUENCE chatting_seq
   START WITH 1              -- 시작 번호
   INCREMENT BY 1            -- 증가값
-  MAXVALUE 9999999999            -- 최대값: 9999999999 --> NUMBER(10) 대응
+  MAXVALUE 99999999         -- 최대값: 99999999 --> NUMBER(8) 대응
   CACHE 2                   -- 2번은 메모리에서만 계산
   NOCYCLE;                  -- 다시 1부터 생성되는 것을 방지
+  
+INSERT INTO chatting(chattingno, memberno, msg, rdate)
+VALUES(chatting_seq.nextval, 2, '안녕하세요', sysdate);
+
+INSERT INTO chatting(chattingno, memberno, msg, rdate)
+VALUES(chatting_seq.nextval, 1, '네 안녕하세요, 저는 챗봇입니다.', sysdate);
+
+COMMIT;
+
+SELECT chattingno, memberno, msg, rdate FROM chatting ORDER BY chattingno DESC;
+                                                                                                                                                                                                                                                                                               2023-11-23 04:03:52
+
+-- 조회
+SELECT chattingno, memberno, msg, rdate
+  FROM chatting
+  WHERE chattingno=1;
+
+- 2023-11-23일자 채팅만 출력
+SELECT chattingno, memberno, msg, rdate
+FROM chatting
+WHERE memberno=1 and SUBSTR(rdate, 1, 10) = '2023-11-23';
+
+-- 시분초 일치하지 않음, 조회안됨
+SELECT chattingno, memberno, msg, rdate
+FROM chatting
+WHERE memberno=1 and rdate = TO_DATE('2023-11-23', 'YYYY-MM-DD');
+
+-- 문열로 변경하는 가능함
+SELECT chattingno, memberno, msg, rdate
+FROM chatting
+WHERE memberno=1 and TO_CHAR(rdate, 'YYYY-MM-DD') = '2023-11-23';
+
+UPDATE chatting
+SET msg='반가워요~'
+WHERE chattingno = 2;
+
+commit;
+
+DELETE FROM chatting;
 
 /**********************************/
 /* Table Name: 이벤트 */
@@ -623,13 +680,19 @@ ALTER TABLE Event ADD word VARCHAR(200);
 /* Table Name: 관심상품 */
 /**********************************/
 CREATE TABLE FavProduct(
-		FavID NUMERIC(10),
-		ProductID NUMERIC(10),
-		memberno NUMERIC(10),
-		CreatedAt DATE,
+      FavID NUMERIC(10),
+      ProductID NUMERIC(10),
+      memberno NUMERIC(10),
+      CreatedAt DATE,
   FOREIGN KEY (ProductID) REFERENCES Products (ProductID) ON DELETE CASCADE,
   FOREIGN KEY (memberno) REFERENCES Member (memberno) ON DELETE CASCADE
 );
+
+COMMENT ON TABLE FavProduct is '관심상품';
+COMMENT ON COLUMN FavProduct.FavID is '관심상품ID';
+COMMENT ON COLUMN FavProduct.ProductID is '제품ID';
+COMMENT ON COLUMN FavProduct.memberno is '회원 번호';
+COMMENT ON COLUMN FavProduct.CreateAt is '등록날짜';
 
 CREATE SEQUENCE FAV_SEQ
   START WITH 1              -- 시작 번호
@@ -637,6 +700,59 @@ CREATE SEQUENCE FAV_SEQ
   MAXVALUE 9999999999            -- 최대값: 9999999999 --> NUMBER(10) 대응
   CACHE 2                   -- 2번은 메모리에서만 계산
   NOCYCLE;                  -- 다시 1부터 생성되는 것을 방지
+  
+-- INSERT
+SELECT ProductID, PName, price FROM products;  -- 9번 사용 확인
+PRODUCTID PNAME                                                                                                                                                                                                         PRICE
+---------- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ----------
+         1 발렌타인 17년                                                                                                                                                                                                125000
+         2 잭다니엘 허니                                                                                                                                                                                                 43000
+         3 그린자켓 17년                                                                                                                                                                                                 56000
+         4 산토리 가쿠빈                                                                                                                                                                                                 45000
+         5 카발란 클래식                                                                                                                                                                                                208000
+         7 샤또 보류어 보르도 슈페리어                                                                                                                                                                                   37000
+         8 브리샤 까베르네쇼비뇽                                                                                                                                                                                         16000
+         9 아리온 모스카토                      
+      
+-- INSERT   
+SELECT memberno, mname FROM member;
+MEMBERNO MNAME                                                                                               
+---------- ----------------------------------------------------------------------------------------------------
+         1 회원1                                                                                               
+         2 회원2      
+         
+         
+INSERT INTO FavProduct(FavID, ProductID, memberno, CreatedAt)
+VALUES(Fav_seq.nextval, 1, 1, sysdate);
+
+INSERT INTO FavProduct(FavID, ProductID, memberno, CreatedAt)
+VALUES(Fav_seq.nextval, 2, 1, sysdate);
+commit;
+
+SELECT FavID, ProductID, memberno, CreatedAt FROM FavProduct ORDER BY FavID ASC;
+FAVID  PRODUCTID   MEMBERNO CREATEDAT          
+---------- ---------- ---------- -------------------
+         1          1          1 2023-12-15 03:28:14
+         2          2          1 2023-12-15 03:28:14
+         
+-- LIST contents join
+SELECT f.FavID, p.ProductID, p.PName, p.Thumb, p.Price, f.memberno, f.CreatedAt
+FROM Products p, FavProduct f
+WHERE p.ProductID = f.ProductID
+ORDER BY FavID ASC;
+
+-- READ
+SELECT f.FavID, p.ProductID, p.PName, p.Price, f.memberno, f.CreatedAt
+FROM Products p, FavProduct f
+WHERE (p.ProductID = f.ProductID) AND f.FavID=1;
+
+
+-- UPDATE
+
+
+-- DELETE
+DELETE FROM FavProduct WHERE FavID=2;
+commit;
 /**********************************/
 /* Table Name: 결제 */
 /**********************************/
@@ -744,7 +860,7 @@ CREATE TABLE MailLog(
 		memberno NUMERIC(10) NOT NULL,
         id VARCHAR(50) NOT NULL,
 		actname VARCHAR(30) NOT NULL,
-		logindate DATE NOT NULL,
+		maildate DATE NOT NULL,
     FOREIGN KEY (memberno) REFERENCES Member (memberno)ON DELETE CASCADE
 );
 

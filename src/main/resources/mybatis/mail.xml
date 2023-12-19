@@ -5,7 +5,7 @@
  
 
   <insert id="create" parameterType="dev.mvc.maillog.MailVO">
-    INSERT INTO MailLog(mailno, memberno, id, actname, logindate)
+    INSERT INTO MailLog(mailno, memberno, id, actname, maildate)
     VALUES (maillog_seq.nextval, #{memberno}, #{id}, #{actname}, sysdate)
   </insert>
  

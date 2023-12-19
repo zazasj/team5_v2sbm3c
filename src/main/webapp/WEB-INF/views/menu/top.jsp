@@ -29,7 +29,7 @@
 
 <div id="logo">
   <a href="/"><img src="/css/images/logo4.jpg"></a>
-  <input type="text" placeholder="검색할 제품을 입력해주세요." style = "width : 300px; margin-left: 350px; " >
+  <input type="text" placeholder="검색할 제품을 입력해주세요." style = "width : 300px; margin-left: 350px; border: 2px solid black;" >
   <input type = "button" value="검색">
   
   <!-- <aside class="aside_right">
