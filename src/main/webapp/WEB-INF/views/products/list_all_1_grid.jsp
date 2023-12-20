@@ -36,7 +36,7 @@
     </c:if>
     <a href="javascript:location.reload();">새로고침</a>
     <span class='menu_divide' >│</span>    
-    <a href="./list_all_1.do&now_page=${param.now_page}&word=${param.word }">목록형</a>  
+    <a href="./list_all_1.do?now_page=${param.now_page}&word=${param.word }">목록형</a>  
   </aside>
   
  <DIV style="text-align: right; clear: both;">  

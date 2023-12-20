@@ -10,13 +10,14 @@
 <title>술기운</title>
 <link rel="shortcut icon" href="/images/sulic-resize36.png" />
 <link href="/css/style.css" rel="Stylesheet" type="text/css">
-
+<c:import url="/menu/top.do" />
 </head>
 <body>
-<c:import url="/menu/top.do" />
+
 
   <div class='title_line'>
-    ${categoryVO.categoryName }
+    <A href="../products/list_all_${cateGroupVO.grpID }_grid.do" class='title_link'>${cateGroupVO.gname }</A> >
+    <A href="./list_by_categoryID_grid.do?categoryID=${categoryVO.categoryID }" class='title_link'>${categoryVO.categoryName }</A>
     <c:if test="${param.word.length() > 0 }">
       > 「${param.word }」 검색 ${search_count } 건
     </c:if> 

@@ -171,7 +171,7 @@
  
 <DIV class='title_line'>
   <A href="../products/list_all_${cateGroupVO.grpID }.do" class='title_link'>${cateGroupVO.gname }</A> >
-  <A href="./list_by_cateno_search_paging.do?cateno=${cateVO.cateno }" class='title_link'>${categoryVO.categoryName }</A>
+  <A href="./list_by_categoryID.do?categoryID=${categoryVO.categoryID }" class='title_link'>${categoryVO.categoryName }</A>
 </DIV>
 
 <DIV class='content_body'>

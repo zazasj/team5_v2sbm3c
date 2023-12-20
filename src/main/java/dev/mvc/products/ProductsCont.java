@@ -1386,6 +1386,8 @@ public class ProductsCont {
    
      CategoryVO categoryVO = categoryProc.read(productsVO.getCategoryID());
      mav.addObject("categoryVO", categoryVO);
+     CateGroupVO cateGroupVO = cateGroupProc.read(categoryVO.getGrpID());
+     mav.addObject("cateGroupVO", cateGroupVO);
      
      HashMap<String, Object> hashMap = new HashMap<String, Object>();
      hashMap.put("categoryID", productsVO.getCategoryID());
