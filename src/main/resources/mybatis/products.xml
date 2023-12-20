@@ -24,12 +24,102 @@
     ORDER BY productID DESC
   </select>
   
+  <!-- 위스키 검색 + 페이징 목록 -->
+  <select id="list_all_1_search_paging" resultType="dev.mvc.products.ProductsVO" parameterType="dev.mvc.products.ProductsVO">
+   SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom, r
+   FROM (
+              SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom, rownum as r
+              FROM (
+                        SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom
+                        FROM Products
+                        <choose>
+                          <when test="word == null or word == ''"> <!-- 검색하지 않는 경우 -->
+                            WHERE categoryID BETWEEN 1 AND 5
+                          </when>
+                          <otherwise>
+                            WHERE categoryID BETWEEN 1 AND 5
+                                                              AND (UPPER(pName) LIKE '%' || UPPER(#{word}) || '%' 
+                                                              OR UPPER(description) LIKE '%' || UPPER(#{word}) || '%' 
+                                                              OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+                          </otherwise>
+                        </choose>
+                        ORDER BY productID DESC
+               )
+    )
+    WHERE <![CDATA[ r >= #{start_num} AND r <= #{end_num} ]]>
+     
+    <!-- 1 page: WHERE r >= 1 AND r <= 10; 
+          2 page: WHERE r >= 11 AND r <= 20;
+          3 page: WHERE r >= 21 AND r <= 30; -->
+  </select>
+  
+    <!-- 위스키 검색 레코드 갯수 -->
+  <select id="search_count_1" resultType="int" parameterType="HashMap">
+    SELECT COUNT(*) as cnt
+    FROM Products
+    <choose>
+      <when test="word == null or word == ''"> <!-- 검색하지 않는 경우의 레코드 갯수 -->
+        WHERE categoryID BETWEEN 1 AND 5
+      </when>
+      <otherwise> <!-- 검색하는 경우의 레코드 갯수 -->
+        WHERE categoryID BETWEEN 1 AND 5 AND (UPPER(pName) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(description) LIKE '%' || UPPER(#{word}) || '%'
+                                                  OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+      </otherwise>
+    </choose>
+  </select>
+  
   <!-- 브랜디/꼬냑 카테고리의 등록된 상품목록 -->
   <select id="list_all_2" resultType="dev.mvc.products.ProductsVO">
     SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom
     FROM Products
     WHERE categoryID BETWEEN 30 AND 31
     ORDER BY productID DESC
+  </select>
+  
+   <!-- 브랜디/꼬냑 검색 + 페이징 목록 -->
+  <select id="list_all_2_search_paging" resultType="dev.mvc.products.ProductsVO" parameterType="dev.mvc.products.ProductsVO">
+   SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom, r
+   FROM (
+              SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom, rownum as r
+              FROM (
+                        SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom
+                        FROM Products
+                        <choose>
+                          <when test="word == null or word == ''"> <!-- 검색하지 않는 경우 -->
+                           WHERE categoryID BETWEEN 30 AND 31
+                          </when>
+                          <otherwise>
+                            WHERE categoryID BETWEEN 30 AND 31
+                                                              AND (UPPER(pName) LIKE '%' || UPPER(#{word}) || '%' 
+                                                              OR UPPER(description) LIKE '%' || UPPER(#{word}) || '%' 
+                                                              OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+                          </otherwise>
+                        </choose>
+                        ORDER BY productID DESC
+               )
+    )
+    WHERE <![CDATA[ r >= #{start_num} AND r <= #{end_num} ]]>
+     
+    <!-- 1 page: WHERE r >= 1 AND r <= 10; 
+          2 page: WHERE r >= 11 AND r <= 20;
+          3 page: WHERE r >= 21 AND r <= 30; -->
+  </select>
+  
+    <!-- 브랜디/꼬냑 검색 레코드 갯수 -->
+  <select id="search_count_2" resultType="int" parameterType="HashMap">
+    SELECT COUNT(*) as cnt
+    FROM Products
+    <choose>
+      <when test="word == null or word == ''"> <!-- 검색하지 않는 경우의 레코드 갯수 -->
+        WHERE categoryID BETWEEN 30 AND 31
+      </when>
+      <otherwise> <!-- 검색하는 경우의 레코드 갯수 -->
+        WHERE categoryID BETWEEN 30 AND 31 AND (UPPER(pName) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(description) LIKE '%' || UPPER(#{word}) || '%'
+                                                  OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+      </otherwise>
+    </choose>
   </select>
   
     <!-- 와인 카테고리의 등록된 상품목록 -->
@@ -40,6 +130,51 @@
     ORDER BY productID DESC
   </select>
   
+  <!-- 와인 검색 + 페이징 목록 -->
+  <select id="list_all_3_search_paging" resultType="dev.mvc.products.ProductsVO" parameterType="dev.mvc.products.ProductsVO">
+   SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom, r
+   FROM (
+              SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom, rownum as r
+              FROM (
+                        SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom
+                        FROM Products
+                        <choose>
+                          <when test="word == null or word == ''"> <!-- 검색하지 않는 경우 -->
+                           WHERE categoryID BETWEEN 6 AND 15
+                          </when>
+                          <otherwise>
+                            WHERE categoryID BETWEEN 6 AND 15
+                                                              AND (UPPER(pName) LIKE '%' || UPPER(#{word}) || '%' 
+                                                              OR UPPER(description) LIKE '%' || UPPER(#{word}) || '%' 
+                                                              OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+                          </otherwise>
+                        </choose>
+                        ORDER BY productID DESC
+               )
+    )
+    WHERE <![CDATA[ r >= #{start_num} AND r <= #{end_num} ]]>
+     
+    <!-- 1 page: WHERE r >= 1 AND r <= 10; 
+          2 page: WHERE r >= 11 AND r <= 20;
+          3 page: WHERE r >= 21 AND r <= 30; -->
+  </select>
+  
+    <!-- 와인 검색 레코드 갯수 -->
+  <select id="search_count_3" resultType="int" parameterType="HashMap">
+    SELECT COUNT(*) as cnt
+    FROM Products
+    <choose>
+      <when test="word == null or word == ''"> <!-- 검색하지 않는 경우의 레코드 갯수 -->
+        WHERE categoryID BETWEEN 6 AND 15
+      </when>
+      <otherwise> <!-- 검색하는 경우의 레코드 갯수 -->
+        WHERE categoryID BETWEEN 6 AND 15 AND (UPPER(pName) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(description) LIKE '%' || UPPER(#{word}) || '%'
+                                                  OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+      </otherwise>
+    </choose>
+  </select>
+  
     <!-- 리큐르 카테고리의 등록된 상품목록 -->
   <select id="list_all_4" resultType="dev.mvc.products.ProductsVO">
     SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom
@@ -48,12 +183,102 @@
     ORDER BY productID DESC
   </select>
   
+  <!-- 리큐르 검색 + 페이징 목록 -->
+  <select id="list_all_4_search_paging" resultType="dev.mvc.products.ProductsVO" parameterType="dev.mvc.products.ProductsVO">
+   SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom, r
+   FROM (
+              SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom, rownum as r
+              FROM (
+                        SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom
+                        FROM Products
+                        <choose>
+                          <when test="word == null or word == ''"> <!-- 검색하지 않는 경우 -->
+                           WHERE categoryID BETWEEN 16 AND 21
+                          </when>
+                          <otherwise>
+                            WHERE categoryID BETWEEN 16 AND 21
+                                                              AND (UPPER(pName) LIKE '%' || UPPER(#{word}) || '%' 
+                                                              OR UPPER(description) LIKE '%' || UPPER(#{word}) || '%' 
+                                                              OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+                          </otherwise>
+                        </choose>
+                        ORDER BY productID DESC
+               )
+    )
+    WHERE <![CDATA[ r >= #{start_num} AND r <= #{end_num} ]]>
+     
+    <!-- 1 page: WHERE r >= 1 AND r <= 10; 
+          2 page: WHERE r >= 11 AND r <= 20;
+          3 page: WHERE r >= 21 AND r <= 30; -->
+  </select>
+  
+    <!-- 리큐르 검색 레코드 갯수 -->
+  <select id="search_count_4" resultType="int" parameterType="HashMap">
+    SELECT COUNT(*) as cnt
+    FROM Products
+    <choose>
+      <when test="word == null or word == ''"> <!-- 검색하지 않는 경우의 레코드 갯수 -->
+        WHERE categoryID BETWEEN 16 AND 21
+      </when>
+      <otherwise> <!-- 검색하는 경우의 레코드 갯수 -->
+        WHERE categoryID BETWEEN 16 AND 21 AND (UPPER(pName) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(description) LIKE '%' || UPPER(#{word}) || '%'
+                                                  OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+      </otherwise>
+    </choose>
+  </select>
+  
     <!-- 전통주 카테고리의 등록된 상품목록 -->
   <select id="list_all_5" resultType="dev.mvc.products.ProductsVO">
     SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom
     FROM Products
     WHERE categoryID BETWEEN 23 AND 25
     ORDER BY productID DESC
+  </select>
+  
+    <!-- 전통주 검색 + 페이징 목록 -->
+  <select id="list_all_5_search_paging" resultType="dev.mvc.products.ProductsVO" parameterType="dev.mvc.products.ProductsVO">
+   SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom, r
+   FROM (
+              SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom, rownum as r
+              FROM (
+                        SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom
+                        FROM Products
+                        <choose>
+                          <when test="word == null or word == ''"> <!-- 검색하지 않는 경우 -->
+                           WHERE categoryID BETWEEN 23 AND 25
+                          </when>
+                          <otherwise>
+                            WHERE categoryID BETWEEN 23 AND 25
+                                                              AND (UPPER(pName) LIKE '%' || UPPER(#{word}) || '%' 
+                                                              OR UPPER(description) LIKE '%' || UPPER(#{word}) || '%' 
+                                                              OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+                          </otherwise>
+                        </choose>
+                        ORDER BY productID DESC
+               )
+    )
+    WHERE <![CDATA[ r >= #{start_num} AND r <= #{end_num} ]]>
+     
+    <!-- 1 page: WHERE r >= 1 AND r <= 10; 
+          2 page: WHERE r >= 11 AND r <= 20;
+          3 page: WHERE r >= 21 AND r <= 30; -->
+  </select>
+  
+    <!-- 전통주 검색 레코드 갯수 -->
+  <select id="search_count_5" resultType="int" parameterType="HashMap">
+    SELECT COUNT(*) as cnt
+    FROM Products
+    <choose>
+      <when test="word == null or word == ''"> <!-- 검색하지 않는 경우의 레코드 갯수 -->
+        WHERE categoryID BETWEEN 23 AND 25
+      </when>
+      <otherwise> <!-- 검색하는 경우의 레코드 갯수 -->
+        WHERE categoryID BETWEEN 23 AND 25 AND (UPPER(pName) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(description) LIKE '%' || UPPER(#{word}) || '%'
+                                                  OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+      </otherwise>
+    </choose>
   </select>
   
   <!-- 특정 카테고리의 등록된 글목록 -->

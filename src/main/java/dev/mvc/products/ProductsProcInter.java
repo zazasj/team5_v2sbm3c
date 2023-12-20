@@ -37,10 +37,48 @@ public interface ProductsProcInter {
   public ArrayList<ProductsVO> list_all_1();
   
   /**
+   * 위스키에 등록된 상품목록 + 검색 + 페이징
+   * @return
+   */
+  public ArrayList<ProductsVO> list_all_1_search_paging(ProductsVO productsVO);
+  
+  /**
+   * 카테고리별 검색된 레코드 갯수
+   * @param map
+   * @return
+   */
+  public int search_count_1(HashMap<String, Object> hashMap);
+  
+  /** 
+   * SPAN태그를 이용한 박스 모델의 지원, 1 페이지부터 시작 
+   * 현재 페이지: 11 / 22   [이전] 11 12 13 14 15 16 17 18 19 20 [다음] 
+   *
+   * @param now_page      현재 페이지
+   * @param word 검색어
+   * @param list_file 목록 파일명
+   * @param search_count 검색 레코드수   
+   * @return 페이징 생성 문자열
+   */ 
+  public String pagingBox1(int now_page, String word, String list_file, int search_count);
+  
+  /**
    * 브랜디/꼬냑에 등록된 상품목록
    * @return
    */
   public ArrayList<ProductsVO> list_all_2();
+  
+  /**
+   * 브랜디/꼬냑에 등록된 상품목록 + 검색 + 페이징
+   * @return
+   */
+  public ArrayList<ProductsVO> list_all_2_search_paging(ProductsVO productsVO);
+  
+  /**
+   * 브랜디/꼬냑 검색된 레코드 갯수
+   * @param map
+   * @return
+   */
+  public int search_count_2(HashMap<String, Object> hashMap);
   
   /**
    * 와인에 등록된 상품목록
@@ -49,16 +87,55 @@ public interface ProductsProcInter {
   public ArrayList<ProductsVO> list_all_3();
   
   /**
+   * 와인에 등록된 상품목록 + 검색 + 페이징
+   * @return
+   */
+  public ArrayList<ProductsVO> list_all_3_search_paging(ProductsVO productsVO);
+  
+  /**
+   * 와인 검색된 레코드 갯수
+   * @param map
+   * @return
+   */
+  public int search_count_3(HashMap<String, Object> hashMap);
+  
+  /**
    * 리큐르에 등록된 상품목록
    * @return
    */
   public ArrayList<ProductsVO> list_all_4();
   
   /**
+   * 리큐르에 등록된 상품목록 + 검색 + 페이징
+   * @return
+   */
+  public ArrayList<ProductsVO> list_all_4_search_paging(ProductsVO productsVO);
+  
+  /**
+   * 리큐르 검색된 레코드 갯수
+   * @param map
+   * @return
+   */
+  public int search_count_4(HashMap<String, Object> hashMap);
+  
+  /**
    * 전통주에 등록된 상품목록
    * @return
    */
   public ArrayList<ProductsVO> list_all_5();
+  
+  /**
+   * 전통주에 등록된 상품목록 + 검색 + 페이징
+   * @return
+   */
+  public ArrayList<ProductsVO> list_all_5_search_paging(ProductsVO productsVO);
+  
+  /**
+   * 전통주 검색된 레코드 갯수
+   * @param map
+   * @return
+   */
+  public int search_count_5(HashMap<String, Object> hashMap);
   
   /**
    * 조회
@@ -100,6 +177,8 @@ public interface ProductsProcInter {
    * @return 페이징 생성 문자열
    */ 
   public String pagingBox(int categoryID, int now_page, String word, String list_file, int search_count);
+  
+  
 
   /**
    * 글 정보 수정

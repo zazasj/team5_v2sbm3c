@@ -170,28 +170,29 @@
 <body>
  
 <DIV class='title_line'>
-  <A href="../cateGroup/list.do" class='title_link'>카테고리 그룹</A> > 
-  <A href="../category/list_by_categrpno.do?categrpno=${cateGroupVO.grpID }" class='title_link'>${cateGroupVO.gname }</A> >
+  <A href="../products/list_all_${cateGroupVO.grpID }.do" class='title_link'>${cateGroupVO.gname }</A> >
   <A href="./list_by_cateno_search_paging.do?cateno=${cateVO.cateno }" class='title_link'>${categoryVO.categoryName }</A>
 </DIV>
 
 <DIV class='content_body'>
   <ASIDE class="aside_right">
-    <A href="./create.do?cateno=${cateVO.cateno }">등록</A>
+  <c:if test="${sessionScope.admin_id != null }">
+    <A href="./create.do?categoryID=${categoryVO.categoryID }">등록</A>
     <span class='menu_divide' >│</span>
+  </c:if>
     <A href="javascript:location.reload();">새로고침</A>
     <span class='menu_divide' >│</span>
-    <A href="./list_by_cateno_grid.do?cateno=${cateVO.cateno }">갤러리형</A>
+    <A href="./list_by_categoryID_grid.do?categoryID=${categoryVO.categoryID }&now_page=${param.now_page}&word=${param.word }">갤러리형</A>
   </ASIDE> 
 
   <DIV style="text-align: right; clear: both;">  
-    <form name='frm' id='frm' method='get' action='./list_by_categoryID_search_paging.do'>
+    <form name='frm' id='frm' method='get' action='./list_by_categoryID.do'>
       <input type='hidden' name='categoryID' value='${categoryVO.categoryID }'>
       <input type='text' name='word' id='word' value='${param.word }' style='width: 20%;'>
       <button type='submit'>검색</button>
       <c:if test="${param.word.length() > 0 }">
         <button type='button' 
-                     onclick="location.href='./list_by_categoryID_search_paging.do?cateno=${categoryVO.categoryID}&word='">검색 취소</button>  
+                     onclick="location.href='./list_by_categoryID.do?categoryID=${categoryVO.categoryID}&word='">검색 취소</button>  
       </c:if>    
     </form>
   </DIV>

@@ -181,8 +181,21 @@
 </aside>
   
   <aside class="aside_right">
+    <a href="./list_all_${cateGroupVO.grpID }_grid.do&now_page=${param.now_page}&word=${param.word }">갤러리형</a>
+    <a>|</a>
     <a href="javascript:location.reload();">새로고침</a>
   </aside>
+  
+   <DIV style="text-align: right; clear: both;">  
+    <form name='frm' id='frm' method='get' action='./list_all_2.do'>
+      <input type='text' name='word' id='word' value='${param.word }' style='width: 20%;'>
+      <button type='submit'>검색</button>
+      <c:if test="${param.word.length() > 0 }">
+        <button type='button' 
+                     onclick="location.href='./list_all_${cateGroupVO.grpID }.do?&word='">검색 취소</button>  
+      </c:if>    
+    </form>
+  </DIV>
   <div class="menu_line"></div> 
   <%-- ******************** Ajax 기반 로그인 폼 시작 ******************** --%>
   <DIV id='div_login' style='display: none;'>
@@ -288,6 +301,10 @@
     </tbody>
       
   </table>
+  
+     <!-- 페이지 목록 출력 부분 시작 -->
+  <DIV class='bottom_menu'>${paging }</DIV> <%-- 페이지 리스트 --%>
+  <!-- 페이지 목록 출력 부분 종료 -->
  
 <jsp:include page="../menu/bottom.jsp" flush='false' /> 
 </body>

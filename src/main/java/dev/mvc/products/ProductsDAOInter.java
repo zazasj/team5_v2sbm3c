@@ -30,10 +30,36 @@ public interface ProductsDAOInter {
   public ArrayList<ProductsVO> list_all_1();
   
   /**
+   * 위스키에 등록된 상품목록 + 검색 + 페이징
+   * @return
+   */
+  public ArrayList<ProductsVO> list_all_1_search_paging(ProductsVO productsVO);
+  
+  /**
+   * 위스키 검색된 레코드 갯수
+   * @param map
+   * @return
+   */
+  public int search_count_1(HashMap<String, Object> hashMap);
+  
+  /**
    * 브랜디/꼬냑에 등록된 상품목록
    * @return
    */
   public ArrayList<ProductsVO> list_all_2();
+  
+  /**
+   * 브랜디/꼬냑에 등록된 상품목록 + 검색 + 페이징
+   * @return
+   */
+  public ArrayList<ProductsVO> list_all_2_search_paging(ProductsVO productsVO);
+  
+  /**
+   * 브랜디/꼬냑 검색된 레코드 갯수
+   * @param map
+   * @return
+   */
+  public int search_count_2(HashMap<String, Object> hashMap);
   
   /**
    * 와인에 등록된 상품목록
@@ -42,16 +68,55 @@ public interface ProductsDAOInter {
   public ArrayList<ProductsVO> list_all_3();
   
   /**
+   * 와인에 등록된 상품목록 + 검색 + 페이징
+   * @return
+   */
+  public ArrayList<ProductsVO> list_all_3_search_paging(ProductsVO productsVO);
+  
+  /**
+   * 와인 검색된 레코드 갯수
+   * @param map
+   * @return
+   */
+  public int search_count_3(HashMap<String, Object> hashMap);
+  
+  /**
    * 리큐르에 등록된 상품목록
    * @return
    */
   public ArrayList<ProductsVO> list_all_4();
   
   /**
+   * 리큐르에 등록된 상품목록 + 검색 + 페이징
+   * @return
+   */
+  public ArrayList<ProductsVO> list_all_4_search_paging(ProductsVO productsVO);
+  
+  /**
+   * 리큐르 검색된 레코드 갯수
+   * @param map
+   * @return
+   */
+  public int search_count_4(HashMap<String, Object> hashMap);
+  
+  /**
    * 전통주에 등록된 상품목록
    * @return
    */
   public ArrayList<ProductsVO> list_all_5();
+  
+  /**
+   * 전통주에 등록된 상품목록 + 검색 + 페이징
+   * @return
+   */
+  public ArrayList<ProductsVO> list_all_5_search_paging(ProductsVO productsVO);
+  
+  /**
+   * 전통주 검색된 레코드 갯수
+   * @param map
+   * @return
+   */
+  public int search_count_5(HashMap<String, Object> hashMap);
   
   /**
    * 카테고리별 등록된 글 목록
