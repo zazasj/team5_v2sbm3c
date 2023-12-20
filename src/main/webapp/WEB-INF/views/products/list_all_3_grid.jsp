@@ -16,13 +16,13 @@
 
 <body>
 
-  <div class='title_line'>위스키 상품 목록</div>
+  <div class='title_line'>와인 상품 목록</div>
   
   <aside class="aside_left">
-  <c:forEach var="categoryVO" items="${list_1 }">
+  <c:forEach var="categoryVO" items="${list_3 }">
     <c:set var="categoryGrpID" value="${categoryVO.grpID}" />
     <c:set var="categoryName" value="${categoryVO.categoryName}" />
-    <c:if test="${categoryGrpID eq 1}">
+    <c:if test="${categoryGrpID eq 3}">
       <a href="/products/list_by_categoryID_grid.do?categoryID=${categoryVO.categoryID}&now_page=1">${categoryName} | </a>
     </c:if>
   </c:forEach>
@@ -36,16 +36,16 @@
     </c:if>
     <a href="javascript:location.reload();">새로고침</a>
     <span class='menu_divide' >│</span>    
-    <a href="./list_all_1.do&now_page=${param.now_page}&word=${param.word }">목록형</a>  
+    <a href="./list_all_3.do?now_page=${param.now_page}&word=${param.word }">목록형</a>  
   </aside>
   
  <DIV style="text-align: right; clear: both;">  
-    <form name='frm' id='frm' method='get' action='./list_all_1_grid.do'>
+    <form name='frm' id='frm' method='get' action='./list_all_3_grid.do'>
       <input type='text' name='word' id='word' value='${param.word }' style='width: 20%;'>
       <button type='submit'>검색</button>
       <c:if test="${param.word.length() > 0 }">
         <button type='button' 
-                     onclick="location.href='./list_all_1_grid.do?&word='">검색 취소</button>  
+                     onclick="location.href='./list_all_3_grid.do?&word='">검색 취소</button>  
       </c:if>    
     </form>
   </DIV>

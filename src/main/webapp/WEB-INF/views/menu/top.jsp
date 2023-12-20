@@ -51,7 +51,7 @@
             <li class="nav-item">
               <c:choose>
                 <c:when test="${grpID ge 1 and grpID le 5}">
-                  <a class="nav-link top_menu_link" href="/products/list_all_${grpID}.do">${gname}</a>
+                  <a class="nav-link top_menu_link" href="/products/list_all_${grpID}.do?now_page=1&word=${param.word }">${gname}</a>
                 </c:when>
               </c:choose>
             </li>

@@ -185,7 +185,7 @@
 </aside>
   
   <aside class="aside_right">
-    <a href="./list_all_${cateGroupVO.grpID }_grid.do&now_page=${param.now_page}&word=${param.word }">갤러리형</a>
+    <a href="./list_all_1_grid.do?now_page=${param.now_page}&word=${param.word }">갤러리형</a>
     <a>|</a>  
     <a href="javascript:location.reload();">새로고침</a>
   </aside>
@@ -196,7 +196,7 @@
       <button type='submit'>검색</button>
       <c:if test="${param.word.length() > 0 }">
         <button type='button' 
-                     onclick="location.href='./list_all_${cateGroupVO.grpID }.do?&word='">검색 취소</button>  
+                     onclick="location.href='./list_all_1.do?&word='">검색 취소</button>  
       </c:if>    
     </form>
   </DIV>
