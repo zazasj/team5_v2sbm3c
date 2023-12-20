@@ -24,6 +24,19 @@ public interface ProductsDAOInter {
   public ArrayList<ProductsVO> list_all();
   
   /**
+   * 모든 상품목록 + 검색 + 페이징
+   * @return
+   */
+  public ArrayList<ProductsVO> list_all_search_paging(ProductsVO productsVO);
+  
+  /**
+   * 모든 검색된 레코드 갯수
+   * @param map
+   * @return
+   */
+  public int search_count_all(HashMap<String, Object> hashMap);
+  
+  /**
    * 위스키에 등록된 상품목록
    * @return
    */

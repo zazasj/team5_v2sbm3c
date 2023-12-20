@@ -16,6 +16,48 @@
     ORDER BY productID DESC
   </select>
   
+  <!-- 모든상품 검색 + 페이징 목록 -->
+  <select id="list_all_search_paging" resultType="dev.mvc.products.ProductsVO" parameterType="dev.mvc.products.ProductsVO">
+   SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom, r
+   FROM (
+              SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom, rownum as r
+              FROM (
+                        SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom
+                        FROM Products
+                        <choose>
+                          <when test="word == null or word == ''"> <!-- 검색하지 않는 경우 -->
+                          </when>
+                          <otherwise>
+                            WHERE (UPPER(pName) LIKE '%' || UPPER(#{word}) || '%' 
+                                       OR UPPER(description) LIKE '%' || UPPER(#{word}) || '%' 
+                                       OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+                          </otherwise>
+                        </choose>
+                        ORDER BY productID DESC
+               )
+    )
+    WHERE <![CDATA[ r >= #{start_num} AND r <= #{end_num} ]]>
+     
+    <!-- 1 page: WHERE r >= 1 AND r <= 10; 
+          2 page: WHERE r >= 11 AND r <= 20;
+          3 page: WHERE r >= 21 AND r <= 30; -->
+  </select>
+  
+    <!-- 모든상품 검색 레코드 갯수 -->
+  <select id="search_count_all" resultType="int" parameterType="HashMap">
+    SELECT COUNT(*) as cnt
+    FROM Products
+    <choose>
+      <when test="word == null or word == ''"> <!-- 검색하지 않는 경우의 레코드 갯수 -->
+      </when>
+      <otherwise> <!-- 검색하는 경우의 레코드 갯수 -->
+        WHERE (UPPER(pName) LIKE '%' || UPPER(#{word}) || '%' 
+                    OR UPPER(description) LIKE '%' || UPPER(#{word}) || '%'
+                    OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+      </otherwise>
+    </choose>
+  </select>
+  
   <!-- 위스키 카테고리의 등록된 상품목록 -->
   <select id="list_all_1" resultType="dev.mvc.products.ProductsVO">
     SELECT productID, categoryID, supplierID, origin, pName, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes, pcnt, recom

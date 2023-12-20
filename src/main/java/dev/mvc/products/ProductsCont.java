@@ -164,43 +164,202 @@ public class ProductsCont {
     return mav; // forward
   }
 
+//  /**
+//   * 전체 목록, 관리자만 사용 가능
+//   * http://localhost:9093/products/list_all.do
+//   * @return
+//   */
+//  @RequestMapping(value="/products/list_all.do", method = RequestMethod.GET)
+//  public ModelAndView list_all(HttpSession session) {
+//    ModelAndView mav = new ModelAndView();
+//    
+//    if (this.adminProc.isAdmin(session) == true) {
+//      mav.setViewName("/products/list_all"); // /WEB-INF/views/contents/list_all.jsp
+//      
+//      ArrayList<ProductsVO> list = this.productsProc.list_all();
+//     
+//      // for문을 사용하여 객체를 추출, Call By Reference 기반의 원본 객체 값 변경
+//      for (ProductsVO productsVO : list) {
+//        String pName = productsVO.getpName();
+//        String description = productsVO.getDescription();
+//        
+//        pName = Tool.convertChar(pName);  // 특수 문자 처리
+//        description = Tool.convertChar(description); 
+//        
+//        productsVO.setpName(pName);
+//        productsVO.setDescription(description);  
+//
+//      }
+//      
+//      mav.addObject("list", list);
+//
+//      
+//    } else {
+//      mav.setViewName("/admin/login_need"); // /WEB-INF/views/admin/login_need.jsp
+//      
+//    }
+//    
+//    return mav;
+//  }
+  
   /**
-   * 전체 목록, 관리자만 사용 가능
-   * http://localhost:9093/products/list_all.do
+   * 모든 상품 목록 + 검색 + 페이징 + Cookie 지원
+   * http://localhost:9091/contents/list_by_categoryID_search_paging.do?categoryID=1&word=스위스&now_page=1
+   * 
+   * @param categoryID
+   * @param word
+   * @param now_page
    * @return
    */
-  @RequestMapping(value="/products/list_all.do", method = RequestMethod.GET)
-  public ModelAndView list_all(HttpSession session) {
+  @RequestMapping(value = "/products/list_all.do", method = RequestMethod.GET)
+  public ModelAndView list_all(
+      @RequestParam(value = "categoryID", defaultValue = "1")int categoryID,
+      @RequestParam(value = "word", defaultValue = "") String word,
+      @RequestParam(value = "now_page", defaultValue = "1") int now_page,
+      HttpServletRequest request, ProductsVO productsVO) {
+    System.out.println("-> list_all_search_paging now_page: " + now_page);
+
     ModelAndView mav = new ModelAndView();
+
+    // 숫자와 문자열 타입을 저장해야함으로 Obejct 사용
+    HashMap<String, Object> map = new HashMap<String, Object>();
+    map.put("categoryID", categoryID);
+    map.put("word", word); // #{word}
+    map.put("now_page", now_page); // 페이지에 출력할 레코드의 범위를 산출하기위해 사용
+
+    // 검색 목록
+    ArrayList<ProductsVO> list = productsProc.list_all_search_paging(productsVO);
+    mav.addObject("list", list);
+
+    // 검색된 레코드 갯수
+    int search_count_all = productsProc.search_count_all(map);
+    mav.addObject("search_count_all", search_count_all);
     
-    if (this.adminProc.isAdmin(session) == true) {
-      mav.setViewName("/products/list_all"); // /WEB-INF/views/contents/list_all.jsp
-      
-      ArrayList<ProductsVO> list = this.productsProc.list_all();
-     
-      // for문을 사용하여 객체를 추출, Call By Reference 기반의 원본 객체 값 변경
-      for (ProductsVO productsVO : list) {
-        String pName = productsVO.getpName();
-        String description = productsVO.getDescription();
-        
-        pName = Tool.convertChar(pName);  // 특수 문자 처리
-        description = Tool.convertChar(description); 
-        
-        productsVO.setpName(pName);
-        productsVO.setDescription(description);  
+    CategoryVO categoryVO = categoryProc.read(categoryID);
+    mav.addObject("categoryVO", categoryVO);
 
+    CateGroupVO cateGroupVO = cateGroupProc.read(categoryVO.getGrpID());
+    mav.addObject("cateGroupVO", cateGroupVO);
+
+    /*
+     * SPAN태그를 이용한 박스 모델의 지원, 1 페이지부터 시작 현재 페이지: 11 / 22 [이전] 11 12 13 14 15 16 17
+     * 18 19 20 [다음]
+     * @param categoryID 카테고리번호
+     * @param search_count 검색(전체) 레코드수
+     * @param now_page 현재 페이지
+     * @param word 검색어
+     * @return 페이징 생성 문자열
+     */
+    // String paging = productsProc.pagingBox(categoryID, search_count, now_page, word);
+    String paging = productsProc.pagingBox1(productsVO.getNow_page(), productsVO.getWord(), "list_all.do", search_count_all);
+
+   
+    mav.addObject("paging", paging);
+
+    mav.addObject("now_page", now_page);
+
+    // /views/contents/list_by_categoryID_search_paging_cookie.jsp
+    mav.setViewName("/products/list_all");
+
+    // -------------------------------------------------------------------------------
+    // 쇼핑 카트 장바구니에 상품 등록전 로그인 폼 출력 관련 쿠기  
+    // -------------------------------------------------------------------------------
+    Cookie[] cookies = request.getCookies();
+    Cookie cookie = null;
+
+    String ck_id = ""; // id 저장
+    String ck_id_save = ""; // id 저장 여부를 체크
+    String ck_passwd = ""; // passwd 저장
+    String ck_passwd_save = ""; // passwd 저장 여부를 체크
+
+    if (cookies != null) {  // Cookie 변수가 있다면
+      for (int i=0; i < cookies.length; i++){
+        cookie = cookies[i]; // 쿠키 객체 추출
+        
+        if (cookie.getName().equals("ck_id")){
+          ck_id = cookie.getValue();                                 // Cookie에 저장된 id
+        }else if(cookie.getName().equals("ck_id_save")){
+          ck_id_save = cookie.getValue();                          // Cookie에 id를 저장 할 것인지의 여부, Y, N
+        }else if (cookie.getName().equals("ck_passwd")){
+          ck_passwd = cookie.getValue();                          // Cookie에 저장된 password
+        }else if(cookie.getName().equals("ck_passwd_save")){
+          ck_passwd_save = cookie.getValue();                  // Cookie에 password를 저장 할 것인지의 여부, Y, N
+        }
       }
-      
-      mav.addObject("list", list);
-
-      
-    } else {
-      mav.setViewName("/admin/login_need"); // /WEB-INF/views/admin/login_need.jsp
-      
     }
+    
+    System.out.println("-> ck_id: " + ck_id);
+    
+    mav.addObject("ck_id", ck_id); 
+    mav.addObject("ck_id_save", ck_id_save);
+    mav.addObject("ck_passwd", ck_passwd);
+    mav.addObject("ck_passwd_save", ck_passwd_save);
+    // -------------------------------------------------------------------------------
     
     return mav;
   }
+  /**
+   * 위스키 목록 + 검색 + 페이징 지원 + Grid
+   * 검색하지 않는 경우
+   * http://localhost:9093/products/list_by_categoryID_grid.do?categoryID=2&word=&now_page=1
+   * 검색하는 경우
+   * http://localhost:9093/products/list_by_categoryID_grid.do?categoryID=2&word=탐험&now_page=1
+   * 
+   * @param categoryID
+   * @param word
+   * @param now_page
+   * @return
+   */
+   @RequestMapping(value = "/products/list_all_grid.do", method = RequestMethod.GET)
+   public ModelAndView list_all_grid(ProductsVO productsVO) {
+      ModelAndView mav = new ModelAndView();
+    
+      // 검색 목록
+    ArrayList<ProductsVO> list = productsProc.list_all_search_paging(productsVO);
+    
+    // for문을 사용하여 객체를 추출, Call By Reference 기반의 원본 객체 값 변경
+    for (ProductsVO vo : list) {
+      String pName = vo.getpName();
+      String description = vo.getDescription();
+      
+      pName = Tool.convertChar(pName);  // 특수 문자 처리
+      description = Tool.convertChar(description); 
+      
+      vo.setpName(pName);
+      vo.setDescription(description);  
+    
+      }
+      
+      mav.addObject("list", list);
+    
+      CategoryVO categoryVO = categoryProc.read(productsVO.getCategoryID());
+      mav.addObject("categoryVO", categoryVO);
+      
+      HashMap<String, Object> hashMap = new HashMap<String, Object>();
+      hashMap.put("categoryID", productsVO.getCategoryID());
+      hashMap.put("word", productsVO.getWord());
+      
+      int search_count_all = this.productsProc.search_count_all(hashMap);  // 검색된 레코드 갯수 ->  전체 페이지 규모 파악
+      mav.addObject("search_count_all", search_count_all);
+    
+      /*
+   * SPAN태그를 이용한 박스 모델의 지원, 1 페이지부터 시작 현재 페이지: 11 / 22 [이전] 11 12 13 14 15 16 17
+   * 18 19 20 [다음]
+   * @param categoryID 카테고리번호
+   * @param now_page 현재 페이지
+   * @param word 검색어
+   * @param list_file 목록 파일명
+   * @return 페이징용으로 생성된 HTML/CSS tag 문자열
+   */
+    String paging = productsProc.pagingBox1(productsVO.getNow_page(), productsVO.getWord(), "list_all_grid.do", search_count_all);
+    mav.addObject("paging", paging);
+    
+      // mav.addObject("now_page", now_page);
+    
+    mav.setViewName("/products/list_all_grid");  // /contents/list_by_categoryID_grid.jsp
+    
+      return mav;
+    }
   
 //  /**
 //   * 위스키 전체 목록

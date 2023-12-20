@@ -28,9 +28,11 @@
 </style> 
 
 <div id="logo" style="display: flex; align-items: center;">
-  <a href="/"><img src="/css/images/logo4.jpg"></a>
-  <input type="text" placeholder="검색할 제품을 입력해주세요." style = "width : 40%; height : 50px;  margin-left: 350px; border: 5px solid black; font-size: 20px; font-weight: bold;" >
-  <input type = "button"  class="btn btn-dark" value="검색"  style="width: 100px; height: 50px; font-size: 18px; font-weight: bold;  ">
+    <a href="/"><img src="/css/images/logo4.png"></a>
+    <form name='frm' id='frm' method='get' action='../products/list_all.do'>
+    <input type="text" name='word' id='word' value='${param.word }' placeholder="검색할 제품을 입력해주세요." style = "width : 500px; height : 50px;  margin-left: 350px; border: 5px solid black; font-size: 20px; font-weight: bold;" >
+    <input type = "submit"  class="btn btn-dark" value="검색"  style="width: 100px; height: 50px;  margin-left: 10px; font-size: 18px; font-weight: bold;  ">
+  </form>
 </div>
 
 <div class='container_main'>
@@ -113,7 +115,7 @@
               </c:when>
               <c:otherwise>
                 <li class="nav-item"> <%-- 서브 메뉴가 없는 독립메뉴 --%>
-                    <a class="nav-link top_menu_link" href="/cateGroup/list_all.do">전체 글 목록</a>
+                    <a class="nav-link top_menu_link" href="/products/list_all.do">전체 상품 목록</a>
                 </li>
               
                 <li class="nav-item dropdown"> <%-- 관리자 서브 메뉴 --%>
