@@ -7,10 +7,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10.0, width=device-width" /> 
-<title>http://localhost:9093/products/list_all_gallery.do</title>
-<link rel="shortcut icon" href="/images/whisky.png" /> <%-- /static 기준 --%>
-<link href="/css/style.css" rel="Stylesheet" type="text/css"> <!-- /static 기준 -->
-
+<title>술기운</title>
+<link rel="shortcut icon" href="/images/sulic-resize36.png" />
+<link href="/css/style.css" rel="Stylesheet" type="text/css">
 <!-- Fotorama -->
 <script type="text/JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link href="/jquery/fotorama/fotorama.css" rel="stylesheet"> <!-- /static 기준 -->

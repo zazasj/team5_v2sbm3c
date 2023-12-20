@@ -7,10 +7,9 @@
 <head> 
 <meta charset="UTF-8"> 
 <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=5.0, width=device-width" /> 
-<title>NO KID ZONE</title>
-
-<link rel="shortcut icon" href="/images/whisky.png" /> <%-- /static 기준 --%>
-<link href="/css/style.css" rel="Stylesheet" type="text/css"> <!-- /static 기준 -->
+<title>술기운</title>
+<link rel="shortcut icon" href="/images/sulic-resize36.png" />
+<link href="/css/style.css" rel="Stylesheet" type="text/css">
 
 <script type="text/javascript">
   window.onload = function() {

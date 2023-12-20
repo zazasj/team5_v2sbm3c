@@ -7,10 +7,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10.0, width=device-width" /> 
-<title>http://localhost:9091/</title>
-<link rel="shortcut icon" href="/images/whisky.png" /> <%-- /static 기준 --%>
-<link href="/css/style.css" rel="Stylesheet" type="text/css"> <!-- /static 기준 -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<title>술기운</title>
+<link rel="shortcut icon" href="/images/sulic-resize36.png" />
+<link href="/css/style.css" rel="Stylesheet" type="text/css">
+<c:import url="/menu/top.do" />
   
 <script type="text/javascript">
   function delete_func(cartID) {  // GET -> POST 전송, 상품 삭제
@@ -45,7 +45,6 @@
   
 </head>
 <body>
-<c:import url="/menu/top.do" />
 
 <%-- GET -> POST: 상품 삭제, 수량 변경용 폼 --%>
 <form name='frm_post' id='frm_post' action='' method='post'>

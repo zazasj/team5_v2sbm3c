@@ -6,8 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=3.0, width=device-width" /> 
-<title>Resort world</title>
- 
+<title>술기운</title>
+<link rel="shortcut icon" href="/images/sulic-resize36.png" />
 <link href="/css/style.css" rel="Stylesheet" type="text/css">
 </head>
  
