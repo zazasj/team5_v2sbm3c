@@ -19,7 +19,7 @@ public class Events {
         
     } else { // Linux, AWS, 서비스용 배치 폴더 
         // System.out.println("Linux");
-        path = "/home/ubuntu/deploy/team5_v2sbm3c/contents/storage/";
+        path = "/home/ubuntu/deploy/team5_v2sbm3c/storage/";
     }
     
     return path;

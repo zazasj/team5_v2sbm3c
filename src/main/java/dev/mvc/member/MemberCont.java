@@ -804,14 +804,14 @@ public class MemberCont {
     
     //2줄 메일 로그 관련 
     String actname = "Find ID /" + verify_code ;   
-    mailService.createMailRecord(memberVO.getMemberno(), memberVO.getId(), actname);
+   mailService.createMailRecord(memberVO.getMemberno(), memberVO.getId(), actname);
     
     MailTool mailTool = new MailTool();
     String receiver = "zazang0503@naver.com";
     String from = "zazang5@gmail.com";
-    String title = "아이디 찾기 확인 메일 : "+verify_code ;
+    String title = "[술기운] 아이디 찾기 확인 메일 : "+verify_code ;
     String content = " <div style=\"text-align: left;\">\r\n"
-        + "    <b><u>아이디 찾기 안내</u><b><br>\r\n"
+        + "    <b><u>[술기운] 아이디 찾기 안내</u><b><br>\r\n"
         + "    <ul>\r\n"
         + "        <li>인증번호 : "+verify_code+"</li>\r\n"      
         + "    </ul>\r\n"   
@@ -887,9 +887,9 @@ public class MemberCont {
     MailTool mailTool = new MailTool();
     String receiver = "zazang0503@naver.com";
     String from = "zazang5@gmail.com";
-    String title = "비밀번호 재 설정 메일"; 
+    String title = "[술기운] 비밀번호 재 설정 메일"; 
     String content = " <div style=\"text-align: left;\">\r\n"
-        + "    <b><u>비밀번호 재 설정 안내</u><b><br>\r\n"
+        + "    <b><u>[술기운] 비밀번호 재 설정 안내</u><b><br>\r\n"
         + "    <ul>\r\n"
         + "        <li>새로운 임시 비밀번호 : "+generatedCode+"</li>\r\n"      
         + "    </ul>\r\n"   
