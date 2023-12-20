@@ -211,7 +211,6 @@ public class ProductsCont {
   public ModelAndView list_all_1(HttpSession session) {
     ModelAndView mav = new ModelAndView();
     
-    if (this.adminProc.isAdmin(session) == true) {
       mav.setViewName("/products/list_all_1"); // /WEB-INF/views/contents/list_all_1.jsp
       
       ArrayList<ProductsVO> list = this.productsProc.list_all_1();
@@ -233,11 +232,7 @@ public class ProductsCont {
       
       ArrayList<CategoryVO> list_1 = categoryProc.list_all();
       mav.addObject("list_1", list_1);
-      
-    } else {
-      mav.setViewName("/admin/login_need"); // /WEB-INF/views/admin/login_need.jsp
-      
-    }
+
     
     return mav;
   }
@@ -249,8 +244,7 @@ public class ProductsCont {
   @RequestMapping(value="/products/list_all_2.do", method = RequestMethod.GET)
   public ModelAndView list_all_2(HttpSession session) {
     ModelAndView mav = new ModelAndView();
-    
-    if (this.adminProc.isAdmin(session) == true) {
+
       mav.setViewName("/products/list_all_2"); // /WEB-INF/views/contents/list_all_2.jsp
       
       ArrayList<ProductsVO> list = this.productsProc.list_all_2();
@@ -272,11 +266,7 @@ public class ProductsCont {
       
       ArrayList<CategoryVO> list_2 = categoryProc.list_all();
       mav.addObject("list_2", list_2);
-      
-    } else {
-      mav.setViewName("/admin/login_need"); // /WEB-INF/views/admin/login_need.jsp
-      
-    }
+
     
     return mav;
   }
@@ -288,8 +278,7 @@ public class ProductsCont {
   @RequestMapping(value="/products/list_all_3.do", method = RequestMethod.GET)
   public ModelAndView list_all_3(HttpSession session) {
     ModelAndView mav = new ModelAndView();
-    
-    if (this.adminProc.isAdmin(session) == true) {
+
       mav.setViewName("/products/list_all_3"); // /WEB-INF/views/contents/list_all_1.jsp
       
       ArrayList<ProductsVO> list = this.productsProc.list_all_3();
@@ -311,11 +300,7 @@ public class ProductsCont {
       
       ArrayList<CategoryVO> list_3 = categoryProc.list_all();
       mav.addObject("list_3", list_3);
-      
-    } else {
-      mav.setViewName("/admin/login_need"); // /WEB-INF/views/admin/login_need.jsp
-      
-    }
+
     
     return mav;
   }
@@ -328,7 +313,6 @@ public class ProductsCont {
   public ModelAndView list_all_4(HttpSession session) {
     ModelAndView mav = new ModelAndView();
     
-    if (this.adminProc.isAdmin(session) == true) {
       mav.setViewName("/products/list_all_4"); // /WEB-INF/views/contents/list_all_1.jsp
       
       ArrayList<ProductsVO> list = this.productsProc.list_all_4();
@@ -350,11 +334,7 @@ public class ProductsCont {
       
       ArrayList<CategoryVO> list_4 = categoryProc.list_all();
       mav.addObject("list_4", list_4);
-      
-    } else {
-      mav.setViewName("/admin/login_need"); // /WEB-INF/views/admin/login_need.jsp
-      
-    }
+
     
     return mav;
   }
@@ -367,7 +347,6 @@ public class ProductsCont {
   public ModelAndView list_all_5(HttpSession session) {
     ModelAndView mav = new ModelAndView();
     
-    if (this.adminProc.isAdmin(session) == true) {
       mav.setViewName("/products/list_all_5"); // /WEB-INF/views/contents/list_all_1.jsp
       
       ArrayList<ProductsVO> list = this.productsProc.list_all_5();
@@ -390,10 +369,6 @@ public class ProductsCont {
       ArrayList<CategoryVO> list_5 = categoryProc.list_all();
       mav.addObject("list_5", list_5);
       
-    } else {
-      mav.setViewName("/admin/login_need"); // /WEB-INF/views/admin/login_need.jsp
-      
-    }
     
     return mav;
   }
