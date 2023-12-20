@@ -126,6 +126,15 @@
                     <a class="dropdown-item" href='/admin/logout.do'>관리자 ${sessionScope.admin_id } 로그아웃</a>
                   </div>
                 </li>
+                 <li class="nav-item dropdown"> <%-- 관리자 서브 메뉴 --%>
+                  <a class="nav-link top_menu_link dropdown-toggle" data-bs-toggle="dropdown" href="#">재고관리</a>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href='/inventory/list.do'>현 재고 상황</a>
+                    <a class="dropdown-item" href='/inventory/list_all.do'>입/출고 전체 내역</a>
+                    <a class="dropdown-item" href='/inventory/list_by_inventoryStatus.do?word=&now_page=1&inventoryStatus=입고'>입고 내역</a>
+                    <a class="dropdown-item" href='/inventory/list_by_inventoryStatus.do?word=&now_page=1&inventoryStatus=출고'>출고 내역</a>
+                  </div>
+                </li>
               </c:otherwise>
             </c:choose>
             

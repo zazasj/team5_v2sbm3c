@@ -25,6 +25,14 @@ public class SupplierProc implements SupplierProcInter{
 	    return list;
 	  }
 	  
+	  /**한창명 넣음
+	   */
+	  @Override
+    public ArrayList<SupplierVO> list_all(){
+      ArrayList<SupplierVO> list = this.supplierDAO.list_all();
+      return list;
+    }
+	  
 	  @Override
 	  public SupplierVO read(int supplierid) {
 	    SupplierVO supplierVO = this.supplierDAO.read(supplierid);

@@ -15,6 +15,13 @@
       ORDER BY supplierid ASC
    </select>
 	
+	<!-- 한창명 넣음 -->
+   <select id="list_all" resultType="dev.mvc.supplier.SupplierVO">
+      SELECT supplierid, adminno, sname, contactinfo, saddress, rdate
+      FROM Suppliers
+      ORDER BY supplierid ASC
+   </select>
+   
    <!-- 읽기, SQL -> SupplierVO return -->
    <select id="read" resultType="dev.mvc.supplier.SupplierVO" parameterType="int">
       SELECT supplierid, adminno, sname, contactinfo, saddress, rdate

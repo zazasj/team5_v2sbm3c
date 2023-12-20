@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 자식 XML 태그들은 dev.mvc.inventory.InventoryDAOInter.java interface와 연결됨 -->
+<mapper namespace="dev.mvc.inventory.InventoryDAOInter">
+  <!-- return: 등록한 레코드 갯수를 1을 리턴, parameterType: 전달받는 데이터 -->
+  <insert id="create" parameterType="dev.mvc.inventory.InventoryVO">
+    INSERT INTO inventory(inventoryID, inventoryStatus, productID, addQuantity,supplierID , lastUpdated) VALUES(inven_seq.nextval,#{inventoryStatus },#{productID},#{addQuantity},#{supplierID}, #{lastUpdated} )
+  </insert>
+
+  <!-- 전체 목록, SQL -> InventoryVO -> ArrayList<InventoryVO> return -->
+<!--   <select id="list_all" resultType="dev.mvc.inventory.InventoryVO">
+    SELECT inventoryID, name, cnt, rdate FROM inventory ORDER BY inventoryID ASC
+  </select> -->
+
+  <!-- 출력 우선 순위 적용 -->
+<!--   <select id="list_all" resultType="dev.mvc.inventory.InventoryVO">
+    SELECT inventoryID, name, cnt, rdate, seqID FROM inventory ORDER BY seqID ASC
+  </select>
+ -->
+ 
+  <!-- 출력 모드 적용 -->
+  <select id="list_all" resultType="dev.mvc.inventory.InventoryVO">
+    SELECT inventoryID, inventoryStatus, productID,quantity, supplierID ,addQuantity, lastUpdated FROM inventory ORDER BY lastUpdated DESC
+  </select>
+  
+  <!-- 출력 모드 적용 -->
+  <select id="list" resultType="dev.mvc.inventory.InventoryVO">
+    SELECT productID, MIN(quantity) AS quantity FROM inventory GROUP BY productID ORDER BY productID ASC
+  </select>
+      
+  <!-- 읽기, SQL -> InventoryVO return -->
+  <select id="read" resultType="dev.mvc.inventory.InventoryVO" parameterType="int">
+    SELECT inventoryID, inventoryStatus, productID,quantity, supplierID ,addQuantity, lastUpdated FROM inventory WHERE inventoryID=#{inventoryID}
+  </select>
+  
+  <!-- 읽기, SQL -> InventoryVO return -->
+  <select id="readString" resultType="dev.mvc.inventory.InventoryVO" parameterType="String">
+    SELECT inventoryID, inventoryStatus, productID,quantity, supplierID ,addQuantity, lastUpdated FROM inventory WHERE inventoryStatus=#{inventoryStatus}
+  </select>
+
+  <!-- return: 수정한 레코드 갯수 리턴, parameterType: 수정할 레코드 정보 -->
+  <update id="update" parameterType="dev.mvc.inventory.InventoryVO">
+    UPDATE inventory SET inventoryStatus=#{inventoryStatus},productID=#{productID} ,supplierID=#{supplierID}, addQuantity=#{addQuantity}, lastUpdated=#{lastUpdated}
+    WHERE inventoryID=#{inventoryID}
+  </update>
+  
+  <!-- return: 수정한 레코드 갯수 리턴, parameterType: 수정할 레코드 정보 -->
+  <update id="updatequantity" parameterType="dev.mvc.inventory.InventoryVO">
+    UPDATE inventory SET quantity = (SELECT SUM(addQuantity) FROM inventory sub WHERE sub.productID = inventory.productID)
+  </update>
+  
+  <!-- return: 삭제한 레코드 갯수 리턴, parameterType: 삭제할 레코드 정보 -->
+  <delete id="delete" parameterType="int">
+    DELETE FROM inventory WHERE inventoryID=#{inventoryID}
+  </delete>
+  
+  <!-- 카테고리별 검색 레코드 갯수 -->
+  <select id="search_count" resultType="int" parameterType="HashMap">
+    SELECT COUNT(*) as cnt
+    FROM inventory
+    <choose>
+      <when test="word == null or word == ''"> <!-- 검색하지 않는 경우의 레코드 갯수 -->
+        WHERE inventoryStatus=#{inventoryStatus}
+      </when>
+      <otherwise> <!-- 검색하는 경우의 레코드 갯수 -->
+        WHERE inventoryStatus=#{inventoryStatus} AND (UPPER(productID) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(supplierID) LIKE '%' || UPPER(#{word}) || '%'
+                                                  OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+      </otherwise>
+    </choose>
+  </select> 
+  <!-- 
+  카테고리별 검색 목록
+  <select id="list_by_tripno_search" resultType="dev.mvc.country.CountryVO" parameterType="HashMap">
+    SELECT countryno, managerno, tripno, title, content, recom, cnt, replycnt, word, rdate,
+            file1, file1saved, thumb1, size1, map, youtube
+    FROM country
+    <choose>
+      <when test="word == null or word == ''"> 검색하지 않는 경우
+        WHERE tripno=#{tripno}
+      </when>
+      <otherwise> 검색하는 경우
+        WHERE tripno=#{tripno} AND (UPPER(title) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(content) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+      </otherwise>
+    </choose>
+    ORDER BY countryno DESC   
+  </select>
+   
+  카테고리별 검색 레코드 갯수
+  <select id="search_count" resultType="int" parameterType="HashMap">
+    SELECT COUNT(*) as cnt
+    FROM country
+    <choose>
+      <when test="word == null or word == ''"> 검색하지 않는 경우의 레코드 갯수
+        WHERE tripno=#{tripno}
+      </when>
+      <otherwise> 검색하는 경우의 레코드 갯수
+        WHERE tripno=#{tripno} AND (UPPER(title) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(content) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+      </otherwise>
+    </choose>
+  </select>    -->
+
+  <!-- 카테고리별 검색 + 페이징 목록 -->
+  <select id="list_by_inventoryStatus_search_paging" resultType="dev.mvc.inventory.InventoryVO" parameterType="dev.mvc.inventory.InventoryVO">
+   SELECT inventoryID, inventoryStatus, productID, supplierID, quantity, addQuantity, lastUpdated, r
+   FROM (
+              SELECT inventoryID, inventoryStatus, productID, supplierID, quantity, addQuantity, lastUpdated, rownum as r
+              FROM (
+                        SELECT inventoryID, inventoryStatus, productID, supplierID, quantity, addQuantity, lastUpdated
+                        FROM inventory
+                        <choose>
+                          <when test="word == null or word == ''"> <!-- 검색하지 않는 경우 -->
+                            WHERE inventoryStatus=#{inventoryStatus}
+                          </when>
+                          <otherwise>
+                            WHERE inventoryStatus=#{inventoryStatus} AND (UPPER(productID) LIKE '%' || UPPER(#{word}) || '%' 
+                                                              OR UPPER(supplierID) LIKE '%' || UPPER(#{word}) || '%' 
+                                                              OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+                          </otherwise>
+                        </choose>
+                        ORDER BY inventoryID DESC
+               )
+    )
+    WHERE <![CDATA[ r >= #{start_num} AND r <= #{end_num} ]]>
+     
+    <!-- 1 page: WHERE r >= 1 AND r <= 10; 
+          2 page: WHERE r >= 11 AND r <= 20;
+          3 page: WHERE r >= 21 AND r <= 30; -->
+  </select>
+  <!-- 
+  특정 카테고리에 속한 레코드 갯수를 리턴
+  <select id="count_by_tripno" resultType="int" parameterType="int">
+    SELECT COUNT(*) as cnt 
+    FROM country 
+    WHERE tripno=#{tripno}
+  </select>
+  
+  특정 카테고리에 속한 모든 레코드 삭제
+  <delete id="delete_by_tripno" parameterType="int">
+    DELETE FROM country
+    WHERE tripno=#{tripno}
+  </delete> -->
+</mapper>
+
+
+
+
+
+

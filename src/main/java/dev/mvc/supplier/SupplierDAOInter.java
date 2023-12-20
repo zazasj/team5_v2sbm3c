@@ -18,6 +18,10 @@ public interface SupplierDAOInter {
 	 */
 	public ArrayList<SupplierVO> list_all_adminno(int adminno);
 	
+	/** 한창명 넣음
+   */
+  public ArrayList<SupplierVO> list_all();
+	
 	/**
 	 * 조회
 	 * @param supplierno
