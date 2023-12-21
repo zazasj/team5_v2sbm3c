@@ -1,5 +1,6 @@
 package dev.mvc.member;
  
+import java.security.KeyStore.Entry.Attribute;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -132,8 +133,7 @@ public class MemberCont {
 
     mav.addObject("url", "/member/msg");  // /member/msg -> /member/msg.jsp
     
-    mav.setViewName("redirect:/member/msg.do"); // POST -> GET -> /member/msg.jsp
-    
+    mav.setViewName("redirect:/member/msg.do");
     return mav;
   }
   
@@ -255,11 +255,11 @@ public class MemberCont {
    * @return
    */
   @RequestMapping(value="/member/delete.do", method=RequestMethod.GET)
-  public ModelAndView delete(HttpSession session){
+  public ModelAndView delete(HttpSession session,int memberno){
     ModelAndView mav = new ModelAndView();    
-    MemberVO memberVO = this.memberProc.read((int)session.getAttribute("memberno")); // �궘�젣�븷 �젅肄붾뱶瑜� �궗�슜�옄�뿉寃� 異쒕젰�븯湲곗쐞�빐 �씫�쓬.
+    MemberVO memberVO = this.memberProc.read(memberno); // �궘�젣�븷 �젅肄붾뱶瑜� �궗�슜�옄�뿉寃� 異쒕젰�븯湲곗쐞�빐 �씫�쓬.
     mav.addObject("memberVO", memberVO);
-    
+    session.setAttribute("delmno", memberno);
     mav.setViewName("/member/delete"); // /member/delete.jsp
     
     return mav; // forward
@@ -273,7 +273,7 @@ public class MemberCont {
   @RequestMapping(value="/member/delete.do", method=RequestMethod.POST)
   public ModelAndView delete_proc(HttpSession session){
     ModelAndView mav = new ModelAndView();   
-    MemberVO memberVO = this.memberProc.read((int)session.getAttribute("memberno")); // �궘�젣�븷 �젅肄붾뱶瑜� �궗�슜�옄�뿉寃� 異쒕젰�븯湲곗쐞�빐 �씫�쓬.
+    MemberVO memberVO = this.memberProc.read((int)session.getAttribute("delmno")); // �궘�젣�븷 �젅肄붾뱶瑜� �궗�슜�옄�뿉寃� 異쒕젰�븯湲곗쐞�빐 �씫�쓬.
     mav.addObject("memberVO", memberVO);
     int memberno = memberVO.getMemberno();
     String id = memberVO.getId();
@@ -286,7 +286,7 @@ public class MemberCont {
     
 
     if (cnt == 1) {
-      mav.addObject("code", "delete_success");
+      mav.addObject("code", "delete_success_admin");
     } else {
       mav.addObject("code", "delete_fail");
     }

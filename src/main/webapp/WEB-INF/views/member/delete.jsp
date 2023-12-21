@@ -27,8 +27,7 @@
   </ASIDE> 
  
   <div class='menu_line'></div>
- 
- 
+
   <div class='message'>
     <form name='frm' method='post' action='./delete.do'>
       '${memberVO.mname }(${memberVO.id })' 회원을 삭제하면 복구 할 수 없습니다.<br><br>
@@ -40,7 +39,6 @@
    
     </form>
   </div>
-
 <jsp:include page="../menu/bottom.jsp" flush='false' />
 </body>
  

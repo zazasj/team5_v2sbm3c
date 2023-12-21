@@ -28,10 +28,10 @@
 </style> 
 
 <div id="logo" style="display: flex; align-items: center;">
-    <a href="/"><img src="/css/images/logo4.png"></a>
+    <a href="/" style="display: block; margin-top: 20px; margin-left: 10px;"><img src="/css/images/logo4.png"></a>
     <form name='frm' id='frm' method='get' action='../products/list_all.do'>
-    <input type="text" name='word' id='word' value='${param.word }' placeholder="검색할 제품을 입력해주세요." style = "width : 500px; height : 50px;  margin-left: 350px; border: 5px solid black; font-size: 20px; font-weight: bold;" >
-    <input type = "submit"  class="btn btn-dark" value="검색"  style="width: 100px; height: 50px;  margin-left: 10px; font-size: 18px; font-weight: bold;  ">
+    <input type="text" name='word' id='word' value='${param.word }' placeholder="검색할 제품을 입력해주세요." style = "width : 600px; height : 50px;  margin-left: 350px;  border: 5px solid black; font-size: 20px; font-weight: bold;" >
+    <input type = "submit"  class="btn btn-dark" value="검색"  style="width: 100px; height: 50px; margin-bottom: 10px; margin-left: 10px; font-size: 18px; font-weight: bold;  ">
   </form>
 </div>
 

@@ -89,6 +89,17 @@
                          class="btn btn-primary btn-sm">확인</button>
           </li>                                                                     
         </c:when>    
+        
+        <c:when test="${param.code == 'delete_success_admin'}"> <%-- Java if --%>
+          <li class='li_none'>
+            <span class="span_success"> 회원 정보 삭제에 성공했습니다.</span>
+          </li>   
+          <li class='li_none'>
+            <button type='button' 
+                         onclick="location.href='/member/list.do'"
+                         class="btn btn-primary btn-sm">확인</button>
+          </li>                                                                     
+        </c:when> 
             
         <c:when test="${code == 'delete_fail'}"> <%-- Java if --%>
           <li class='li_none'>

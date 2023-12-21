@@ -4,38 +4,38 @@
 <mapper namespace = "dev.mvc.member.MemberDAOInter">
   <select id="checkID" resultType="int" parameterType="String">
     SELECT COUNT(id) as cnt
-    FROM member
+    FROM Member
     WHERE id=#{id}
   </select>
   
   <insert id="create" parameterType="dev.mvc.member.MemberVO">
-    INSERT INTO member(memberno, id, passwd, mname, tel, zipcode, address1, address2, mdate, grade)
+    INSERT INTO Member(memberno, id, passwd, mname, tel, zipcode, address1, address2, mdate, grade)
     VALUES (member_seq.nextval, #{id}, #{passwd}, #{mname}, #{tel}, #{zipcode}, 
                  #{address1}, #{address2}, sysdate, #{grade})
   </insert>
 
   <select id="list" resultType="dev.mvc.member.MemberVO">
     SELECT memberno, id, passwd, mname, tel, zipcode, address1, address2, mdate, grade
-    FROM member
+    FROM Member
     ORDER BY grade ASC, id ASC
   </select>
   
   <!-- memberno로 회원 정보 조회 -->
   <select id="read" resultType="dev.mvc.member.MemberVO" parameterType="int">
     SELECT memberno, id, passwd, mname, tel, zipcode, address1, address2, mdate, grade
-    FROM member
+    FROM Member
     WHERE memberno = #{memberno}
   </select>  
 
   <!-- id(이메일)로 회원 정보 조회 -->
   <select id="readById" resultType="dev.mvc.member.MemberVO" parameterType="String">
     SELECT memberno, id, passwd, mname, tel, zipcode, address1, address2, mdate, grade
-    FROM member
+    FROM Member
     WHERE id = #{id}
   </select>
   
   <update id="update" parameterType="dev.mvc.member.MemberVO">
-    UPDATE member 
+    UPDATE Member 
     SET id=#{id}, mname=#{mname}, tel=#{tel}, zipcode=#{zipcode}, address1=#{address1}, address2=#{address2}
     WHERE memberno=#{memberno}
   </update>
@@ -47,27 +47,27 @@
   </update>-->
   
   <delete id="delete" parameterType="int">
-    DELETE FROM member
+    DELETE FROM Member
     WHERE memberno=#{memberno}
   </delete>
 
   <!-- 로그인 -->
   <select id="login" resultType="int" parameterType="HashMap">
     SELECT COUNT(memberno) as cnt
-    FROM member
+    FROM Member
     WHERE id=#{id} AND passwd=#{passwd}
   </select>
   
   <!--  현재 패스워드 검사 -->
   <select id="passwd_check" parameterType="HashMap" resultType="int">
     SELECT COUNT(memberno) as cnt
-    FROM member
+    FROM Member
     WHERE memberno=#{memberno} AND passwd=#{passwd}
   </select>
    
   <!-- 패스워드 변경 -->
   <update id="passwd_update" parameterType="HashMap">
-    UPDATE member
+    UPDATE Member
     SET passwd=#{passwd}
     WHERE memberno=#{memberno}
   </update>
@@ -75,14 +75,14 @@
   <!-- 아이디찾기 -->
   <select id="findid" resultType="int" parameterType="HashMap">
     SELECT COUNT(*) as cnt
-    FROM member
+    FROM Member
     WHERE mname=#{name} AND tel=#{tel}
   </select>
   
   <!-- tel로 회원 정보 조회 -->
   <select id="readBytel" resultType="dev.mvc.member.MemberVO" parameterType="String">
     SELECT memberno, id
-    FROM member
+    FROM Member
     WHERE tel = #{tel}
   </select>
   

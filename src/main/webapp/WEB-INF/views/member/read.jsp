@@ -277,7 +277,7 @@ window.onload = function() {
     </div>
     
     <div class="form_input">
-      <button type="button" id='btn_send' onclick="send()" class="btn btn-primary btn-sm">저장</button>
+      <button type="submit" id='btn_send' onclick="send()" class="btn btn-primary btn-sm">저장</button>
       <button type="button" onclick="history.back()" class="btn btn-primary btn-sm">취소</button>
     </div>   
   </FORM>

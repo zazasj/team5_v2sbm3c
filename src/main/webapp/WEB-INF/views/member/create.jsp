@@ -324,7 +324,7 @@
     </div>
     
     <div class="bottom_menu">
-      <button type="button" id='btn_send' onclick="send()" class="btn btn-primary btn-sm">가입</button>
+      <button type="submit" id='btn_send' onclick="send()" class="btn btn-primary btn-sm">가입</button>
       <button type="button" onclick="history.back()" class="btn btn-primary btn-sm">취소</button>
     </div>   
   </form>
