@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="dev.mvc.favproduct.FavProductDAOInter">
+
+  <insert id="create" parameterType="dev.mvc.favproduct.FavProductVO">
+    INSERT INTO favproduct(favID, productID, memberno, createdat)
+    VALUES(FAV_seq.nextval, #{productID}, #{memberno}, sysdate)
+  </insert> 
+  
+  <!-- memberno 회원 번호별 쇼핑카트 목록 출력 -->
+  <select id="list_by_memberno" resultType="dev.mvc.favproduct.FavProductVO" parameterType="int">
+    SELECT f.favID, p.productID, p.pName, p.thumb, p.price, f.memberno, f.createdat
+    FROM products p, favproduct f
+    WHERE (p.productID = f.productID) AND f.memberno = #{memberno}
+    ORDER BY favID ASC
+  </select>  
+  
+  <!-- 삭제 처리, id=delete, 입력: PK, 리턴: 삭제된 갯수 int -->
+  <delete id="delete" parameterType="int">
+    DELETE FROM favproduct 
+    WHERE favID =#{favID}
+  </delete>
+  
+  <select id="checkIfFavorite" parameterType="java.util.HashMap" resultType="int">
+        SELECT COUNT(*) 
+        FROM favproduct
+        WHERE memberno=#{memberno} AND productID=#{productID}
+    </select>
+</mapper>

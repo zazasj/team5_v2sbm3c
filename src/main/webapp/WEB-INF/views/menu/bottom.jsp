@@ -25,7 +25,7 @@
 	}	  
   </style>
  <div class="fixed-button">
-    <a href="http://localhost:5000/chatbot?memberno=${sessionScope.memberno}">
+    <a href="http://15.165.163.8:5000/chatbot?memberno=${sessionScope.memberno }">    
         <button>
             <img src='/css/images/chat.png' title="chat">
         </button>

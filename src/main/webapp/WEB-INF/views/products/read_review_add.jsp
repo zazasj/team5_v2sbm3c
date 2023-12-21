@@ -26,6 +26,137 @@
 <!-- 추가 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript">
+$(function() {
+    var favform= $('#favform');
+    $('#btn_login').on('click', login_ajax);
+    $('#btn_loadDefault').on('click', loadDefault);
+    $('#btn_favproduct', favform).on('click', favproduct_ajax);
+  });
+  
+function loadDefault() {
+    $('#id').val('user1');
+    $('#passwd').val('1234');
+  } 
+  
+  <%-- 로그인 --%>
+  function login_ajax() {
+    var params = "";
+    params = $('#frm_login').serialize(); // 직렬화, 폼의 데이터를 키와 값의 구조로 조합
+    // params += '&${ _csrf.parameterName }=${ _csrf.token }';
+    // console.log(params);
+    // return;
+    
+    $.ajax(
+      {
+        url: '/member/login_ajax.do',
+        type: 'post',  // get, post
+        cache: false, // 응답 결과 임시 저장 취소
+        async: true,  // true: 비동기 통신
+        dataType: 'json', // 응답 형식: json, html, xml...
+        data: params,      // 데이터
+        success: function(rdata) { // 응답이 온경우
+          var str = '';
+          //console.log('-> login cnt: ' + rdata.cnt);  // 1: 로그인 성공
+          
+          if (rdata.cnt == 1) {
+            // 관심목록에 insert 처리 Ajax 호출
+            $('#div_login').hide();
+            // alert('로그인 성공');
+            $('#login_yn').val('YES'); // 로그인 성공 기록
+            location.reload();
+            productID_ajax(); // 관심목록에 insert 처리 Ajax 호출 
+            
+          } else {
+            alert('로그인에 실패했습니다.<br>잠시후 다시 시도해주세요.');
+            
+          }
+        },
+        // Ajax 통신 에러, 응답 코드가 200이 아닌경우, dataType이 다른경우 
+        error: function(request, status, error) { // callback 함수
+          console.log(error);
+        }
+      }
+    );  //  $.ajax END
+
+  }
+
+  
+  <%-- 찜한 목록에 상품 추가 --%>
+  function favproduct_ajax() {
+    var favform= $('#favform');
+    var productID = $('#productID', favform).val();
+    var memberno= $('#memberno', favform).val();
+    
+    console.log('-> productID: ' + productID); 
+
+  //이미 관심상품인지 확인하는 AJAX 요청
+    $.ajax({
+      url: '/favproduct/check.do',
+      type: 'GET',
+      data: { productID: productID, memberno: memberno },
+      dataType: 'json',
+      success: function(response) {
+        if (response.error){
+		  // memberno가 없을때 로그인 폼 표시
+          $('#div_login').show();
+          }
+        else if (response.isFavorite) {
+          // 이미 관심상품인 경우
+          alert('이미 관심상품 목록에 있습니다.');
+        } else {
+          // 관심상품에 추가
+          if ('${sessionScope.id}' != '' || $('#login_yn').val() == 'YES') {
+            productID_ajax_post();  // 실제로 관심상품에 상품을 추가
+          } else {
+            $('#div_login').show(); // 로그인폼 출력
+          }
+        }
+      },
+      error: function(error) {
+        console.error('에러 발생:', error);
+      }
+    });
+  }
+
+<%-- 찜한 목록에 상품 등록 --%>
+function productID_ajax_post() {
+  var params = "";
+  params = $('#favform').serialize(); // 직렬화, 폼의 데이터를 키와 값의 구조로 조합
+  console.log('-> params: '+params)
+  $.ajax(
+    {
+      url: '../favproduct/create.do',
+      type: 'post',  // get, post
+      cache: false, // 응답 결과 임시 저장 취소
+      async: true,  // true: 비동기 통신
+      dataType: 'json', // 응답 형식: json, html, xml...
+      data: params,      // 데이터
+      beforeSend: function() {
+          console.log('Sending data:', params);
+      },
+      success: function(rdata) { // 응답이 온경우
+        var str = '';
+        // console.log('-> cart_ajax_post cnt: ' + rdata.cnt);  // 1: 쇼핑카트 등록 성공
+        
+        if (rdata.favID == 1) {
+          var sw = confirm('선택한 상품이 관심상품에 담겼습니다.\n관심상품으로 이동하시겠습니까?');
+          if (sw == true) {
+            // 관심상품으로 이동
+            location.href='/favproduct/list_by_memberno.do';
+          }           
+        } else {
+          alert('선택한 상품을 장바구니에 담지못했습니다.<br>잠시후 다시 시도해주세요.');
+        }
+      },
+      // Ajax 통신 에러, 응답 코드가 200이 아닌경우, dataType이 다른경우 
+      error: function(request, status, error) { // callback 함수
+        console.log(error);
+      }
+    }
+  );  //  $.ajax END
+
+}
+
   let review_list;
   $(function(){    
     // ---------------------------------------- 댓글 관련 시작 ----------------------------------------
@@ -440,6 +571,18 @@
     <a href="./list_by_categoryID.do?categoryID=${categoryID}&now_page=${param.now_page}&word=${param.word }">목록형</a>    
     <span class='menu_divide' >│</span>
     <a href="./list_by_categoryID_grid.do?categoryID=${categoryID }&now_page=${param.now_page}&word=${param.word }">갤러리형</a>
+    <!--  <form name='favform' id='favform' >
+      <input type='hidden' name='productID' id='productID' value='${productID}'>
+      <input type='hidden' name='memberno' id='memberno' value='${sessionScope.memberno}'>
+      
+      <DIV style='text-align: center; text-decoration: none;'>      
+        <button type='button' id='btn_favproduct' class="btn btn-outline-danger" 
+        style="padding: 2px 8px 3px 8px; margin: 0px 0px 2px 0px; 
+        width: 100px; height: 50px; font-size: 18px; font-weight: bold; ">
+        찜하기</button><br>
+    </DIV>
+  </form> -->
+    
   </aside> 
   
   <div style="text-align: right; clear: both;">  
@@ -464,6 +607,53 @@
   
   <DIV class='menu_line'></DIV>
 
+
+  <%-- ******************** Ajax 기반 로그인 폼 시작 ******************** --%>
+  <DIV id='div_login' style='display: none;'>
+    <div style='width: 80%; margin: 0px 0px 0px 40%;'>
+        <FORM name='frm_login' id='frm_login' method='POST' action='/member/login_ajax.do' class="form-horizontal">
+          <input type="hidden" name="${ _csrf.parameterName }" value="${ _csrf.token }">
+          <input type="hidden" name="productID" id="productID" value="productID">
+          <input type='hidden' name='memberno' id='memberno' value='${sessionScope.memberno}'>
+    
+          <div class="form-group">
+            <label class="col-md-4 control-label" style='font-size: 0.8em;'>아이디</label>    
+            <div class="col-md-8">
+              <input type='text' class="form-control" name='id' id='id' 
+                         value='${ck_id }' required="required" 
+                         style='width: 40%;' placeholder="아이디" autofocus="autofocus">
+              <Label>   
+                <input type='checkbox' name='id_save' value='Y' 
+                          ${ck_id_save == 'Y' ? "checked='checked'" : "" }> 저장
+              </Label>                   
+            </div>
+       
+          </div>   
+       
+          <div class="form-group">
+            <label class="col-md-4 control-label" style='font-size: 0.8em;'>패스워드</label>    
+            <div class="col-md-8">
+              <input type='password' class="form-control" name='passwd' id='passwd' 
+                        value='${ck_passwd }' required="required" style='width: 40%;' placeholder="패스워드">
+              <Label>
+                <input type='checkbox' name='passwd_save' value='Y' 
+                          ${ck_passwd_save == 'Y' ? "checked='checked'" : "" }> 저장
+              </Label>
+            </div>
+          </div>   
+        </FORM>
+    </div>
+   
+    <div style='text-align: center; margin: 10px auto;'>
+      <button type="submit" id='btn_login' class="btn btn-info">로그인</button>
+      <button type='button' onclick="location.href='../member/create.do'" class="btn btn-info">회원가입</button>
+      <button type='button' id='btn_loadDefault' class="btn btn-info">테스트 계정</button>
+      <button type='button' id='btn_cancel' class="btn btn-info" onclick="$('#div_login').hide();">취소</button>
+    </div>
+  
+  </DIV>
+  <%-- ******************** Ajax 기반 로그인 폼 종료 ******************** --%>
+  
   <fieldset class="fieldset_basic">
     <ul>
       <li class="li_none">
@@ -504,19 +694,29 @@
     <button type="button" class="btn-close" id = "warning_close" data-bs-dismiss="alert"></button>
     <strong>로그인 필요 기능</strong>  회원 로그인 후에 좋아요가 가능합니다.
   </div>
-  <form name='likeform' id='likeform' method='post' action='/like/like_check.do'>
-        <input type='hidden' name='productid' id='productid' value='${productID }'>
+  	<DIV style='text-align: center; text-decoration: none;'>               
+  		<form name='likeform' id='likeform' method='post' action='/like/like_check.do' style="display: inline-block; margin-right: 10px;">
+  		<input type='hidden' name='productid' id='productid' value='${productID }'>
         <input type='hidden' name='memberno' id='memberno' value='${sessionScope.memberno}'>
         <input type='hidden' name='word ' id='word ' value='${word }'>
         <input type='hidden' name='categoryID' id='categoryID' value='${categoryID }'>
               
-        <DIV style='text-align: center; text-decoration: none;'>               
           <button type='submit' name='likebtn' id='likebtn' class='btn btn-outline-danger' 
           style="padding: 2px 8px 3px 8px; margin: 0px 0px 2px 0px; 
           width: 100px; height: 50px; font-size: 18px; font-weight: bold; ">
           ♥(${recom })</button>
-        </DIV>
- </form>
+        </form>
+    	<form name='favform' id='favform' style="display: inline-block;">
+    	<input type='hidden' name='productID' id='productID' value='${productID}'>
+    	<input type='hidden' name='memberno' id='memberno' value='${sessionScope.memberno}'>      
+    	<button type='button' id='btn_favproduct' class="btn btn-outline-danger" 
+    	style="padding: 2px 8px 3px 8px; margin: 0px 0px 2px 0px; 
+          width: 100px; height: 50px; font-size: 18px; font-weight: bold;">찜하기</button><br>
+    	</form>
+    </DIV>
+    
+  
+  
   
   <!-- ------------------------------ 댓글 영역 시작 ------------------------------ -->
 

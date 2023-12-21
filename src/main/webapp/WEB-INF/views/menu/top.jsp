@@ -27,6 +27,19 @@
   }
 </style> 
 
+<script type="text/javascript">
+  function chatbot() {
+    // "http://15.165.163.8localhost:5000/chatbot/?memberno=${sessionScope.memberno }"  
+    var url = 'http://15.165.163.8:5000/chatbot?memberno=${sessionScope.memberno }';
+    var win = window.open(url, '챗봇', 'width=1300px, height=850px');
+       
+    var x = (screen.width - 1300) / 2;
+    var y = (screen.height - 850) / 2;
+       
+    win.moveTo(x, y); // 화면 중앙으로 이동
+  }
+</script>
+
 <div id="logo" style="display: flex; align-items: center;">
     <a href="/"><img src="/css/images/logo4.png"></a>
     <form name='frm' id='frm' method='get' action='../products/list_all.do'>
@@ -96,6 +109,7 @@
                     <a class="dropdown-item" href="http://localhost:8001/ais/recommend_form/?memberno=${sessionScope.memberno }">관심분야 등록하고 추천받기</a>
                     <a class="dropdown-item" href="/orderdetails/list_by_memberno.do">회원 주문 상세 목록</a>
                     <a class="dropdown-item" href="/member/read.do">가입 정보</a>
+                    <a class="dropdown-item" href="/favproduct/list_by_memberno.do">관심상품</a>                    
                     <a class="dropdown-item" href="/carts/list_by_memberno.do">장바구니</a>
                     <a class="dropdown-item" href="#">주문 결제</a>
                     <a class="dropdown-item" href="/member/passwd_update.do">비밀번호 변경</a>
