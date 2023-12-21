@@ -27,19 +27,6 @@
   }
 </style> 
 
-<script type="text/javascript">
-  function chatbot() {
-    // "http://15.165.163.8localhost:5000/chatbot/?memberno=${sessionScope.memberno }"  
-    var url = 'http://15.165.163.8:5000/chatbot?memberno=${sessionScope.memberno }';
-    var win = window.open(url, '챗봇', 'width=1300px, height=850px');
-       
-    var x = (screen.width - 1300) / 2;
-    var y = (screen.height - 850) / 2;
-       
-    win.moveTo(x, y); // 화면 중앙으로 이동
-  }
-</script>
-
 <div id="logo" style="display: flex; align-items: center;">
     <a href="/"><img src="/css/images/logo4.png"></a>
     <form name='frm' id='frm' method='get' action='../products/list_all.do'>
