@@ -22,6 +22,8 @@ import dev.mvc.cateGroup.CateGroupProcInter;
 import dev.mvc.cateGroup.CateGroupVO;
 import dev.mvc.category.CategoryProcInter;
 import dev.mvc.category.CategoryVO;
+import dev.mvc.supplier.SupplierProcInter;
+import dev.mvc.supplier.SupplierVO;
 import dev.mvc.tool.Tool;
 import dev.mvc.tool.Upload;
 
@@ -42,6 +44,10 @@ public class ProductsCont {
   @Autowired
   @Qualifier("dev.mvc.products.ProductsProc") // @Component("dev.mvc.products.ContentsProc")
   private ProductsProcInter productsProc;
+  
+  @Autowired
+  @Qualifier("dev.mvc.supplier.SupplierProc")
+  private SupplierProcInter supplierProc;
   
   public ProductsCont () {
     System.out.println("-> ProductsCont created.");
@@ -65,9 +71,15 @@ public class ProductsCont {
   @RequestMapping(value="/products/create.do", method = RequestMethod.GET)
   public ModelAndView create(int categoryID) {
     ModelAndView mav = new ModelAndView();
+    
+    ArrayList<SupplierVO> list_sup = this.supplierProc.list_all();
+    mav.addObject("list_sup", list_sup);
 
     CategoryVO categoryVO = this.categoryProc.read(categoryID); // create.jsp에 카테고리 정보를 출력하기위한 목적
     mav.addObject("categoryVO", categoryVO);
+    
+    CateGroupVO cateGroupVO = cateGroupProc.read(categoryVO.getGrpID());
+    mav.addObject("cateGroupVO", cateGroupVO);
     
     mav.setViewName("/products/create"); // /webapp/WEB-INF/views/products/create.jsp
     
@@ -1824,21 +1836,23 @@ public class ProductsCont {
   public ModelAndView delete(ProductsVO productsVO) {
     ModelAndView mav = new ModelAndView();
     
+ // 삭제할 파일 정보를 읽어옴, 기존에 등록된 레코드 저장용
+    ProductsVO productsVO_old = productsProc.read(productsVO.getProductID());
+    
     // -------------------------------------------------------------------
     // 파일 삭제 시작
     // -------------------------------------------------------------------
-    // 삭제할 파일 정보를 읽어옴.
-    ProductsVO productsVO_read = productsProc.read(productsVO.getProductID());
-        
-    String imageFileSaved = productsVO.getImageFileSaved();
-    String thumb = productsVO.getThumb();
+    String imageFileSaved = productsVO_old.getImageFileSaved();  // 실제 저장된 파일명
+    String thumb = productsVO_old.getThumb();       // 실제 저장된 preview 이미지 파일명
+    long sizes = 0;
+       
+    String upDir =  Products.getUploadDir(); // C:/kd/deploy/resort_v3sbm3c/contents/storage/
     
-    String uploadDir = Products.getUploadDir();
-    Tool.deleteFile(uploadDir, imageFileSaved);  // 실제 저장된 파일삭제
-    Tool.deleteFile(uploadDir, thumb);     // preview 이미지 삭제
+    Tool.deleteFile(upDir, imageFileSaved);  // 실제 저장된 파일삭제
+    Tool.deleteFile(upDir, thumb);     // preview 이미지 삭제
     // -------------------------------------------------------------------
     // 파일 삭제 종료
-    // -------------------------------------------------------------------
+    // --------------------------------------------------------------------
         
     this.productsProc.delete(productsVO.getProductID()); // DBMS 삭제
         
@@ -1864,7 +1878,7 @@ public class ProductsCont {
 
     mav.addObject("categoryID", productsVO.getCategoryID());
     mav.addObject("now_page", now_page);
-    mav.setViewName("redirect:/products/list_by_category.do"); 
+    mav.setViewName("redirect:/products/list_by_categoryID.do"); 
     
     return mav;
   }   

@@ -189,9 +189,9 @@
     <form name='frm' id='frm' method='get' action='./list_by_categoryID.do'>
       <input type='hidden' name='categoryID' value='${categoryVO.categoryID }'>
       <input type='text' name='word' id='word' value='${param.word }' style='width: 20%;'>
-      <button type='submit'>검색</button>
+      <button class="press-button" type='submit'>검색</button>
       <c:if test="${param.word.length() > 0 }">
-        <button type='button' 
+        <button class="press-button" type='button' 
                      onclick="location.href='./list_by_categoryID.do?categoryID=${categoryVO.categoryID}&word='">검색 취소</button>  
       </c:if>    
     </form>

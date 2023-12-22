@@ -13,6 +13,8 @@ import dev.mvc.cateGroup.CateGroupProcInter;
 import dev.mvc.cateGroup.CateGroupVO;
 import dev.mvc.category.CategoryProcInter;
 import dev.mvc.category.CategoryVO;
+import dev.mvc.supplier.SupplierProcInter;
+import dev.mvc.supplier.SupplierVO;
 
 
 
@@ -25,6 +27,10 @@ public class HomeCont {
   @Autowired // CateProcInter interface 구현한 객체를 만들어 자동으로 할당해라.
   @Qualifier("dev.mvc.category.CategoryProc")
   private CategoryProcInter categoryProc;
+  
+  @Autowired
+  @Qualifier("dev.mvc.supplier.SupplierProc")
+  private SupplierProcInter supplierProc;
   
   public HomeCont() {
     System.out.println("-> HomeCont created.");
@@ -58,7 +64,6 @@ public class HomeCont {
     
     return mav;
   }
-
   
 }
 

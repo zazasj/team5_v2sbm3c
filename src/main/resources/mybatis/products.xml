@@ -5,8 +5,8 @@
 <mapper namespace="dev.mvc.products.ProductsDAOInter">
   <!-- 등록한 레코드 갯수 1 리턴, #{adminno}: public int getAdminno() 호출됨 -->
   <insert id="create" parameterType="dev.mvc.products.ProductsVO">
-    INSERT INTO Products(productID, categoryID, supplierID, pName, origin, description, volume, alcoholContent, price)
-    VALUES(product_seq.nextval, #{categoryID}, #{supplierID}, #{pName}, #{origin}, #{description}, #{volume}, #{alcoholContent}, #{price})
+    INSERT INTO Products(productID, categoryID, supplierID, pName, origin, description, volume, alcoholContent, price, imageFile, imageFileSaved, thumb, sizes)
+    VALUES(product_seq.nextval, #{categoryID}, #{supplierID}, #{pName}, #{origin}, #{description}, #{volume}, #{alcoholContent}, #{price}, #{imageFile}, #{imageFileSaved}, #{thumb}, #{sizes})
   </insert>
 
   <!-- 모든 카테고리의 등록된 상품목록 -->

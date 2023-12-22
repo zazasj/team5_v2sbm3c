@@ -84,9 +84,9 @@
             </c:when>
         </c:choose>
         
-        <button type='button' onclick="location.href='./create.do?cateno=${cateno}'" class="btn btn-secondary btn-sm">새로운 컨텐츠 등록</button>
-        <button type='button' onclick="location.href='./list_by_cateno.do?cateno=${cateno}'" class="btn btn-secondary btn-sm">목록</button>
-        <button type='button' onclick="location.href='./list_by_cateno_grid.do?cateno=${cateno}'" class="btn btn-secondary btn-sm">갤러리 목록</button>
+        <button type='button' onclick="location.href='./create.do?categoryID=${categoryID}'" class="btn btn-secondary btn-sm">새로운 컨텐츠 등록</button>
+        <button type='button' onclick="location.href='./list_by_categoryID.do?categoryID=${categoryID}'" class="btn btn-secondary btn-sm">목록</button>
+        <button type='button' onclick="location.href='./list_by_categoryID_grid.do?categoryID=${categoryID}'" class="btn btn-secondary btn-sm">갤러리 목록</button>
       </li>
     </UL>
   </fieldset>

@@ -123,6 +123,7 @@
                   <a class="nav-link top_menu_link dropdown-toggle" data-bs-toggle="dropdown" href="#">관리자</a>
                   <div class="dropdown-menu">
                     <a class="dropdown-item" href='/cateGroup/list_all.do'>카테고리그룹 전체 목록</a>
+                    <a class="dropdown-item" href='/category/list_all.do'>카테고리 전체 목록</a>
                     <a class="dropdown-item" href='/member/list.do'>회원 목록</a>
                     <a class="dropdown-item" href='/review/list.do'>리뷰 전체 목록</a>
                     <a class="dropdown-item" href='/supplier/list_all_adminno.do'>공급 업체</a>                  

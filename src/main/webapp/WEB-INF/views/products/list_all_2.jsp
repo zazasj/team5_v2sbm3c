@@ -181,7 +181,7 @@
 </aside>
   
   <aside class="aside_right">
-    <a href="./list_all_2_grid.do&now_page=${param.now_page}&word=${param.word }">갤러리형</a>
+    <a href="./list_all_2_grid.do&now_page=${param.now_page == null ? 1 : param.now_page}&word=${param.word }">갤러리형</a>
     <a>|</a>
     <a href="javascript:location.reload();">새로고침</a>
   </aside>
@@ -189,9 +189,9 @@
    <DIV style="text-align: right; clear: both;">  
     <form name='frm' id='frm' method='get' action='./list_all_2.do'>
       <input type='text' name='word' id='word' value='${param.word }' style='width: 20%;'>
-      <button type='submit'>검색</button>
+      <button class="press-button" type='submit'>검색</button>
       <c:if test="${param.word.length() > 0 }">
-        <button type='button' 
+        <button class="press-button" type='button' 
                      onclick="location.href='./list_all_2.do?&word='">검색 취소</button>  
       </c:if>    
     </form>

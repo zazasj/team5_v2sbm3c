@@ -567,10 +567,6 @@ function productID_ajax_post() {
     </c:if>
 
     <a href="javascript:location.reload();">새로고침</a>
-    <span class='menu_divide' >│</span>    
-    <a href="./list_by_categoryID.do?categoryID=${categoryID}&now_page=${param.now_page}&word=${param.word }">목록형</a>    
-    <span class='menu_divide' >│</span>
-    <a href="./list_by_categoryID_grid.do?categoryID=${categoryID }&now_page=${param.now_page}&word=${param.word }">갤러리형</a>
     <!--  <form name='favform' id='favform' >
       <input type='hidden' name='productID' id='productID' value='${productID}'>
       <input type='hidden' name='memberno' id='memberno' value='${sessionScope.memberno}'>
@@ -673,13 +669,6 @@ function productID_ajax_post() {
         </DIV>
       </li>
       
-      <li class="li_none" style="clear: both;">
-        <DIV style='text-decoration: none;'>
-          <br>
-          검색어(키워드): ${word }
-        </DIV>
-      </li>
-
       <li class="li_none">
         <div>
           <c:if test="${imageFile.trim().length() > 0 }">

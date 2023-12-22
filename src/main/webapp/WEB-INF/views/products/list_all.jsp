@@ -181,9 +181,9 @@
  <DIV style="text-align: right; clear: both;">  
     <form name='frm' id='frm' method='get' action='./list_all.do'>
       <input type='text' name='word' id='word' value='${param.word }' style='width: 20%;'>
-      <button type='submit'>검색</button>
+      <button class="press-button" type='submit'>검색</button>
       <c:if test="${param.word.length() > 0 }">
-        <button type='button' 
+        <button class="press-button" type='button' 
                      onclick="location.href='./list_all.do?&word='">검색 취소</button>  
       </c:if>    
     </form>

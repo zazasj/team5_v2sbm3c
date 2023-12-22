@@ -127,7 +127,7 @@
                 <fmt:formatNumber value="${tot}" pattern="#,###" />
               </td>
               <td style='vertical-align: middle; text-align: center;'>
-                <A href="javascript: delete_func(${cartID })"><IMG src="/cart/images/delete3.png"></A>
+                <A href="javascript: delete_func(${cartID })"><img src='/products/images/delete.png'></A>
               </td>
             </tr>
           </c:forEach>
@@ -159,7 +159,7 @@
           <div class='cart_price'  style='font-size: 2.0em; color: #FF0000;'><fmt:formatNumber value="${total_ordering }" pattern="#,###" /> 원</div>
           
           <form name='frm' id='frm' style='margin-top: 50px;' action="/order_pay/create.do" method='get'>
-            <button type='submit' id='btn_order' class='btn btn-info' style='font-size: 1.5em;'>주문하기</button>
+            <button type='submit' id='btn_order' class='btn btn-info' style='font-size: 1.5em; float: right;;'>주문하기</button>
           </form>
         <td>
       </tr>

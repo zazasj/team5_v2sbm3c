@@ -25,34 +25,8 @@
   <DIV class='title_line'> ${categoryVO.categoryName } > ${pName } >파일 수정</DIV>
   
   <aside class="aside_right">
-    <a href="./create.do?categoryID=${categoryID }">등록</a>
-    <span class='menu_divide' >│</span>
     <a href="javascript:location.reload();">새로고침</a>
-    <span class='menu_divide' >│</span>    
-    <a href="./list_by_categoryID.do?categoryID=${categoryID }&now_page=${param.now_page}&word=${param.word }">목록형</a>    
-    <span class='menu_divide' >│</span>
-    <a href="./list_by_categoryID_grid.do?categoryID=${categoryID}&now_page=${param.now_page}&word=${param.word }">갤러리형</a>
   </aside>
-  
-  <div style="text-align: right; clear: both;">  
-    <form name='frm' id='frm' method='get' action='./list_by_cateno_search_paging.do'>
-      <input type='hidden' name='categoryID' value='${categoryVO.categoryID }'>  <%-- 게시판의 구분 --%>
-      
-      <c:choose>
-        <c:when test="${param.word != '' }"> <%-- 검색하는 경우 --%>
-          <input type='text' name='word' id='word' value='${param.word }' class='input_word'>
-        </c:when>
-        <c:otherwise> <%-- 검색하지 않는 경우 --%>
-          <input type='text' name='word' id='word' value='' class='input_word'>
-        </c:otherwise>
-      </c:choose>
-      <button type='submit' class='btn btn-secondary btn-sm' style="padding: 2px 8px 3px 8px; margin: 0px 0px 2px 0px;">검색</button>
-      <c:if test="${param.word.length() > 0 }">
-        <button type='button' class='btn btn-secondary btn-sm' 
-                    onclick="location.href='./list_by_categoryID.do?categoryID=${categoryVO.categoryID}&word='" style="padding: 2px 8px 3px 8px; margin: 0px 0px 2px 0px;">검색 취소</button>  
-      </c:if>    
-    </form>
-  </div>
   
   <div class='menu_line'></div>
 

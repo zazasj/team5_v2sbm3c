@@ -30,8 +30,6 @@
       <span class='menu_divide' >│</span>
     </c:if>
     <a href="javascript:location.reload();">새로고침</a>
-    <span class='menu_divide' >│</span>    
-    <a href="./list_by_categoryID.do?categoryID=${param.categoryID }&now_page=${param.now_page == null ? 1 : param.now_page }&word=${param.word }">목록형</a>    
     <span class='menu_divide' >│</span>
     <a href="./list_by_categoryID_grid.do?categoryID=${param.categoryID }&now_page=${param.now_page == null ? 1 : param.now_page }&word=${param.word }">갤러리형</a>
   </aside>
@@ -48,9 +46,9 @@
           <input type='text' name='word' id='word' value=''>
         </c:otherwise>
       </c:choose>
-      <button type='submit' class='btn btn-secondary btn-sm' style="padding: 2px 8px 3px 8px; margin: 0px 0px 2px 0px;">검색</button>
+      <button type='submit'  class="press-button" style="padding: 2px 8px 3px 8px; margin: 0px 0px 2px 0px;">검색</button>
       <c:if test="${param.word.length() > 0 }"> <%-- 검색 상태하면 '검색 취소' 버튼을 출력 --%>
-        <button type='button' class='btn btn-secondary btn-sm' style="padding: 2px 8px 3px 8px; margin: 0px 0px 2px 0px;"
+        <button type='button' class="press-button" style="padding: 2px 8px 3px 8px; margin: 0px 0px 2px 0px;"
                     onclick="location.href='./list_by_cateno.do?cateno=${param.cateno}&word='">검색 취소</button>  
       </c:if>    
     </form>
