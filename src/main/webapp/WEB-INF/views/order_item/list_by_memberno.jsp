@@ -22,7 +22,6 @@
  
   });
 </script>
-
 </head> 
  
 <body>
@@ -68,25 +67,25 @@
       <TH class='th_bs'>주문일</TH>
     </TR>
    
-    <c:forEach var="orderdetailsVO" items="${list }">
-      <c:set var="order_payno" value ="${orderdetailsVO.order_payno}" />
-      <c:set var="order_detailsno" value ="${orderdetailsVO.order_detailsno}" />
-      <c:set var="memberno" value ="${orderdetailsVO.memberno}" />
-      <c:set var="productid" value ="${orderdetailsVO.productid}" />
-      <c:set var="title" value ="${orderdetailsVO.title}" />
-      <c:set var="saleprice" value ="${orderdetailsVO.saleprice}" />
-      <c:set var="cnt" value ="${orderdetailsVO.cnt}" />
-      <c:set var="tot" value ="${orderdetailsVO.tot}" />
-      <c:set var="stateno" value ="${orderdetailsVO.stateno}" />
-      <c:set var="rdate" value ="${orderdetailsVO.rdate}" />
+    <c:forEach var="order_itemVO" items="${list }">
+      <c:set var="order_payno" value ="${order_itemVO.order_payno}" />
+      <c:set var="order_itemno" value ="${order_itemVO.order_itemno}" />
+      <c:set var="memberno" value ="${order_itemVO.memberno}" />
+      <c:set var="productid" value ="${order_itemVO.productid}" />
+      <c:set var="pname" value ="${order_itemVO.pname}" />
+      <c:set var="price" value ="${order_itemVO.price}" />
+      <c:set var="cnt" value ="${order_itemVO.cnt}" />
+      <c:set var="tot" value="${order_itemVO.price * order_itemVO.cnt}" /> <!-- Calculate the total for each item -->
+      <c:set var="stateno" value ="${order_itemVO.stateno}" />
+      <c:set var="rdate" value ="${order_itemVO.rdate}" />
          
     <TR>
       <TD class=td_basic>${order_payno}</TD>
-      <TD class=td_basic>${order_detailsno}</TD>
+      <TD class=td_basic>${order_itemno}</TD>
       <TD class=td_basic><A href="/member/read.do?memberno=${memberno}">${memberno}</A></TD>
-      <TD class=td_basic><A href="/contents/read.do?contentsno=${productid}">${productid}</A></TD>
-      <TD class='td_left'>${title}</TD>
-      <TD class='td_left'><fmt:formatNumber value="${saleprice }" pattern="#,###" /></TD>
+      <TD class=td_basic><A href="/products/read.do?productid=${productid}">${productid}</A></TD>
+      <TD class='td_left'>${pname}</TD>
+      <TD class='td_left'><fmt:formatNumber value="${price }" pattern="#,###" /></TD>
       <TD class='td_basic'>${cnt }</TD>
       <TD class='td_basic'><fmt:formatNumber value="${tot }" pattern="#,###" /></TD>
       <TD class='td_basic'>
@@ -100,7 +99,7 @@
         </c:choose>
       </TD>
       
-      <TD class='td_basic'>${rdate.substring(1,16) }</TD>
+      <TD class='td_basic'>${rdate.substring(2,16) }</TD>
       
     </TR>
     </c:forEach>
@@ -118,7 +117,7 @@
    
   <DIV class='bottom_menu'>
     <button type='button' onclick="location.reload();" class="btn btn-primary">새로 고침</button>
-    <button type='button' onclick="location.href='/order_pay/list_by_memberno.do?memberno=${memberno}'" class="btn btn-primary">결재 목록</button>
+    <button type='button' onclick="location.href='/order_pay/list_by_memberno.do?memberno=${memberno}'" class="btn btn-primary">돌아가기</button>
   </DIV>
 </DIV>
  

@@ -96,32 +96,44 @@ window.onload = function() {
     }
   }
 
-  function send() { // 회원 수정 처리
-	    let id = document.getElementById('id');
-	    let id_msg = document.getElementById('id_msg');
-
-	    if (id.value.trim().length == 0) {
-	      id_msg.innerHTML= 'ID가 누락됬습니다. ID 입력은 필수 입니다. ID(이메일)는 3자이상 권장합니다.';
-	      id_msg.classList.add('span_warning');    // class 적용
-	      id.focus();
-
-	      return false;  // 회원 가입 진행 중지
-	      
+  function send() {
+	    var frm = document.getElementById('frm');
+	    if (check_null($('#rname').val()) || check_null($('#rtel').val()) || check_null($('#rzipcode').val()) || check_null($('#raddress1').val()) || check_null($('#raddress2').val())) {
+	        alert('모든 필수 항목을 입력해주세요.');
+	        return;
 	    }
 
-	    let mname = document.getElementById('mname');
-	    let mname_msg = document.getElementById('mname_msg');
+	    // 유효성 검사 통과 시에만 제출
+	    if (validateForm()) {
+	        $.ajax({
+	            url: '/orderpay/create.do',
+	            type: 'post',
+	            data: $('#frm').serialize(),
+	            success: function (response) {
+	                alert('결제가 완료되었습니다.');
+	                // 추가적인 처리 또는 리다이렉션을 수행할 수 있습니다.
+	            },
+	            error: function (request, status, error) {
+	                alert('결제에 실패했습니다. 다시 시도해주세요.');
+	                console.log(error);
+	            }
+	        });
+	    }
+	}
+  function validateForm() {
+	    var isValid = true;
 
-	    if (mname.value.length == 0) {
-	      mname_msg.innerHTML= '이름 입력은 필수입니다.';
-	      mname_msg.classList.add('span_warning');    // class 적용
-	      mname.focus();
-
-	      return false;  // 회원 가입 진행 중지
+	    // 각 필드의 유효성 검사를 수행
+	    if ($('#rname').val().trim() === '') {
+	        alert('수취인 성명을 입력해주세요.');
+	        isValid = false;
 	    }
 
-	    document.getElementById('frm').submit(); // required="required" 작동 안됨.
-	  }  
+	    // 나머지 필드에 대해서도 유효성 검사를 수행
+
+	    return isValid;
+	}
+  
 </script>
 </head> 
 

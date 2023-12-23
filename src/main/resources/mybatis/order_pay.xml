@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="dev.mvc.order_pay.Order_payDAOInter">
+
+  <resultMap id="order_pay_result" type="dev.mvc.order_pay.Order_payVO">
+    <result property="order_payno" column="order_payno" />
+    <result property="memberno" column="memberno" />
+    <result property="rname" column="rname" />
+    <result property="rtel" column="rtel" />
+    <result property="rzipcode" column="rzipcode" />
+    <result property="raddress1" column="raddress1" />
+    <result property="raddress2" column="raddress2" />
+    <result property="paytype" column="paytype" />
+    <result property="amount" column="amount" />
+    <result property="rdate" column="rdate" />
+  </resultMap>
+
+  
+  <!-- 주문 결재 등록 전 order_payno를 Order_payVO에 저장  -->
+  <insert id="create" parameterType="dev.mvc.order_pay.Order_payVO">
+    INSERT INTO order_pay(order_payno, memberno, rname, rtel, rzipcode,
+                                     raddress1, raddress2, paytype, amount, rdate)
+    VALUES (order_item_seq.nextval, #{memberno}, #{rname}, #{rtel}, #{rzipcode},
+                                     #{raddress1}, #{raddress2}, #{paytype}, #{amount}, sysdate)
+  </insert>
+  
+  <!-- 회원별 주문 결재 목록 -->
+  <select id="list_by_memberno" resultType="dev.mvc.order_pay.Order_payVO" parameterType="int">
+    SELECT order_payno, memberno, rname, rtel, rzipcode, raddress1, raddress2, paytype, amount, rdate
+    FROM order_pay
+    WHERE memberno=#{memberno}
+    ORDER BY order_payno DESC
+  </select>
+  
+
+</mapper>

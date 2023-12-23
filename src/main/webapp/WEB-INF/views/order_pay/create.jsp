@@ -1,24 +1,29 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
+ 
+<!DOCTYPE html> 
+<html lang="ko"> 
+<head> 
+<meta charset="UTF-8"> 
 <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10.0, width=device-width" /> 
 <title>술기운</title>
+
 <link rel="shortcut icon" href="/images/sulic-resize36.png" />
 <link href="/css/style.css" rel="Stylesheet" type="text/css">
 
 <script type="text/JavaScript"
           src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-          
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-  
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
 <script type="text/javascript">
+
+  var frm;
+  
   $(function() { // 자동 실행
+	  frm = $('#frm');
     $('#btn_DaumPostcode').on('click', DaumPostcode); // 다음 우편 번호
     $('#btn_my_address').on('click', my_address); 
     $('#btn_order_pay').on('click', send);
@@ -68,37 +73,11 @@
   }
   
   function send() {
-    if (check_null($('#rname').val()))  {
-      alert('수취인 성명을 입력해주세요.');
-      $('#rname').focus();
-      return;
-    } 
-
-    if (check_null($('#rtel').val()))  {
-      alert('수취인 전화번호를 입력해주세요.');
-      $('#rtel').focus();
-      return;
-    } 
-
-    if (check_null($('#rzipcode').val()))  {
-      alert('우편번호를 입력해주세요.');
-      $('#rzipcode').focus();
-      return;
-    }    
-
-    if (check_null($('#raddress1').val()))  {
-      alert('주소를 입력해주세요.');
-      $('#raddress1').focus();
-      return;
-    }     
-     
-    if (check_null($('#raddress2').val()))  {
-      alert('상세 주소를 입력해주세요. 내용이 없으면 수취인 성명을 입력주세요.');
-      $('#raddress2').focus();
-      return;
-    }     
-
-    frm.submit();
+	  if (check_null($('#rname').val()) || check_null($('#rtel').val()) || check_null($('#rzipcode').val()) || check_null($('#raddress1').val()) || check_null($('#raddress2').val())) {
+          alert('모든 필수 항목을 입력해주세요.');
+          return;
+      }  
+	  frm.submit();
   }
 </script>
 </head> 
@@ -130,40 +109,40 @@
    
     <%-- table 내용 --%>
     <tbody>
-      <c:forEach var="cartVO" items="${list }">
-        <c:set var="cartno" value="${cartVO.cartno }" />
-        <c:set var="contentsno" value="${cartVO.contentsno }" />
-        <c:set var="title" value="${cartVO.title }" />
-        <c:set var="thumb1" value="${cartVO.thumb1 }" />
-        <c:set var="price" value="${cartVO.price }" />
+      <c:forEach var="cartsVO" items="${list }">
+        <c:set var="cartID" value="${cartsVO.cartID }" />
+        <c:set var="productID" value="${cartsVO.productID }" />
+        <c:set var="pName" value="${cartsVO.pName }" />
+        <c:set var="thumb" value="${cartsVO.thumb }" />
+        <c:set var="price" value="${cartsVO.price }" />
         <c:set var="dc" value="${cartVO.dc }" />
         <c:set var="saleprice" value="${cartVO.saleprice }" />
         <c:set var="point" value="${cartVO.point }" />
-        <c:set var="memberno" value="${cartVO.memberno }" />
-        <c:set var="cnt" value="${cartVO.cnt }" />
-        <c:set var="tot" value="${cartVO.tot }" />
-        <c:set var="rdate" value="${cartVO.rdate }" />
+        <c:set var="memberno" value="${cartsVO.memberno }" />
+        <c:set var="cnt" value="${cartsVO.cnt }" />
+        <c:set var="tot" value="${cartsVO.tot }" />
+        <c:set var="cdate" value="${cartsVO.cdate }" />
         
         <tr> 
           <td style='vertical-align: middle; text-align: center;'>
             <c:choose>
-              <c:when test="${thumb1.endsWith('jpg') || thumb1.endsWith('png') || thumb1.endsWith('gif')}">
-                <%-- /static/contents/storage/ --%>
-                <a href="/contents/read.do?contentsno=${contentsno}"><IMG src="/contents/storage/${thumb1 }" style="width: 120px; height: 80px;"></a> 
+              <c:when test="${thumb.endsWith('jpg') || thumb.endsWith('png') || thumb.endsWith('gif')}">
+                <%-- /static/products/storage/ --%>
+                <a href="/products/read.do?productID=${productID}"><IMG src="/products/storage/${thumb }" style="width: 120px; height: 80px;"></a> 
               </c:when>
               <c:otherwise> <!-- 이미지가 아닌 일반 파일 -->
-                ${contentsVO.file1}
+                ${productsVO.imageFile}
               </c:otherwise>
             </c:choose>
           </td>  
           <td style='vertical-align: middle;'>
-            <a href="/contents/read.do?contentsno=${contentsno}"><strong>${title}</strong></a> 
+            <a href="/products/read.do?productID=${productID}"><strong>${pName}</strong></a> 
           </td> 
           <td style='vertical-align: middle; text-align: center;'>
             <del><fmt:formatNumber value="${price}" pattern="#,###" /></del><br>
-            <span style="color: #FF0000; font-size: 1.2em;">${dc} %</span>
-            <strong><fmt:formatNumber value="${saleprice}" pattern="#,###" /></strong><br>
-            <span style="font-size: 0.8em;">포인트: <fmt:formatNumber value="${point}" pattern="#,###" /></span>
+            <span style="color: #FF0000; font-size: 1.2em;">0 %</span>
+            <strong><fmt:formatNumber value="${price}" pattern="#,###" /></strong><br>
+            <span style="font-size: 0.8em;">포인트: <fmt:formatNumber value="0" pattern="#,###" /></span>
           </td>
           <td style='vertical-align: middle; text-align: center;'>
             수량: ${cnt }
@@ -172,7 +151,7 @@
             <fmt:formatNumber value="${tot}" pattern="#,###" />
           </td>
           <td style='vertical-align: middle; text-align: center;'>
-            <A href="../cart/list_by_memberno.do"><IMG src="/cart/images/delete3.png" title="쇼핑카트로 이동합니다."></A>
+            <A href="../carts/list_by_memberno.do"><IMG src="/carts/images/delete3.png" title="쇼핑카트로 이동합니다."></A>
           </td>
         </tr>
       </c:forEach>
@@ -181,20 +160,19 @@
   </table>
   
   <form name='frm' id='frm' style='margin-top: 50px;' action="/order_pay/create.do" method='post'>
-    <input type="hidden" name="${ _csrf.parameterName }" value="${ _csrf.token }">  
-    <input type="hidden" name="amount" value=" ${total_order }">   <%-- 전체 주문 금액 --%>
-    
-    
-  <ASIDE class="aside_left">
-    배송 정보<span style="font-size: 0.7em;">(*: 필수 입력)</span>
-    <button type="button" id="btn_my_address" class="btn" style="margin-bottom: 2px;">나의 주소 가져오기</button> 
-    <button type="reset" id="btn_reset" class="btn" style="margin-bottom: 2px;">주소 지우기</button>
-  </ASIDE> 
+            <input type="hidden" name="${ _csrf.parameterName }" value="${ _csrf.token }">
+            <input type="hidden" name="amount" value=" ${total_order }">
+
+            <aside class="aside_left">
+                배송 정보<span style="font-size: 0.7em;">(*: 필수 입력)</span>
+                <button type="button" id="btn_my_address" class="btn" style="margin-bottom: 2px;">나의 주소 가져오기</button>
+                <button type="reset" id="btn_reset" class="btn" style="margin-bottom: 2px;">주소 지우기</button>
+            </aside> 
 
   <div class='menu_line'></div>
 
     <div class="form-group">
-      <label for="mname" class="col-md-2 control-label" style='font-size: 0.9em;'>수취인 성명*</label>    
+      <label for="rname" class="col-md-2 control-label" style='font-size: 0.9em;'>수취인 성명*</label>    
       <div class="col-md-10">
         <input type='text' class="form-control" name='rname' id='rname' 
                    value='' required="required" style='width: 30%;' placeholder="수취인 성명">
@@ -202,7 +180,7 @@
     </div>   
 
     <div class="form-group">
-      <label for="tel" class="col-md-2 control-label" style='font-size: 0.9em;'>수취인 전화번호*</label>    
+      <label for="rtel" class="col-md-2 control-label" style='font-size: 0.9em;'>수취인 전화번호*</label>    
       <div class="col-md-10">
         <input type='text' class="form-control" name='rtel' id='rtel' 
                    value='' required="required" style='width: 30%;' placeholder="수취인 전화번호"> 예) 010-0000-0000
@@ -210,7 +188,7 @@
     </div>   
 
     <div class="form-group">
-      <label for="zipcode" class="col-md-2 control-label" style='font-size: 0.9em;'>우편번호</label>    
+      <label for="rzipcode" class="col-md-2 control-label" style='font-size: 0.9em;'>우편번호</label>    
       <div class="col-md-10">
         <input type='text' class="form-control" name='rzipcode' id='rzipcode' 
                    value='' style='width: 30%;' placeholder="우편번호">
@@ -219,7 +197,7 @@
     </div>  
 
     <div class="form-group">
-      <label for="address1" class="col-md-2 control-label" style='font-size: 0.9em;'>주소</label>    
+      <label for="raddress1" class="col-md-2 control-label" style='font-size: 0.9em;'>주소</label>    
       <div class="col-md-10">
         <input type='text' class="form-control" name='raddress1' id='raddress1' 
                    value='' style='width: 80%;' placeholder="주소">
@@ -227,7 +205,7 @@
     </div>   
 
     <div class="form-group">
-      <label for="address2" class="col-md-2 control-label" style='font-size: 0.9em;'>상세 주소</label>    
+      <label for="raddress2" class="col-md-2 control-label" style='font-size: 0.9em;'>상세 주소</label>    
       <div class="col-md-10">
         <input type='text' class="form-control" name='raddress2' id='raddress2' 
                    value='' style='width: 80%;' placeholder="상세 주소">
@@ -242,7 +220,7 @@
   <img src="//i1.daumcdn.net/localimg/localimages/07/postcode/320/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
 </div>
 
-<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
 <script>
     // 우편번호 찾기 화면을 넣을 element
     var element_wrap = document.getElementById('wrap');
@@ -309,9 +287,9 @@
     </div>
   
   <div style='margin-top: 20px; width: 100%; clear: both;'> </div>  
-  <ASIDE class="aside_left" style='margin-top: 50px;'>
-    결재 정보<br>
-  </ASIDE> 
+  <aside class="aside_left" style='margin-top: 50px;'>
+                결재 정보<br>
+            </aside>
 
   <div class='menu_line'></div>
   <div style=" text-align: left;">

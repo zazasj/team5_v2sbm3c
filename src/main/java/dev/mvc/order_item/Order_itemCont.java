@@ -1,4 +1,4 @@
-package dev.mvc.orderdetails;
+package dev.mvc.order_item;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,20 +13,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class OrderdetailsCont {
+public class Order_itemCont {
   @Autowired 
-  @Qualifier("dev.mvc.orderdetails.OrderdetailsProc")
-  private OrderdetailsProcInter orderdetailsProc;
+  @Qualifier("dev.mvc.order_item.Order_itemProc")
+  private Order_itemProcInter order_itemProc;
   
-  public OrderdetailsCont() {
-    System.out.println("-> OrderdetailsCont created.");
+  public Order_itemCont() {
+    System.out.println("-> Order_itemCont created.");
   }
   /**
    * 주문 결재/회원별 목록
    * http://localhost:9091/order_item/list_by_memberno.do 
    * @return
    */
-  @RequestMapping(value="/orderdetails/list_by_memberno.do", method=RequestMethod.GET )
+  @RequestMapping(value="/order_item/list_by_memberno.do", method=RequestMethod.GET )
   public ModelAndView list_by_memberno(HttpSession session,
                                                         int order_payno) {
     ModelAndView mav = new ModelAndView();
@@ -42,10 +42,10 @@ public class OrderdetailsCont {
       map.put("order_payno", order_payno);
       map.put("memberno", memberno);
       
-      List<OrderdetailsVO> list = this.orderdetailsProc.list_by_memberno(map);
+      List<Order_itemVO> list = this.order_itemProc.list_by_memberno(map);
       
-      for (OrderdetailsVO orderdetailsVO: list) {
-        tot_sum += orderdetailsVO.getTot();
+      for (Order_itemVO order_itemVO: list) {
+        tot_sum += order_itemVO.getPrice() * order_itemVO.getCnt();
       }
       
       if (tot_sum < 30000) { // 상품 주문 금액이 30,000 원 이하이면 배송비 3,000 원 부여
@@ -58,9 +58,9 @@ public class OrderdetailsCont {
       mav.addObject("total_order", total_order);     // 할인 금액 총 합계(금액)
       mav.addObject("list", list); // request.setAttribute("list", list);
 
-      mav.setViewName("/orderdetails/list_by_memberno"); // /views/order_item/list_by_memberno.jsp
+      mav.setViewName("/order_item/list_by_memberno"); // /views/order_item/list_by_memberno.jsp
     } else { // 회원으로 로그인하지 않았다면
-      mav.addObject("return_url", "/orderdetails/list_by_memberno.do"); // 로그인 후 이동할 주소 ★
+      mav.addObject("return_url", "/order_item/list_by_memberno.do"); // 로그인 후 이동할 주소 ★
       
       mav.setViewName("redirect:/member/login.do"); // /WEB-INF/views/member/login_ck_form.jsp
     }

@@ -93,8 +93,8 @@
                     <a class="dropdown-item" href="/member/findpwd.do">비밀번호 찾기</a>
                   </c:when>
                   <c:otherwise>
-                    <a class="dropdown-item" href="http://localhost:8001/ais/recommend_form/?memberno=${sessionScope.memberno }">관심분야 등록하고 추천받기</a>
-                    <a class="dropdown-item" href="/orderdetails/list_by_memberno.do">회원 주문 상세 목록</a>
+                    <a class="dropdown-item" href="http://13.125.18.11:8000/ais/recommend_form/?memberno=${sessionScope.memberno }">관심분야 등록하고 추천받기</a>
+                    <a class="dropdown-item" href="/order_pay/list_by_memberno.do">회원 주문 상세 목록</a>
                     <a class="dropdown-item" href="/member/read.do">가입 정보</a>
                     <a class="dropdown-item" href="/favproduct/list_by_memberno.do">관심상품</a>                    
                     <a class="dropdown-item" href="/carts/list_by_memberno.do">장바구니</a>

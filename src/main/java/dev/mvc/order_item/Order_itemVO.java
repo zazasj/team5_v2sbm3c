@@ -1,6 +1,6 @@
-package dev.mvc.orderdetails;
+package dev.mvc.order_item;
 
-public class OrderdetailsVO {
+public class Order_itemVO {
 
   /*
   COMMENT ON TABLE order_details is '주문상세';
@@ -15,7 +15,7 @@ public class OrderdetailsVO {
    * 
    * */
     /** 주문상세번호 */
-    private int order_detailsno=0;  // 초기값: 0
+    private int order_itemno=0;  // 초기값: 0
     
     /** 회원 번호 */
     private int memberno = 0;
@@ -27,10 +27,10 @@ public class OrderdetailsVO {
     private int productid = 0;
     
     /** 제목, contents join */
-    private String title = "";
+    private String pname = "";
     
     /** 판매가, contents join */
-    private int saleprice;
+    private int price;
     
     /** 수량 */
     private int cnt = 0;
@@ -52,12 +52,12 @@ public class OrderdetailsVO {
     /** 주문날짜 */
     private String rdate = ""; // 초기값: null
 
-    public int getOrder_detailsno() {
-      return order_detailsno;
+    public int getOrder_itemno() {
+      return order_itemno;
     }
 
-    public void setOrder_detailsno(int order_detailsno) {
-      this.order_detailsno = order_detailsno;
+    public void setOrder_itemno(int order_itemno) {
+      this.order_itemno = order_itemno;
     }
 
     public int getMemberno() {
@@ -84,20 +84,20 @@ public class OrderdetailsVO {
       this.productid = productid;
     }
 
-    public String getTitle() {
-      return title;
+    public String getPname() {
+      return pname;
     }
 
-    public void setTitle(String title) {
-      this.title = title;
+    public void setPname(String pname) {
+      this.pname = pname;
     }
 
-    public int getSaleprice() {
-      return saleprice;
+    public int getPrice() {
+      return price;
     }
 
-    public void setSaleprice(int saleprice) {
-      this.saleprice = saleprice;
+    public void setPrice(int price) {
+      this.price = price;
     }
 
     public int getCnt() {
