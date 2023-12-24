@@ -964,6 +964,7 @@ CREATE TABLE order_pay(
   FOREIGN KEY (MEMBERNO) REFERENCES MEMBER (MEMBERNO)
 );
 
+ALTER TABLE ORDER_PAY MODIFY RNAME VARCHAR2(30) NULL;
 COMMENT ON TABLE order_pay is '주문_결재';
 COMMENT ON COLUMN order_pay.order_payno is '주문 번호';
 COMMENT ON COLUMN order_pay.MEMBERNO is '회원 번호';
@@ -1041,6 +1042,7 @@ CREATE TABLE order_item(
   FOREIGN KEY (memberno) REFERENCES MEMBER (memberno),
   FOREIGN KEY (productid) REFERENCES products (productid)
 );
+
 
 COMMENT ON TABLE order_item is '주문상세';
 COMMENT ON COLUMN order_item.order_itemno is '주문상세번호';

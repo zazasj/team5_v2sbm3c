@@ -112,16 +112,30 @@ public class Order_payCont {
    * @return
    */
   @RequestMapping(value = "/order_pay/create.do", method = RequestMethod.POST)
-  public ModelAndView create(HttpSession session, @ModelAttribute("order_payVO") Order_payVO order_payVO) {
+  public ModelAndView create(HttpSession session, String rname,
+      String rtel,
+      String rzipcode,
+      String raddress1,
+      String raddress2,
+      int amount) {
       ModelAndView mav = new ModelAndView();
-
+      
+      Order_payVO order_payVO = new Order_payVO();
+      
       int memberno = (int) session.getAttribute("memberno");
       order_payVO.setMemberno(memberno);
-
+      order_payVO.setRname(rname);
+      order_payVO.setRtel(rtel);
+      order_payVO.setRzipcode(rzipcode);
+      order_payVO.setRaddress1(raddress1);
+      order_payVO.setRaddress2(raddress2);
+      order_payVO.setAmount(amount);
+      System.out.println(order_payVO.toString());
       // 주문 결제 등록
       int cnt = this.order_payProc.create(order_payVO);
+      System.out.println(cnt);
       int order_payno = order_payVO.getOrder_payno(); // 결재 번호 수집
-
+      
       Order_itemVO order_itemVO = new Order_itemVO();
 
       if (cnt == 1) { // 정상적으로 주문 결재 정보가 등록된 경우

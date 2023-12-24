@@ -19,11 +19,15 @@
   
   <!-- 주문 결재 등록 전 order_payno를 Order_payVO에 저장  -->
   <insert id="create" parameterType="dev.mvc.order_pay.Order_payVO">
+    <selectKey keyProperty="order_payno" resultType="int" order="BEFORE">
+      SELECT order_pay_seq.nextval FROM dual
+    </selectKey>
+    
     INSERT INTO order_pay(order_payno, memberno, rname, rtel, rzipcode,
                                      raddress1, raddress2, paytype, amount, rdate)
-    VALUES (order_item_seq.nextval, #{memberno}, #{rname}, #{rtel}, #{rzipcode},
+    VALUES (#{order_payno}, #{memberno}, #{rname}, #{rtel}, #{rzipcode},
                                      #{raddress1}, #{raddress2}, #{paytype}, #{amount}, sysdate)
-  </insert>
+  </insert> 
   
   <!-- 회원별 주문 결재 목록 -->
   <select id="list_by_memberno" resultType="dev.mvc.order_pay.Order_payVO" parameterType="int">

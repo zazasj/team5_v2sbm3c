@@ -12,12 +12,7 @@
 <link rel="shortcut icon" href="/images/sulic-resize36.png" />
 <link href="/css/style.css" rel="Stylesheet" type="text/css">
 
-<script type="text/JavaScript"
-          src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-          
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
- 
+<c:import url="/menu/top.do" />
  
 <script type="text/javascript">
   $(function(){
@@ -27,7 +22,6 @@
 </head> 
  
 <body>
-<jsp:include page="../menu/top.jsp" flush='false' />
  
   <DIV class='title_line'>
     ${sessionScope.id }님 주문결재 내역
@@ -93,7 +87,7 @@
         </c:choose>
       </TD>
       <TD class='td_basic'><fmt:formatNumber value="${amount }" pattern="#,###" /></TD>
-      <TD class='td_basic'>${rdate.substring(1,16) }</TD>
+      <TD class='td_basic'>${rdate.substring(2,16) }</TD>
       <TD class='td_basic'>
         <A href="/order_item/list_by_memberno.do?order_payno=${order_payno}"><img src="/orderpay/images/bu6.png" title="주문 내역 상세 조회"></A>
       </TD>

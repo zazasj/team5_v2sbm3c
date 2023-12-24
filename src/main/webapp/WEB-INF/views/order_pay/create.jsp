@@ -12,11 +12,7 @@
 <link rel="shortcut icon" href="/images/sulic-resize36.png" />
 <link href="/css/style.css" rel="Stylesheet" type="text/css">
 
-<script type="text/JavaScript"
-          src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<c:import url="/menu/top.do" />
 
 <script type="text/javascript">
 
@@ -84,7 +80,7 @@
 
 
 <body>
-<jsp:include page="../menu/top.jsp" flush='false' />
+
   <DIV class='title_line'>
     주문, 결재
   </DIV>
@@ -316,8 +312,7 @@
         <td style='width: 50%;'>
           <div class='cart_label' style='font-size: 2.0em;'>전체 주문 금액</div>
           <div class='cart_price'  style='font-size: 2.0em; color: #FF0000;'><fmt:formatNumber value="${total_order }" pattern="#,###" /> 원</div>
-          
-            <button type='button' id='btn_order_pay' class='btn btn-info' style='font-size: 1.5em;'>결재하기</button>
+            <button type='submit' id='btn_order_pay' class='btn btn-info' style='font-size: 1.5em;'>결재하기</button>
         <td>
       </tr>
     </tbody>

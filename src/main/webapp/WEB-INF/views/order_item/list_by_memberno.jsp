@@ -12,11 +12,7 @@
 <link rel="shortcut icon" href="/images/sulic-resize36.png" />
 <link href="/css/style.css" rel="Stylesheet" type="text/css">
 
-<script type="text/JavaScript"
-          src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
- 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<c:import url="/menu/top.do" />
 <script type="text/javascript">
   $(function(){
  
@@ -25,7 +21,6 @@
 </head> 
  
 <body>
-<jsp:include page="../menu/top.jsp" flush='false' />
  
   <DIV class='title_line'>
     ${sessionScope.id }님 주문 결재 상세 내역
