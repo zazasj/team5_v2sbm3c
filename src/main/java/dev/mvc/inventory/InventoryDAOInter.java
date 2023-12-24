@@ -70,6 +70,19 @@ public interface InventoryDAOInter {
    * @return
    */
   public ArrayList<InventoryVO> list_by_inventoryStatus_search(HashMap<String, Object> hashMap);
+  /**
+   * 카테고리별 검색 목록
+   * @param map
+   * @return
+   */
+  public ArrayList<InventoryVO> list_by_inventoryStatus_search2(HashMap<String, Object> hashMap);
+  
+  /**
+   * 카테고리별 검색된 레코드 갯수
+   * @param map
+   * @return
+   */
+  public int search_count2(HashMap<String, Object> hashMap);
   
   /**
    * 카테고리별 검색된 레코드 갯수
@@ -84,6 +97,12 @@ public interface InventoryDAOInter {
    * @return
    */
   public ArrayList<InventoryVO> list_by_inventoryStatus_search_paging(InventoryVO inventoryVO);
+  /**
+   * 카테고리별 검색 목록 + 페이징
+   * @param inventoryVO
+   * @return
+   */
+  public ArrayList<InventoryVO> list_by_inventoryStatus_search_paging2(InventoryVO inventoryVO);
 }
 
 

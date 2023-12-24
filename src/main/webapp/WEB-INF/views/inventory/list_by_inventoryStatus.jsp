@@ -92,18 +92,42 @@
         <td class="td_bs">${inventoryStatus}</td>
         <td class="td_bs">${productID}</td>
         <!-- Loop through the list1 to find matching pName -->
-        <c:forEach var="productsVO" items="${list1}" varStatus="info1">
-            <c:if test="${productsVO.productID eq inventoryVO.productID}">
-                <td class="td_bs">${productsVO.pName}</td>
-            </c:if>
-        </c:forEach>
+        <c:set var="matchingProduct" value="false" />
+
+<c:forEach var="productVO" items="${list1}" varStatus="info1">
+    <c:if test="${productVO.productID eq inventoryVO.productID}">
+        <td class="td_bs">${productVO.pName}</td>
+        <c:set var="matchingProduct" value="true" />
+    </c:if>
+</c:forEach>
+
+<c:choose>
+    <c:when test="${matchingProduct}">
+        <!-- Matching found, do nothing here as it has already been handled in the loop -->
+    </c:when>
+    <c:otherwise>
+        <td class="td_bs">제품명 미지정</td>
+    </c:otherwise>
+</c:choose>
+
         <td class="td_bs">${supplierID}</td>
-        <!-- Loop through the list1 to find matching pName -->
-        <c:forEach var="supplierVO" items="${list2}" varStatus="info1">
-            <c:if test="${supplierVO.supplierid eq inventoryVO.supplierID}">
-                <td class="td_bs">${supplierVO.sname}</td>
-            </c:if>
-        </c:forEach>
+        <c:set var="matching" value="false" />
+
+<c:forEach var="supplierVO" items="${list2}" varStatus="info1">
+    <c:if test="${supplierVO.supplierid eq inventoryVO.supplierID}">
+        <td class="td_bs">${supplierVO.sname}</td>
+        <c:set var="matching" value="true" />
+    </c:if>
+</c:forEach>
+
+<c:choose>
+    <c:when test="${matching}">
+        <!-- Matching found, do nothing here as it has already been handled in the loop -->
+    </c:when>
+    <c:otherwise>
+        <td class="td_bs">공급업체 미지정</td>
+    </c:otherwise>
+</c:choose>
         <td class="td_bs">${addQuantity}</td>
         <td class="td_bs">${lastUpdated}</td>
         <td class="td_bs">

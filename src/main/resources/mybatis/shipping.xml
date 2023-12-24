@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 자식 XML 태그들은 dev.mvc.shipping.ShippingDAOInter.java interface와 연결됨 -->
+<mapper namespace="dev.mvc.shipping.ShippingDAOInter">
+  <!-- return: 등록한 레코드 갯수를 1을 리턴, parameterType: 전달받는 데이터 -->
+  <insert id="create" parameterType="dev.mvc.shipping.ShippingVO">
+    INSERT INTO shipping(shippingID,order_payno, shippingType, deliveryPrice, estimatedDeliveryDate, trackingNumber, deliveryStatus,file1, file1saved, thumb1, size1) VALUES(inven_seq.nextval,#{order_payno},#{shippingType},#{deliveryPrice}, sysdate,#{trackingNumber},#{deliveryStatus},#{file1}, #{file1saved}, #{thumb1}, #{size1} )
+  </insert>
+
+  <!-- 전체 목록, SQL -> ShippingVO -> ArrayList<ShippingVO> return -->
+<!--   <select id="list_all" resultType="dev.mvc.shipping.ShippingVO">
+    SELECT shippingID, name, cnt, rdate FROM shipping ORDER BY shippingID ASC
+  </select> -->
+
+  <!-- 출력 우선 순위 적용 -->
+<!--   <select id="list_all" resultType="dev.mvc.shipping.ShippingVO">
+    SELECT shippingID, name, cnt, rdate, seqID FROM shipping ORDER BY seqID ASC
+  </select>
+ -->
+ 
+  <!-- 출력 모드 적용 -->
+  <select id="list_all" resultType="dev.mvc.shipping.ShippingVO">
+    SELECT shippingID, order_payno, shippingType,deliveryPrice,estimatedDeliveryDate, trackingNumber, deliveryStatus,file1, file1saved, thumb1, size1 FROM shipping ORDER BY shippingID ASC
+  </select>
+      
+  <!-- 읽기, SQL -> ShippingVO return -->
+  <select id="read" resultType="dev.mvc.shipping.ShippingVO" parameterType="int">
+    SELECT shippingID, deliveryStatus, order_payno,shippingType,deliveryPrice, estimatedDeliveryDate ,trackingNumber, deliveryStatus,file1, file1saved, thumb1, size1 FROM shipping WHERE shippingID=#{shippingID}
+  </select>
+
+  <!-- return: 수정한 레코드 갯수 리턴, parameterType: 수정할 레코드 정보 -->
+  <update id="update" parameterType="dev.mvc.shipping.ShippingVO">
+    UPDATE shipping SET order_payno=#{order_payno},shippingType=#{shippingType} , estimatedDeliveryDate=#{estimatedDeliveryDate}, trackingNumber=#{trackingNumber}, deliveryStatus=#{deliveryStatus},file1=#{file1}, file1saved=#{file1saved}, thumb1=#{thumb1}, size1=#{size1}
+    WHERE shippingID=#{shippingID}
+  </update>
+  
+  <!-- return: 삭제한 레코드 갯수 리턴, parameterType: 삭제할 레코드 정보 -->
+  <delete id="delete" parameterType="int">
+    DELETE FROM shipping WHERE shippingID=#{shippingID}
+  </delete>
+  
+  <!-- 카테고리별 검색 레코드 갯수 -->
+  <select id="search_count" resultType="int" parameterType="HashMap">
+    SELECT COUNT(*) as cnt
+    FROM shipping
+    <choose>
+      <when test="word == null or word == ''">
+      </when>
+      <otherwise> <!-- 검색하는 경우의 레코드 갯수 -->
+        WHERE (UPPER(deliveryStatus) LIKE '%' || UPPER(#{word}) || '%'
+                                                  OR UPPER(shippingType) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(order_payno) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(trackingNumber) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+      </otherwise>
+    </choose>
+  </select> 
+  <!-- 
+  카테고리별 검색 목록
+  <select id="list_by_tripno_search" resultType="dev.mvc.country.CountryVO" parameterType="HashMap">
+    SELECT countryno, adminno, tripno, title, content, recom, cnt, replycnt, word, rdate,
+            file1, file1saved, thumb1, size1, map, youtube
+    FROM country
+    <choose>
+      <when test="word == null or word == ''"> 검색하지 않는 경우
+        WHERE tripno=#{tripno}
+      </when>
+      <otherwise> 검색하는 경우
+        WHERE tripno=#{tripno} AND (UPPER(title) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(content) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+      </otherwise>
+    </choose>
+    ORDER BY countryno DESC   
+  </select>
+   
+  카테고리별 검색 레코드 갯수
+  <select id="search_count" resultType="int" parameterType="HashMap">
+    SELECT COUNT(*) as cnt
+    FROM country
+    <choose>
+      <when test="word == null or word == ''"> 검색하지 않는 경우의 레코드 갯수
+        WHERE tripno=#{tripno}
+      </when>
+      <otherwise> 검색하는 경우의 레코드 갯수
+        WHERE tripno=#{tripno} AND (UPPER(title) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(content) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+      </otherwise>
+    </choose>
+  </select>    -->
+
+  <!-- 카테고리별 검색 + 페이징 목록 -->
+  <select id="list_by_shippingID_search_paging" resultType="dev.mvc.shipping.ShippingVO" parameterType="dev.mvc.shipping.ShippingVO">
+   SELECT  shippingID, order_payno, shippingType,deliveryPrice,estimatedDeliveryDate, trackingNumber, deliveryStatus,file1, file1saved, thumb1, size1, r
+   FROM (
+              SELECT  shippingID, order_payno, shippingType,deliveryPrice,estimatedDeliveryDate, trackingNumber, deliveryStatus,file1, file1saved, thumb1, size1, rownum as r
+              FROM (
+                        SELECT  shippingID, order_payno, shippingType,deliveryPrice,estimatedDeliveryDate, trackingNumber, deliveryStatus,file1, file1saved, thumb1, size1
+                        FROM shipping
+                        <choose>
+                          <when test="word == null or word == ''">
+                          </when>
+                          <otherwise>
+                            WHERE (UPPER(deliveryStatus) LIKE '%' || UPPER(#{word}) || '%'
+                                                  OR UPPER(shippingType) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(order_payno) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(trackingNumber) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+                          </otherwise>
+                        </choose>
+                        ORDER BY shippingID DESC
+               )
+    )
+    WHERE <![CDATA[ r >= #{start_num} AND r <= #{end_num} ]]>
+     
+    <!-- 1 page: WHERE r >= 1 AND r <= 10; 
+          2 page: WHERE r >= 11 AND r <= 20;
+          3 page: WHERE r >= 21 AND r <= 30; -->
+  </select>
+</mapper>
+
+
+
+
+

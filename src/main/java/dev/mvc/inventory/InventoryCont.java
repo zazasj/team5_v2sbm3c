@@ -17,6 +17,7 @@ import dev.mvc.products.ProductsProcInter;
 import dev.mvc.products.ProductsVO;
 import dev.mvc.supplier.SupplierProcInter;
 import dev.mvc.supplier.SupplierVO;
+import dev.mvc.tool.Tool;
 
 @Controller
 public class InventoryCont {
@@ -85,55 +86,62 @@ public class InventoryCont {
    * @return
    */
   @RequestMapping(value="/inventory/list_all.do", method = RequestMethod.GET)
-  public ModelAndView list_all(HttpSession session) {
+  public ModelAndView list_all(HttpSession session, InventoryVO inventoryVO) {
     ModelAndView mav = new ModelAndView();
     
-    if (this.adminProc.isAdmin(session) == true) {
-      mav.setViewName("/inventory/list_all"); // /WEB-INF/views/inventory/list_all.jsp
-        
-      ArrayList<InventoryVO> list = this.inventoryProc.list_all();
-      mav.addObject("list", list);
-      
-      ArrayList<ProductsVO> list1 = this.productsProc.list_all();
-      mav.addObject("list1", list1);
-      
-      ArrayList<SupplierVO> list2 = this.supplierProc.list_all();
-      mav.addObject("list2", list2);
+    ArrayList<InventoryVO> list4 = this.inventoryProc.list_all();
+    mav.addObject("list", list4);
     
-      
-      
-    } else {
-      mav.setViewName("/admin/login_need"); // /WEB-INF/views/admin/login_need.jsp
-      
-    }
+ // 검색 목록
+    ArrayList<InventoryVO> list = inventoryProc.list_by_inventoryStatus_search_paging2(inventoryVO);
     
-    return mav;
-  }
-  /**
-   * 전체 목록
-   * http://localhost:9092/inventory/list_all.do
-   * @return
-   */
-  @RequestMapping(value="/inventory/list.do", method = RequestMethod.GET)
-  public ModelAndView list(HttpSession session) {
-    ModelAndView mav = new ModelAndView();
+    ArrayList<ProductsVO> list1 = this.productsProc.list_all();
+    mav.addObject("list1", list1);
     
-    if (this.adminProc.isAdmin(session) == true) {
-      mav.setViewName("/inventory/list"); // /WEB-INF/views/inventory/list_all.jsp
-      
-      ArrayList<InventoryVO> list = this.inventoryProc.list();
-      mav.addObject("list", list);
-      
-      ArrayList<ProductsVO> list1 = this.productsProc.list_all();
-      mav.addObject("list1", list1);
-      
-      ArrayList<SupplierVO> list2 = this.supplierProc.list_all();
-      mav.addObject("list2", list2);
-      
-    } else {
-      mav.setViewName("/admin/login_need"); // /WEB-INF/views/admin/login_need.jsp
-      
-    }
+    ArrayList<SupplierVO> list2 = this.supplierProc.list_all();
+    mav.addObject("list2", list2);
+    
+      // for문을 사용하여 객체를 추출, Call By Reference 기반의 원본 객체 값 변경
+      for (InventoryVO inventoryvo2 : list) {
+              String inventoryStatus = inventoryvo2.getInventoryStatus();
+              int supplierID = inventoryvo2.getSupplierID();
+              int productID= inventoryvo2.getProductID();
+              
+              inventoryStatus = Tool.convertChar(inventoryStatus);
+              /*
+               * supplierID = Tool.convertChar(supplierID); // 특수 문자 처리 productID =
+               * Tool.convertChar(productID);
+               */
+              
+              inventoryvo2.setInventoryStatus(inventoryStatus);
+              inventoryvo2.setSupplierID(supplierID);
+              inventoryvo2.setProductID(productID);
+      }
+    mav.addObject("list", list);
+  
+
+  
+    HashMap<String, Object> hashMap = new HashMap<String, Object>();
+    hashMap.put("word", inventoryVO.getWord());
+    
+    int search_count2 = this.inventoryProc.search_count2(hashMap);  // 검색된 레코드 갯수 ->  전체 페이지 규모 파악
+    mav.addObject("search_count2", search_count2);
+    
+    /*
+     * SPAN태그를 이용한 박스 모델의 지원, 1 페이지부터 시작 현재 페이지: 11 / 22 [이전] 11 12 13 14 15 16 17
+     * 18 19 20 [다음]
+     * @param inventoryStatus 카테고리번호
+     * @param now_page 현재 페이지
+     * @param word 검색어
+     * @param list_file 목록 파일명
+     * @return 페이징용으로 생성된 HTML/CSS tag 문자열
+     */
+    String paging = inventoryProc.pagingBox2(inventoryVO.getNow_page(), inventoryVO.getWord(), "list_all.do", search_count2);
+    mav.addObject("paging", paging);
+  
+    // mav.addObject("now_page", now_page);
+   mav.setViewName("/inventory/list_all"); // /WEB-INF/views/inventory/list_all.jsp
+   
     
     return mav;
   }
@@ -176,30 +184,71 @@ public class InventoryCont {
    * @return
    */
   @RequestMapping(value="/inventory/update.do", method = RequestMethod.GET)
-  public ModelAndView update(HttpSession session, int inventoryID) { // int inventoryID = (int)request.getParameter("inventoryID");
+  public ModelAndView update(HttpSession session, InventoryVO inventoryVO,int inventoryID) { // int inventoryID = (int)request.getParameter("inventoryID");
     ModelAndView mav = new ModelAndView();
     
+    ArrayList<InventoryVO> list4 = this.inventoryProc.list_all();
+    mav.addObject("list", list4);
+    
+ // 검색 목록
+    ArrayList<InventoryVO> list = inventoryProc.list_by_inventoryStatus_search_paging2(inventoryVO);
+    
+    ArrayList<ProductsVO> list1 = this.productsProc.list_all();
+    mav.addObject("list1", list1);
+    
+    ArrayList<SupplierVO> list2 = this.supplierProc.list_all();
+    mav.addObject("list2", list2);
+    
+      // for문을 사용하여 객체를 추출, Call By Reference 기반의 원본 객체 값 변경
+      for (InventoryVO inventoryvo2 : list) {
+              String inventoryStatus = inventoryvo2.getInventoryStatus();
+              int supplierID = inventoryvo2.getSupplierID();
+              int productID= inventoryvo2.getProductID();
+              
+              inventoryStatus = Tool.convertChar(inventoryStatus);
+              /*
+               * supplierID = Tool.convertChar(supplierID); // 특수 문자 처리 productID =
+               * Tool.convertChar(productID);
+               */
+              
+              inventoryvo2.setInventoryStatus(inventoryStatus);
+              inventoryvo2.setSupplierID(supplierID);
+              inventoryvo2.setProductID(productID);
+      }
+    mav.addObject("list", list);
+  
+
+  
+    HashMap<String, Object> hashMap = new HashMap<String, Object>();
+    hashMap.put("word", inventoryVO.getWord());
+    
+    int search_count2 = this.inventoryProc.search_count2(hashMap);  // 검색된 레코드 갯수 ->  전체 페이지 규모 파악
+    mav.addObject("search_count2", search_count2);
+    
+    /*
+     * SPAN태그를 이용한 박스 모델의 지원, 1 페이지부터 시작 현재 페이지: 11 / 22 [이전] 11 12 13 14 15 16 17
+     * 18 19 20 [다음]
+     * @param inventoryStatus 카테고리번호
+     * @param now_page 현재 페이지
+     * @param word 검색어
+     * @param list_file 목록 파일명
+     * @return 페이징용으로 생성된 HTML/CSS tag 문자열
+     */
+    String paging = inventoryProc.pagingBox3(inventoryVO.getInventoryID(),inventoryVO.getNow_page(), inventoryVO.getWord(), "update.do", search_count2);
+    mav.addObject("paging", paging);
     if (this.adminProc.isAdmin(session) == true) {
-      // mav.setViewName("/inventory/update"); // /WEB-INF/views/inventory/update.jsp
-      mav.setViewName("/inventory/list_all_update"); // /WEB-INF/views/inventory/list_all_update.jsp
+      // mav.setViewName("/shipping/update"); // /WEB-INF/views/shipping/update.jsp
+      mav.setViewName("/inventory/list_all_update"); // /WEB-INF/views/shipping/list_all_update.jsp
       
-      InventoryVO inventoryVO = this.inventoryProc.read(inventoryID);
-      mav.addObject("inventoryVO", inventoryVO);
+      InventoryVO inventoryVO1 = this.inventoryProc.read(inventoryID);
+      mav.addObject("inventoryVO", inventoryVO1);
       
-      ArrayList<InventoryVO> list = this.inventoryProc.list_all();
-      mav.addObject("list", list);
       
-      ArrayList<ProductsVO> list1 = this.productsProc.list_all();
-      mav.addObject("list1", list1);
-      
-      ArrayList<SupplierVO> list2 = this.supplierProc.list_all();
-      mav.addObject("list2", list2);
       
     } else {
-      mav.setViewName("/admin/login_need"); // /WEB-INF/views/admin/login_need.jsp
+      mav.setViewName("/manager/login_need"); // /WEB-INF/views/manager/login_need.jsp
       
     }
-        
     return mav;
   }
   
@@ -249,24 +298,19 @@ public class InventoryCont {
     
     return mav;
   }
-  
   /**
-   * 삭제폼
-   * http://localhost:9092/inventory/delete.do?inventoryID=1
+   * 전체 목록
+   * http://localhost:9092/inventory/list_all.do
    * @return
    */
-  @RequestMapping(value="/inventory/delete.do", method = RequestMethod.GET)
-  public ModelAndView delete(HttpSession session, int inventoryID) { // int inventoryID = (int)request.getParameter("inventoryID");
+  @RequestMapping(value="/inventory/list.do", method = RequestMethod.GET)
+  public ModelAndView list(HttpSession session) {
     ModelAndView mav = new ModelAndView();
     
     if (this.adminProc.isAdmin(session) == true) {
-      // mav.setViewName("/inventory/delete"); // /WEB-INF/views/inventory/delete.jsp
-      mav.setViewName("/inventory/list_all_delete"); // /WEB-INF/views/inventory/list_all_delete.jsp
+      mav.setViewName("/inventory/list"); // /WEB-INF/views/inventory/list_all.jsp
       
-      InventoryVO inventoryVO = this.inventoryProc.read(inventoryID);
-      mav.addObject("inventoryVO", inventoryVO);
-      
-      ArrayList<InventoryVO> list = this.inventoryProc.list_all();
+      ArrayList<InventoryVO> list = this.inventoryProc.list();
       mav.addObject("list", list);
       
       ArrayList<ProductsVO> list1 = this.productsProc.list_all();
@@ -274,9 +318,86 @@ public class InventoryCont {
       
       ArrayList<SupplierVO> list2 = this.supplierProc.list_all();
       mav.addObject("list2", list2);
-   
+      
+    } else {
+      mav.setViewName("/admin/login_need"); // /WEB-INF/views/admin/login_need.jsp
+      
     }
     
+    return mav;
+  }
+  
+  /**
+   * 삭제폼
+   * http://localhost:9092/inventory/delete.do?inventoryID=1
+   * @return
+   */
+  @RequestMapping(value="/inventory/delete.do", method = RequestMethod.GET)
+  public ModelAndView delete(HttpSession session, int inventoryID,InventoryVO inventoryVO) { // int inventoryID = (int)request.getParameter("inventoryID");
+ModelAndView mav = new ModelAndView();
+    
+    ArrayList<InventoryVO> list4 = this.inventoryProc.list_all();
+    mav.addObject("list", list4);
+    
+ // 검색 목록
+    ArrayList<InventoryVO> list = inventoryProc.list_by_inventoryStatus_search_paging2(inventoryVO);
+    
+    ArrayList<ProductsVO> list1 = this.productsProc.list_all();
+    mav.addObject("list1", list1);
+    
+    ArrayList<SupplierVO> list2 = this.supplierProc.list_all();
+    mav.addObject("list2", list2);
+    
+      // for문을 사용하여 객체를 추출, Call By Reference 기반의 원본 객체 값 변경
+      for (InventoryVO inventoryvo2 : list) {
+              String inventoryStatus = inventoryvo2.getInventoryStatus();
+              int supplierID = inventoryvo2.getSupplierID();
+              int productID= inventoryvo2.getProductID();
+              
+              inventoryStatus = Tool.convertChar(inventoryStatus);
+              /*
+               * supplierID = Tool.convertChar(supplierID); // 특수 문자 처리 productID =
+               * Tool.convertChar(productID);
+               */
+              
+              inventoryvo2.setInventoryStatus(inventoryStatus);
+              inventoryvo2.setSupplierID(supplierID);
+              inventoryvo2.setProductID(productID);
+      }
+    mav.addObject("list", list);
+  
+
+  
+    HashMap<String, Object> hashMap = new HashMap<String, Object>();
+    hashMap.put("word", inventoryVO.getWord());
+    
+    int search_count2 = this.inventoryProc.search_count2(hashMap);  // 검색된 레코드 갯수 ->  전체 페이지 규모 파악
+    mav.addObject("search_count2", search_count2);
+    
+    /*
+     * SPAN태그를 이용한 박스 모델의 지원, 1 페이지부터 시작 현재 페이지: 11 / 22 [이전] 11 12 13 14 15 16 17
+     * 18 19 20 [다음]
+     * @param inventoryStatus 카테고리번호
+     * @param now_page 현재 페이지
+     * @param word 검색어
+     * @param list_file 목록 파일명
+     * @return 페이징용으로 생성된 HTML/CSS tag 문자열
+     */
+    String paging = inventoryProc.pagingBox3(inventoryVO.getInventoryID(),inventoryVO.getNow_page(), inventoryVO.getWord(), "delete.do", search_count2);
+    mav.addObject("paging", paging);
+    if (this.adminProc.isAdmin(session) == true) {
+      // mav.setViewName("/shipping/update"); // /WEB-INF/views/shipping/update.jsp
+      mav.setViewName("/inventory/list_all_delete"); // /WEB-INF/views/shipping/list_all_update.jsp
+      
+      InventoryVO inventoryVO1 = this.inventoryProc.read(inventoryID);
+      mav.addObject("inventoryVO", inventoryVO1);
+      
+      
+      
+    } else {
+      mav.setViewName("/manager/login_need"); // /WEB-INF/views/manager/login_need.jsp
+      
+    }
     return mav;
   }
   

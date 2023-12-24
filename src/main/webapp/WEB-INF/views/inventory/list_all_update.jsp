@@ -21,6 +21,25 @@
   <span class='menu_divide' >│</span>
   <a href="javascript:location.reload();">새로고침</a>
 </aside>
+
+<div style="text-align: right; clear: both;">  
+    <form name='frm' id='frm' method='get' action='./list_all.do'>
+      
+      <c:choose>
+        <c:when test="${param.word != '' }"> <%-- 검색하는 경우는 검색어를 출력 --%>
+          <input type='text' name='word' id='word' value='${param.word }'>
+        </c:when>
+        <c:otherwise> <%-- 검색하지 않는 경우 --%>
+          <input type='text' name='word' id='word' value=''>
+        </c:otherwise>
+      </c:choose>
+      <button type='submit' class='btn btn-secondary btn-sm' style="padding: 2px 8px 3px 8px; margin: 0px 0px 2px 0px;">검색</button>
+      <c:if test="${param.word.length() > 0 }"> <%-- 검색 상태하면 '검색 취소' 버튼을 출력 --%>
+        <button type='button' class='btn btn-secondary btn-sm' style="padding: 2px 8px 3px 8px; margin: 0px 0px 2px 0px;"
+                    onclick="location.href='./list_all.do'">검색 취소</button>
+      </c:if>    
+    </form>
+  </div>
 <div class="menu_line"></div> 
 
 <form name='frm' method='post' action='/inventory/update.do'>
@@ -213,15 +232,15 @@
 
 <table class="table table-hover">
     <colgroup>
-        <col style='width: 4%;'/>
         <col style='width: 10%;'/>
-        <col style='width: 4%;'/>    
-        <col style='width: 16%;'/>
-        <col style='width: 4%;'/>
-        <col style='width: 14%;'/>
-        <col style='width: 5%;'/>
-        <col style='width: 7%;'/>
-        <col style='width: 5%;'/>
+        <col style='width: 10%;'/>
+        <col style='width: 10%;'/>    
+        <col style='width: 10%;'/>
+        <col style='width: 10%;'/>
+        <col style='width: 13%;'/>
+        <col style='width: 10%;'/>
+        <col style='width: 10%;'/>
+        <col style='width: 10%;'/>
       </colgroup>
       <thead>
         <tr>
@@ -229,7 +248,7 @@
           <th class="th_bs">재고 상태</th>
           <th class="th_bs">제품 ID</th>
           <th class="th_bs">제품 이름</th>
-          <th class="th_bs">업체 ID</th>
+          <th class="th_bs">공급업체 ID</th>
           <th class="th_bs">공급업체 회사명</th>
           <th class="th_bs">제품 수량</th>
           <th class="th_bs">입/출고 날짜</th>
@@ -250,18 +269,42 @@
         <td class="td_bs">${inventoryStatus}</td>
         <td class="td_bs">${productID}</td>
         <!-- Loop through the list1 to find matching pName -->
-        <c:forEach var="productsVO" items="${list1}" varStatus="info1">
-            <c:if test="${productsVO.productID eq inventoryVO.productID}">
-                <td class="td_bs">${productsVO.pName}</td>
-            </c:if>
-        </c:forEach>
+        <c:set var="matchingProduct" value="false" />
+
+<c:forEach var="productVO" items="${list1}" varStatus="info1">
+    <c:if test="${productVO.productID eq inventoryVO.productID}">
+        <td class="td_bs">${productVO.pName}</td>
+        <c:set var="matchingProduct" value="true" />
+    </c:if>
+</c:forEach>
+
+<c:choose>
+    <c:when test="${matchingProduct}">
+        <!-- Matching found, do nothing here as it has already been handled in the loop -->
+    </c:when>
+    <c:otherwise>
+        <td class="td_bs">제품명 미지정</td>
+    </c:otherwise>
+</c:choose>
+
         <td class="td_bs">${supplierID}</td>
-        <!-- Loop through the list1 to find matching pName -->
-        <c:forEach var="supplierVO" items="${list2}" varStatus="info1">
-            <c:if test="${supplierVO.supplierid eq inventoryVO.supplierID}">
-                <td class="td_bs">${supplierVO.sname}</td>
-            </c:if>
-        </c:forEach>
+        <c:set var="matching" value="false" />
+
+<c:forEach var="supplierVO" items="${list2}" varStatus="info1">
+    <c:if test="${supplierVO.supplierid eq inventoryVO.supplierID}">
+        <td class="td_bs">${supplierVO.sname}</td>
+        <c:set var="matching" value="true" />
+    </c:if>
+</c:forEach>
+
+<c:choose>
+    <c:when test="${matching}">
+        <!-- Matching found, do nothing here as it has already been handled in the loop -->
+    </c:when>
+    <c:otherwise>
+        <td class="td_bs">공급업체 미지정</td>
+    </c:otherwise>
+</c:choose>
         <td class="td_bs">${addQuantity}</td>
         <td class="td_bs">${lastUpdated}</td>
         <td class="td_bs">
@@ -273,6 +316,10 @@
       </tbody>
       
   </table>
+  
+  <!-- 페이지 목록 출력 부분 시작 -->
+  <DIV class='bottom_menu'>${paging }</DIV> <%-- 페이지 리스트 --%>
+  <!-- 페이지 목록 출력 부분 종료 -->
  
 <jsp:include page="../menu/bottom.jsp" flush='false' /> 
 </body>
