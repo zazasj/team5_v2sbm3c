@@ -38,7 +38,7 @@ public class HomeCont {
     System.out.println("-> HomeCont created.");
   }
   
-  @GetMapping(value = {"/index.do", "", "/",})
+  @GetMapping(value = {"/index.do", "", "/"})
   public ModelAndView home() {
     System.out.println("-> home() ver 2.0");
     
