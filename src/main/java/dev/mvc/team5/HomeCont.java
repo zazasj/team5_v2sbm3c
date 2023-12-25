@@ -20,7 +20,7 @@ import dev.mvc.supplier.SupplierVO;
 import lombok.extern.slf4j.Slf4j;
 
 
-@RestController
+@Controller
 public class HomeCont {
   @Autowired // CateProcInter interface 구현한 객체를 만들어 자동으로 할당해라.
   @Qualifier("dev.mvc.cateGroup.CateGroupProc")
