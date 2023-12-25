@@ -7,18 +7,20 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import dev.mvc.cateGroup.CateGroupProcInter;
 import dev.mvc.cateGroup.CateGroupVO;
 import dev.mvc.category.CategoryProcInter;
 import dev.mvc.category.CategoryVO;
+import dev.mvc.cicd.CICDCont;
 import dev.mvc.supplier.SupplierProcInter;
 import dev.mvc.supplier.SupplierVO;
+import lombok.extern.slf4j.Slf4j;
 
 
-
-@Controller
+@RestController
 public class HomeCont {
   @Autowired // CateProcInter interface 구현한 객체를 만들어 자동으로 할당해라.
   @Qualifier("dev.mvc.cateGroup.CateGroupProc")
