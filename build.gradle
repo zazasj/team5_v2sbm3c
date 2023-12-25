@@ -9,8 +9,12 @@ group = 'dev.mvc'
 version = '1.0'
 
 java {
-	sourceCompatibility = '1.8'
+	sourceCompatibility = '11'
 }
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 
 repositories {
 	mavenCentral()
@@ -40,7 +44,6 @@ dependencies {
   implementation 'com.sun.mail:javax.mail:1.6.2'
   // https://mvnrepository.com/artifact/javax.mail/javax.mail-api 
   implementation 'javax.mail:javax.mail-api:1.6.2'
-  testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
   // https://mvnrepository.com/artifact/org.projectlombok/lombok  
   compileOnly 'org.projectlombok:lombok:1.18.26'                       
   annotationProcessor 'org.projectlombok:lombok:1.18.26' 
