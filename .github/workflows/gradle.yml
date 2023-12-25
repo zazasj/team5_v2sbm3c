@@ -42,22 +42,3 @@ jobs:
         script: |
           whoami
           ls -al
-    - name: Copy war file to remote
-      uses: appleboy/scp-action@master
-      with:
-        username: ${{ secrets.SERVER_USERNAME }}
-        host: ${{ secrets.SERVER_HOST }}
-        key: ${{ secrets.SERVER_KEY }}
-        source: "./build/libs/*.war"
-        target: "/home/ubuntu/deploy"
-        strip_components: 2       
-    - name: Execute deploy script
-      uses: appleboy/ssh-action@master
-      with:
-        username: ${{ secrets.SERVER_USERNAME }}
-        host: ${{ secrets.SERVER_HOST }}
-        key: ${{ secrets.SERVER_KEY }}
-        script_stop: true
-        script: |
-          chmod +x /home/ubuntu/deploy/deploy.sh
-          sh /home/ubuntu/deploy/deploy.sh
