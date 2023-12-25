@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,8 +39,8 @@ public class HomeCont {
   }
   
   // http://localhost:9091
-  @RequestMapping(value= {"", "/", "/index.do", "/index.resort"}, method=RequestMethod.GET)
-  public ModelAndView home() {
+  @GetMapping("/index.do")
+ public ModelAndView home() {
     System.out.println("-> home() ver 2.0");
     
     ModelAndView mav = new ModelAndView();
