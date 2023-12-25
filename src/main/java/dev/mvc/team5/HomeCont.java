@@ -14,13 +14,12 @@ import dev.mvc.cateGroup.CateGroupProcInter;
 import dev.mvc.cateGroup.CateGroupVO;
 import dev.mvc.category.CategoryProcInter;
 import dev.mvc.category.CategoryVO;
-import dev.mvc.cicd.CICDCont;
 import dev.mvc.supplier.SupplierProcInter;
 import dev.mvc.supplier.SupplierVO;
 import lombok.extern.slf4j.Slf4j;
 
 
-@Controller
+@RestController
 public class HomeCont {
   @Autowired // CateProcInter interface 구현한 객체를 만들어 자동으로 할당해라.
   @Qualifier("dev.mvc.cateGroup.CateGroupProc")
