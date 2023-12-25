@@ -20,7 +20,7 @@ import dev.mvc.supplier.SupplierVO;
 import lombok.extern.slf4j.Slf4j;
 
 
-@Controller
+@RestController
 public class HomeCont {
   @Autowired // CateProcInter interface 구현한 객체를 만들어 자동으로 할당해라.
   @Qualifier("dev.mvc.cateGroup.CateGroupProc")
@@ -38,15 +38,12 @@ public class HomeCont {
     System.out.println("-> HomeCont created.");
   }
   
-  //http://54.66.10.137:9093/index.do
-  @RequestMapping(value= {"", "/", "/index.do", "/index.resort"}, method=RequestMethod.GET)
+  @GetMapping(value = {"/index.do", "", "/",})
   public ModelAndView home() {
     System.out.println("-> home() ver 2.0");
     
     ModelAndView mav = new ModelAndView();
     mav.setViewName("/index"); // /WEB-INF/views/index.jsp
-    // spring.mvc.view.prefix=/WEB-INF/views/
-    // spring.mvc.view.suffix=.jsp
         
     return mav;
   }
