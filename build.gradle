@@ -28,7 +28,6 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	//testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
 	//testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.3.1'
   testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
