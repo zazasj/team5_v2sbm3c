@@ -26,10 +26,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import dev.mvc.carts.CartsProcInter;
 import dev.mvc.carts.CartsVO;
+import dev.mvc.cateGroup.CateGroupVO;
+import dev.mvc.category.CategoryVO;
 import dev.mvc.order_item.Order_itemProcInter;
 import dev.mvc.order_item.Order_itemVO;
 import dev.mvc.products.ProductsProcInter;
 import dev.mvc.products.ProductsVO;
+import dev.mvc.tool.Tool;
  
 @Controller
 public class Order_payCont {
@@ -178,25 +181,67 @@ public class Order_payCont {
    * http://localhost:9091/order_pay/list_by_memberno.do 
    * @return
    */
-  @RequestMapping(value="/order_pay/list_by_memberno.do", method=RequestMethod.GET )
-  public ModelAndView list_by_memberno(HttpSession session) {
-    ModelAndView mav = new ModelAndView();
-    
-    if (session.getAttribute("memberno") != null) { // 회원으로 로그인을 했다면 쇼핑카트로 이동
-      int memberno = (int)session.getAttribute("memberno");
-      
-      List<Order_payVO> list = this.order_payProc.list_by_memberno(memberno);
-      mav.addObject("list", list); // request.setAttribute("list", list);
+  @RequestMapping(value = "/order_pay/list_by_memberno.do", method = RequestMethod.GET)
+  public ModelAndView list_by_memberno(HttpSession session,
+                                        @RequestParam(value = "word", defaultValue = "") String word,
+                                        @RequestParam(value = "now_page", defaultValue = "1") int now_page
+                                        ,Order_payVO order_payVO) {
 
-      mav.setViewName("/order_pay/list_by_memberno"); // /views/order_pay/list_by_memberno.jsp   
-      
-    } else { // 회원으로 로그인하지 않았다면
-      mav.addObject("return_url", "/order_pay/list_by_memberno.do"); // 로그인 후 이동할 주소 ★
-      
-      mav.setViewName("redirect:/member/login.do"); // /WEB-INF/views/member/login_ck_form.jsp
-    }
+      System.out.println("-> Order_pay_list_by_memberno now_page: " + now_page);
 
-    return mav;
+      ModelAndView mav = new ModelAndView();
+
+      if (session.getAttribute("memberno") != null) {
+          int memberno = (int) session.getAttribute("memberno");
+          
+          System.out.println(memberno);
+          
+          // Order_payVO 객체에 값을 설정합니다.
+          order_payVO.setWord(word);
+          order_payVO.setNow_page(now_page);
+
+          // Order_payVO를 HashMap으로 변환
+          HashMap<String, Object> hashMap = new HashMap<String, Object>();
+          hashMap.put("memberno", memberno);
+          hashMap.put("word", word);
+          hashMap.put("now_page", now_page);
+
+          ArrayList<Order_payVO> list = this.order_payProc.list_by_memberno_search_paging(order_payVO);
+
+          for (Order_payVO order_payVO1 : list) {
+              String rname = order_payVO1.getRname();
+              String raddress1 = order_payVO1.getRaddress1();
+
+              rname = Tool.convertChar(rname);  // 특수 문자 처리
+              raddress1 = Tool.convertChar(raddress1);
+
+              order_payVO1.setRname(rname);
+              order_payVO1.setRaddress1(raddress1);
+          }
+
+          // 검색 목록
+          mav.addObject("list", list);
+
+          int search_count = order_payProc.search_count(hashMap);
+          mav.addObject("search_count", search_count);
+          
+          Order_payVO VO = order_payProc.read_by_memberno(order_payVO.getMemberno());
+          mav.addObject("order_payVO", VO);
+
+          String paging = order_payProc.pagingBox(order_payVO.getMemberno(), order_payVO.getNow_page(), order_payVO.getWord(), "list_by_memberno.do", search_count);
+
+          mav.addObject("paging", paging);
+
+          mav.addObject("now_page", now_page);
+
+          mav.setViewName("/order_pay/list_by_memberno");
+
+      } else {
+          mav.addObject("return_url", "/order_pay/list_by_memberno.do");
+          mav.setViewName("redirect:/member/login.do");
+      }
+
+      return mav;
   }
 
 }

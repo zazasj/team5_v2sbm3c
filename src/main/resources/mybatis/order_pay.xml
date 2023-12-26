@@ -29,6 +29,12 @@
                                      #{raddress1}, #{raddress2}, #{paytype}, #{amount}, sysdate)
   </insert> 
   
+  <select id="read_by_memberno" resultType="dev.mvc.order_pay.Order_payVO" parameterType="int">
+    SELECT *
+    FROM order_pay
+    WHERE memberno = #{memberno}
+  </select>
+  
   <!-- 회원별 주문 결재 목록 -->
   <select id="list_by_memberno" resultType="dev.mvc.order_pay.Order_payVO" parameterType="int">
     SELECT order_payno, memberno, rname, rtel, rzipcode, raddress1, raddress2, paytype, amount, rdate
@@ -37,5 +43,82 @@
     ORDER BY order_payno DESC
   </select>
   
+  <select id="list_by_memberno_search" resultType="dev.mvc.order_pay.Order_payVO" parameterType="HashMap">
+    SELECT order_payno, memberno, rname, rtel, rzipcode, raddress1, raddress2, paytype, amount, rdate
+    FROM order_pay
+    <choose>
+      <when test="word == null or word == ''"> <!-- 검색하지 않는 경우 -->
+        WHERE memberno=#{memberno}
+      </when>
+      <otherwise> <!-- 검색하는 경우 -->
+        WHERE memberno=#{memberno} AND (UPPER(rname) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(raddress1) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+      </otherwise>
+    </choose>
+    ORDER BY order_payno DESC   
+  </select>
+  
+  <!-- 멤버별 검색 레코드 갯수 -->
+  <select id="search_count" resultType="int" parameterType="HashMap">
+    SELECT COUNT(*) as cnt
+    FROM order_pay
+    <choose>
+      <when test="word == null or word == ''"> <!-- 검색하지 않는 경우의 레코드 갯수 -->
+        WHERE memberno=#{memberno}
+      </when>
+      <otherwise> <!-- 검색하는 경우의 레코드 갯수 -->
+        WHERE memberno=#{memberno} AND (UPPER(rname) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(raddress1) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+      </otherwise>
+    </choose>
+  </select>  
+  
+  <!-- 멤버별 검색 + 페이징 목록 -->
+  <select id="list_by_memberno_search_paging" resultType="dev.mvc.order_pay.Order_payVO" parameterType="dev.mvc.order_pay.Order_payVO">
+   SELECT order_payno, memberno, rname, rtel, rzipcode, raddress1, raddress2, paytype, amount, rdate, r
+   FROM (
+              SELECT order_payno, memberno, rname, rtel, rzipcode, raddress1, raddress2, paytype, amount, rdate, rownum as r
+              FROM (
+                        SELECT order_payno, memberno, rname, rtel, rzipcode, raddress1, raddress2, paytype, amount, rdate
+                        FROM order_pay
+                        <choose>
+                          <when test="word == null or word == ''"> <!-- 검색하지 않는 경우 -->
+                            WHERE memberno=#{memberno}
+                          </when>
+                          <otherwise>
+                            WHERE memberno=#{memberno} AND (UPPER(rname) LIKE '%' || UPPER(#{word}) || '%' 
+                                                              OR UPPER(raddress1) LIKE '%' || UPPER(#{word}) || '%' 
+                                                              OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+                          </otherwise>
+                        </choose>
+                        ORDER BY order_payno DESC
+               )
+    )
+    WHERE <![CDATA[ r >= #{start_num} AND r <= #{end_num} ]]>
+     
+    <!-- 1 page: WHERE r >= 1 AND r <= 10; 
+          2 page: WHERE r >= 11 AND r <= 20;
+          3 page: WHERE r >= 21 AND r <= 30; -->
+  </select>
+  
+  <!-- 모든상품 검색 레코드 갯수 -->
+  <select id="search_count_all" resultType="int" parameterType="HashMap">
+    SELECT COUNT(*) as cnt
+    FROM order_pay
+    <choose>
+      <when test="word == null or word == ''"> <!-- 검색하지 않는 경우의 레코드 갯수 -->
+      </when>
+      <otherwise> <!-- 검색하는 경우의 레코드 갯수 -->
+        WHERE (UPPER(rname) LIKE '%' || UPPER(#{word}) || '%' 
+                   OR UPPER(rtel) LIKE '%' || UPPER(#{word}) || '%'
+                   OR UPPER(rzipcode) LIKE '%' || UPPER(#{word}) || '%'
+                   OR UPPER(raddress1) LIKE '%' || UPPER(#{word}) || '%'
+                   OR UPPER(paytype) LIKE '%' || UPPER(#{word}) || '%'
+                   OR UPPER(rdate) LIKE '%' || UPPER(#{word}) || '%')
+      </otherwise>
+    </choose>
+  </select>
 
 </mapper>
