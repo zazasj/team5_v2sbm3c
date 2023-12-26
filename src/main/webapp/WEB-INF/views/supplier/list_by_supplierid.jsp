@@ -86,7 +86,7 @@
         		</c:otherwise>
     		  </c:choose>
     		  </div>
-		      <td class="td_bs">${supplierVO.sname }</td>
+		      <td class="td_bs"><a href="./read.do?supplierid=${supplierid }" style="display:block;">${supplierVO.sname }</a></td>
 		      <td class="td_bs">${supplierVO.contactinfo }</td>
 		      <td class="td_bs">${supplierVO.email }</td>
 		      <td class="td_bs">${supplierVO.saddress }</td>

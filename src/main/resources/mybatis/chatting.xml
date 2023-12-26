@@ -29,4 +29,62 @@
     DELETE FROM chatting
     WHERE chattingno=#{chattingno}
   </delete>
+  
+  <!-- 카테고리별 검색 목록 -->
+  <select id="list_by_chattingno_search" resultType="dev.mvc.chatting.ChattingVO" parameterType="HashMap">
+    SELECT chattingno, memberno, msg, word, rdate
+    FROM chatting
+    <choose>
+      <when test="word == null or word == ''"> <!-- 검색하지 않는 경우 -->
+      </when>
+      <otherwise> <!-- 검색하는 경우 -->
+        WHERE (UPPER(chattingno) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+      </otherwise>
+    </choose>
+    ORDER BY chattingno DESC   
+  </select>
+   
+  <!-- 카테고리별 검색 레코드 갯수 -->
+  <select id="search_count" resultType="int" parameterType="HashMap">
+    SELECT COUNT(*) as cnt
+    FROM chatting
+    <choose>
+      <when test="word == null or word == ''"> <!-- 검색하지 않는 경우의 레코드 갯수 --> 
+      </when>
+      <otherwise> <!-- 검색하는 경우의 레코드 갯수 -->
+        WHERE (UPPER(chattingno) LIKE '%' || UPPER(#{word}) || '%' 
+        										  OR UPPER(msg) LIKE '%' || UPPER(#{word}) || '%'
+                                                  OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+      </otherwise>
+    </choose>
+  </select>
+  
+  <!-- 카테고리별 검색 + 페이징 목록 -->
+  <select id="list_by_chattingno_search_paging" resultType="dev.mvc.chatting.ChattingVO" parameterType="dev.mvc.chatting.ChattingVO">
+   SELECT chattingno, memberno, msg, word, rdate, r
+   FROM (
+              SELECT chattingno, memberno, msg, word, rdate, rownum as r
+              FROM (
+                        SELECT chattingno, memberno, msg, word, rdate
+                        FROM chatting
+                        <choose>
+                          <when test="word == null or word == ''"> <!-- 검색하지 않는 경우 -->
+                            </when>
+                          <otherwise>
+                            WHERE (UPPER(chattingno) LIKE '%' || UPPER(#{word}) || '%' 
+                            								  OR UPPER(msg) LIKE '%' || UPPER(#{word}) || '%'
+                                                              OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+                          </otherwise>
+                        </choose>
+                        ORDER BY chattingno ASC
+               )
+    )
+    WHERE <![CDATA[ r >= #{start_num} AND r <= #{end_num} ]]>
+     
+    <!-- 1 page: WHERE r >= 1 AND r <= 10; 
+          2 page: WHERE r >= 11 AND r <= 20;
+          3 page: WHERE r >= 21 AND r <= 30; -->
+  </select>
+ 
 </mapper>

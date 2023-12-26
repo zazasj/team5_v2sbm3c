@@ -80,7 +80,7 @@
               <a class="nav-link top_menu_link" href="/event/list_by_eventno.do">이벤트</a>
             </li>
             <li class="nav-item"> <%-- 서브 메뉴가 없는 독립메뉴 --%>
-              <a class="nav-link top_menu_link" href="/chatting/list_all.do">챗봇 기록</a>
+              <a class="nav-link top_menu_link" href="/chatting/list_by_chattingno.do">챗봇 기록</a>
             </li>
         
             <li class="nav-item dropdown"> <%-- 회원 서브 메뉴 --%>

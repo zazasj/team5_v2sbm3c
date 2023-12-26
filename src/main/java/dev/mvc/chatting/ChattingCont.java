@@ -1,6 +1,7 @@
 package dev.mvc.chatting;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import dev.mvc.chatting.ChattingVO;
 import dev.mvc.member.MemberProcInter;
+import dev.mvc.supplier.SupplierVO;
 import dev.mvc.chatting.ChattingProcInter;
 import dev.mvc.tool.Tool;
 
@@ -181,6 +183,82 @@ public class ChattingCont {
 	     
 	     return mav;
 	   }
+	   
+//	   /**
+//	    * 특정 카테고리의 검색 목록
+//	    * http://localhost:9091/contents/list_by_cateno.do?cateno=1
+//	    * @return
+//	    */
+//	   @RequestMapping(value="/chatting/list_by_chattingno.do", method = RequestMethod.GET)
+//	   public ModelAndView list_by_chattingno(String word) {
+//	     ModelAndView mav = new ModelAndView();
+//
+//	     mav.setViewName("/chatting/list_by_chattingno"); // /WEB-INF/views/contents/list_by_cateno.jsp
+//	     
+//	     // request.setAttribute("cateVO", cateVO);
+//	     
+//	     // 검색하지 않는 경우
+//	     // ArrayList<ContentsVO> list = this.contentsProc.list_by_cateno(cateno);
+//
+//	     HashMap<String, Object> hashMap = new HashMap<String, Object>();
+//		 hashMap.put("word", word);
+//		 int search_count = this.chattingProc.search_count(hashMap);  // 검색된 레코드 갯수 ->  전체 페이지 규모 파악
+//		 mav.addObject("search_count", search_count);
+//		    
+//		 ArrayList<ChattingVO> list = this.chattingProc.list_by_chattingno_search(hashMap);
+//		    
+//	     
+//	     // for문을 사용하여 객체를 추출, Call By Reference 기반의 원본 객체 값 변경
+//	     for (ChattingVO chattingVO : list) {
+//	       String msg = chattingVO.getMsg();
+//	       
+//	       msg = Tool.convertChar(msg);  // 특수 문자 처리
+//	       
+//	       chattingVO.setMsg(msg);  
+//
+//	     }
+//	     
+//	     mav.addObject("list", list);
+//	     
+//	     return mav;
+//	   }  
+	   
+	   @RequestMapping(value="/chatting/list_by_chattingno.do", method = RequestMethod.GET)
+		  public ModelAndView list_by_chattingno(ChattingVO chattingVO) {
+		    ModelAndView mav = new ModelAndView();
+
+		    ArrayList<ChattingVO> list = chattingProc.list_by_chattingno_search_paging(chattingVO);	 
+		    // 검색하는 경우	    
+		    System.out.println("List size: " + list.size());
+		    for (ChattingVO vo : list) {
+		        System.out.println(vo.toString()); // 또는 필요한 속성만 출력
+		    }
+		    // for문을 사용하여 객체를 추출, Call By Reference 기반의 원본 객체 값 변경
+		    for (ChattingVO chattingvo2 : list) {
+		      String msg = chattingvo2.getMsg();
+		      
+		      msg = Tool.convertChar(msg);
+		      
+		      chattingvo2.setMsg(msg);
+		    }
+		    
+		    mav.addObject("list", list);
+		    
+		    HashMap<String, Object> hashMap = new HashMap<String, Object>();	     
+		    hashMap.put("word", chattingVO.getWord());
+		    int search_count = this.chattingProc.search_count(hashMap);  // 검색된 레코드 갯수 ->  전체 페이지 규모 파악
+		    mav.addObject("search_count", search_count);
+		     
+		    String paging = chattingProc.pagingBox(chattingVO.getNow_page(), chattingVO.getWord(), "list_by_chattingno.do", search_count);
+		    mav.addObject("paging", paging);
+		  
+		    // mav.addObject("now_page", now_page);
+		    
+		    mav.setViewName("/chatting/list_by_chattingno");  // /contents/list_by_cateno.jsp
+		    
+		    
+		    return mav;
+		  }  
 	   
 	 }
 		   
