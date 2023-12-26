@@ -126,7 +126,7 @@
                     <a class="dropdown-item" href='/category/list_all.do'>카테고리 전체 목록</a>
                     <a class="dropdown-item" href='/member/list.do'>회원 목록</a>
                     <a class="dropdown-item" href='/review/list.do'>리뷰 전체 목록</a>
-                    <a class="dropdown-item" href='/supplier/list_all_adminno.do'>공급 업체</a>          
+                    <a class="dropdown-item" href='/supplier/list_by_supplierid.do'>공급 업체</a>          
                     <a class="dropdown-item" href='/inventory/list_all.do'>재고 현황</a> 
                     <a class="dropdown-item" href='/shipping/list_by_shippingID.do'>배송 현황</a>         
                     <a class="dropdown-item" href='/admin/logout.do'>관리자 ${sessionScope.admin_id } 로그아웃</a>

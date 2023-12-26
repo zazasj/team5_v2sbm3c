@@ -14,8 +14,8 @@
 </head>
  
 <body>
-<jsp:include page="../menu/top.jsp" flush='false' />
-<div class='title_line'>공급업체 등록</div>
+<c:import url="/menu/top.do" />
+  <div class='title_line'>공급업체 등록</div>
   <form name='frm' method='post' action='/supplier/create.do' enctype="multipart/form-data">     
     
     <div>
@@ -31,10 +31,21 @@
     </div>
     <br>
     <div>
+       <label>이메일</label>
+       <input type='text' name='email' value='이메일을 적으시오.' required="required" 
+                 autofocus="autofocus" class="form-control" style='width: 100%;'>
+    </div>
+    <br>
+    <div>
        <label>주소</label>
        <input type='text' name='saddress' value='주소를 적으시오.' required="required" 
                  autofocus="autofocus" class="form-control" style='width: 100%;'>
     </div>
+    <br>
+    <div>
+       <label>이미지</label>
+       <input type='file' class="form-control" name='file1MF' id='file1MF' value='' placeholder="파일 선택">
+    </div> 
     <br>
          
     <div class="content_body_bottom">

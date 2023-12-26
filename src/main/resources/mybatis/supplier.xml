@@ -4,12 +4,12 @@
 <mapper namespace = "dev.mvc.supplier.SupplierDAOInter">
 	
 	<insert id="create" parameterType="dev.mvc.supplier.SupplierVO">
-    	INSERT INTO Suppliers(supplierid, adminno, sname, contactinfo, saddress, rdate)
-    	VALUES(supply_seq.nextval, 1, #{sname}, #{contactinfo}, #{saddress}, sysdate)
+    	INSERT INTO Suppliers(supplierid, adminno, sname, contactinfo, email, saddress, file1, file1saved, thumb1, size1, rdate)
+    	VALUES(supply_seq.nextval, 1, #{sname}, #{contactinfo}, #{email}, #{saddress}, #{file1}, #{file1saved}, #{thumb1}, #{size1}, sysdate)
 	</insert>
 
 	<select id="list_all_adminno" resultType="dev.mvc.supplier.SupplierVO">
-      SELECT supplierid, adminno, sname, contactinfo, saddress, rdate
+      SELECT supplierid, adminno, sname, contactinfo, email, saddress, rdate, file1, file1saved, thumb1, size1
       FROM Suppliers
       WHERE adminno = #{adminno}
       ORDER BY supplierid ASC
@@ -17,17 +17,81 @@
 	
 	<!-- 한창명 넣음 -->
    <select id="list_all" resultType="dev.mvc.supplier.SupplierVO">
-      SELECT supplierid, adminno, sname, contactinfo, saddress, rdate
+      SELECT supplierid, adminno, sname, contactinfo, email, saddress, rdate
       FROM Suppliers
       ORDER BY supplierid ASC
    </select>
    
    <!-- 읽기, SQL -> SupplierVO return -->
    <select id="read" resultType="dev.mvc.supplier.SupplierVO" parameterType="int">
-      SELECT supplierid, adminno, sname, contactinfo, saddress, rdate
+      SELECT supplierid, adminno, sname, contactinfo, email, saddress, file1, file1saved, thumb1, size1, rdate
       FROM Suppliers
       WHERE supplierid = #{supplierid}
    </select>
+   
+   <!-- 카테고리별 검색 목록 -->
+  <select id="list_by_supplierid_search" resultType="dev.mvc.supplier.SupplierVO" parameterType="HashMap">
+    SELECT supplierid, sname, contactinfo, email, saddress, file1, file1saved, thumb1, size1, word, rdate
+    FROM Suppliers
+    <choose>
+      <when test="word == null or word == ''"> <!-- 검색하지 않는 경우 -->        
+      </when>
+      <otherwise> <!-- 검색하는 경우 -->
+        WHERE (UPPER(sname) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(contactinfo) LIKE '%' || UPPER(#{word}) || '%'
+                                                  OR UPPER(email) LIKE '%' || UPPER(#{word}) || '%'
+                                                  OR UPPER(saddress) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+      </otherwise>
+    </choose>
+    ORDER BY supplierid ASC   
+  </select>
+  
+  <!-- 카테고리별 검색 + 페이징 목록 -->
+  <select id="list_by_supplierid_search_paging" resultType="dev.mvc.supplier.SupplierVO" parameterType="dev.mvc.supplier.SupplierVO">
+   SELECT supplierid, sname, contactinfo, email, saddress, file1, file1saved, thumb1, size1, word, rdate, r
+   FROM (
+              SELECT supplierid, sname, contactinfo, email, saddress, file1, file1saved, thumb1, size1, word, rdate, rownum as r
+              FROM (
+                        SELECT supplierid, sname, contactinfo, email, saddress, file1, file1saved, thumb1, size1, word, rdate
+                        FROM Suppliers
+                        <choose>
+                          <when test="word == null or word == ''"> <!-- 검색하지 않는 경우 -->
+                          </when>
+                          <otherwise>
+                            WHERE  (UPPER(sname) LIKE '%' || UPPER(#{word}) || '%'
+                            						OR UPPER(contactinfo) LIKE '%' || UPPER(#{word}) || '%'
+                                                  	OR UPPER(email) LIKE '%' || UPPER(#{word}) || '%'
+                                                  	OR UPPER(saddress) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  	OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+                          </otherwise>
+                        </choose>
+                        ORDER BY supplierid DESC
+               )
+    )
+    WHERE <![CDATA[ r >= #{start_num} AND r <= #{end_num} ]]>
+     
+    <!-- 1 page: WHERE r >= 1 AND r <= 10; 
+          2 page: WHERE r >= 11 AND r <= 20;
+          3 page: WHERE r >= 21 AND r <= 30; -->
+  </select>
+   
+  <!-- 카테고리별 검색 레코드 갯수 -->
+  <select id="search_count" resultType="int" parameterType="HashMap">
+    SELECT COUNT(*) as cnt
+    FROM Suppliers
+    <choose>
+      <when test="word == null or word == ''"> <!-- 검색하지 않는 경우의 레코드 갯수 -->       
+      </when>
+      <otherwise> <!-- 검색하는 경우의 레코드 갯수 -->
+        WHERE (UPPER(sname) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(contactinfo) LIKE '%' || UPPER(#{word}) || '%'
+                                                  OR UPPER(email) LIKE '%' || UPPER(#{word}) || '%'
+                                                  OR UPPER(saddress) LIKE '%' || UPPER(#{word}) || '%' 
+                                                  OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+      </otherwise>
+    </choose>
+  </select> 
 
   <!-- return : 삭제한 레코드 갯수를 리턴, parameterType: 수정할 레코드 정보-->
    <delete id="delete" parameterType="int">
@@ -37,8 +101,22 @@
   <!-- return : 수정한 레코드 갯수를 1을 리턴, parameterType: 수정할 레코드 정보-->
   <update id="update" parameterType="dev.mvc.supplier.SupplierVO">
     UPDATE Suppliers 
-    SET sname = #{sname}, contactinfo =#{contactinfo}, saddress =#{saddress} 
+    SET sname = #{sname}, contactinfo =#{contactinfo}, saddress =#{saddress}, email =#{email} 
     WHERE supplierid=#{supplierid}
+  </update>
+  
+  <!-- 글 수정 -->
+  <update id="update_text" parameterType="dev.mvc.supplier.SupplierVO">
+    UPDATE Suppliers
+    SET sname = #{sname}, contactinfo =#{contactinfo}, saddress =#{saddress}, email =#{email} 
+    WHERE supplierid=#{supplierid}
+  </update>
+  
+  <!-- 파일 수정 -->
+  <update id="update_file" parameterType="dev.mvc.supplier.SupplierVO">
+    UPDATE Suppliers
+    SET file1=#{file1}, file1saved=#{file1saved}, thumb1=#{thumb1}, size1=#{size1}
+    WHERE supplierid = #{supplierid}
   </update>
 
 </mapper>

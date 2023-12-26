@@ -44,6 +44,12 @@ int supplierid = supplierVO.getSupplierid();
                class="form-control form-control-sm" style="width: 50%">
   </div>
   
+  <div style="margin-top: 20px;">
+    <label>이메일</label>
+    <input type="text" name="email" value="<%=supplierVO.getEmail() %>" required="required" autofocus="autofocus" 
+               class="form-control form-control-sm" style="width: 50%">
+  </div>
+  
   <div class="content_body_bottom">
     <button type="submit" class="btn btn-secondary btn-sm">저장</button>
     <button type="button" onclick="history.back();" class="btn btn-secondary btn-sm">취소</button> 

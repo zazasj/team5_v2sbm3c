@@ -9,8 +9,6 @@
 <title>술기운</title>
 <link rel="shortcut icon" href="/images/sulic-resize36.png" />
 <link href="/css/style.css" rel="Stylesheet" type="text/css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 
 </head> 
 <body>
@@ -26,10 +24,21 @@
   <fieldset class='fieldset_basic'>
     <UL>
       <c:choose>
+        <c:when test="${code == 'passwd_fail'}">
+          <LI class='li_none'>
+            <span class="span_fail">패스워드가 일치하지 않습니다.</span>
+          </LI> 
+        </c:when>
         <c:when test="${code == 'create_success'}"> <%-- Java if --%>
           <LI class='li_none'>
             <span class="span_success">새로운 업체를 등록했습니다.</span>
           </LI> 
+        </c:when>
+        <c:when test="${code == 'check_upload_file_fail'}"> <%-- Java if --%>
+          <li class='li_none'>
+            <span class="span_fail">업로드 할 수 없는 파일 형식입니다.</span><br>
+            <span>가능한 파일 형식[jpg, jpef, png, gif, txt, hwp, doc, ppt, pptx, xls, xlsx, zip, tar, gz, ipynb]</span>
+          </li> 
         </c:when>
         <c:when test="${code == 'create_fail'}"> <%-- Java if --%>
           <LI class='li_none'>
@@ -72,7 +81,7 @@
             </c:when>
             <c:otherwise>
                 <button type='button' onclick="location.href='./create.do?'" class="btn btn-secondary btn-sm">새로운 업체 등록</button>
-                <button type='button' onclick="location.href='./list_by_adminno.do'" class="btn btn-secondary btn-sm">목록</button>
+                <button type='button' onclick="location.href='./list_by_supplierid.do'" class="btn btn-secondary btn-sm">목록</button>
             </c:otherwise>
         </c:choose>
         
