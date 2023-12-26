@@ -2,7 +2,6 @@ eclipse.preferences.version=1
 encoding//src/main/java/dev/mvc/cateGroup/CateGroupCont.java=UTF-8
 encoding//src/main/java/dev/mvc/event/EventCont.java=UTF-8
 encoding//src/main/java/dev/mvc/event/EventDAOInter.java=UTF-8
-encoding//src/main/java/dev/mvc/login/LoginService.java=UTF-8
 encoding//src/main/java/dev/mvc/team5/DatabaseConfiguration.java=UTF-8
 encoding//src/main/java/dev/mvc/tool/Download.java=UTF-8
 encoding//src/main/java/dev/mvc/tool/Tool.java=UTF-8

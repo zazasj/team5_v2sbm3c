@@ -7,15 +7,15 @@ import org.springframework.stereotype.Service;
 public class LoginService {
 
     @Autowired
-    private LoginDAOInter loginDAO; // ¿¹½Ã·Î »ç¿ëÇÑ DAO ÀÎÅÍÆäÀÌ½º
+    private LoginDAOInter loginDAO; // ì˜ˆì‹œë¡œ ì‚¬ìš©í•œ DAO ì¸í„°í˜ì´ìŠ¤
 
     public void createLoginRecord(int memberNo, String ip) {
-        // LoginVO »ı¼º
+        // LoginVO ìƒì„±
         LoginVO loginVO = new LoginVO();
         loginVO.setMemberno(memberNo);
         loginVO.setIp(ip);
 
-        // DAO¸¦ ÅëÇØ ·Î±×ÀÎ ±â·Ï »ı¼º
+        // DAOë¥¼ í†µí•´ ë¡œê·¸ì¸ ê¸°ë¡ ìƒì„±
         loginDAO.create(loginVO);
     }
 }
