@@ -151,8 +151,8 @@
             <td class="td_bs">${trackingNumber}</td>
             <td class="td_bs">${estimatedDeliveryDate}</td>
             <td class="td_bs">
-              <a href="./update.do?shippingID=${shippingID }" title="수정"><img src="/shipping/images/update.png" class="icon"></a>
-              <a href="./delete.do?shippingID=${shippingID }" title="삭제"><img src="/shipping/images/delete.png" class="icon"></a>
+              <a href="./update.do?shippingID=${shippingID }" title="수정"><img src="/category/images/update.png" class="icon"></a>
+              <a href="./delete.do?shippingID=${shippingID }" title="삭제"><img src="/category/images/delete.png" class="icon"></a>
             </td>
           </tr>
         </c:forEach>

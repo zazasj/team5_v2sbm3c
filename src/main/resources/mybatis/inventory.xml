@@ -65,13 +65,27 @@
         WHERE inventoryStatus=#{inventoryStatus}
       </when>
       <otherwise> <!-- 검색하는 경우의 레코드 갯수 -->
-        WHERE inventoryStatus=#{inventoryStatus} AND (UPPER(productID) LIKE '%' || UPPER(#{word}) || '%' 
-                                                  OR UPPER(supplierID) LIKE '%' || UPPER(#{word}) || '%'
-                                                  OR UPPER(addQuantity) LIKE '%' || UPPER(#{word}) || '%'
-                                                  OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
+        WHERE inventoryStatus=#{inventoryStatus} AND (
+            UPPER(productID) LIKE '%' || UPPER(#{word}) || '%' 
+            OR UPPER(supplierID) LIKE '%' || UPPER(#{word}) || '%'
+            OR UPPER(addQuantity) LIKE '%' || UPPER(#{word}) || '%'
+            OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%'
+            OR EXISTS (
+                SELECT 1
+                FROM products
+                WHERE products.productID = inventory.productID
+                AND (UPPER(pname) LIKE '%' || UPPER(#{word}) || '%')
+            )
+            OR EXISTS (
+                SELECT 1
+                FROM suppliers
+                WHERE suppliers.supplierID = inventory.supplierID
+                AND (UPPER(sname) LIKE '%' || UPPER(#{word}) || '%')
+            )
+        )
       </otherwise>
     </choose>
-  </select> 
+</select>
   <!-- 
   카테고리별 검색 목록
   <select id="list_by_tripno_search" resultType="dev.mvc.country.CountryVO" parameterType="HashMap">
@@ -109,32 +123,43 @@
 
   <!-- 카테고리별 검색 + 페이징 목록 -->
   <select id="list_by_inventoryStatus_search_paging" resultType="dev.mvc.inventory.InventoryVO" parameterType="dev.mvc.inventory.InventoryVO">
-   SELECT inventoryID, inventoryStatus, productID, supplierID, quantity, addQuantity, lastUpdated, r
-   FROM (
-              SELECT inventoryID, inventoryStatus, productID, supplierID, quantity, addQuantity, lastUpdated, rownum as r
-              FROM (
-                        SELECT inventoryID, inventoryStatus, productID, supplierID, quantity, addQuantity, lastUpdated
-                        FROM inventory
-                        <choose>
-                          <when test="word == null or word == ''"> <!-- 검색하지 않는 경우 -->
-                            WHERE inventoryStatus=#{inventoryStatus}
-                          </when>
-                          <otherwise>
-                            WHERE inventoryStatus=#{inventoryStatus} AND (UPPER(productID) LIKE '%' || UPPER(#{word}) || '%' 
-                                                              OR UPPER(supplierID) LIKE '%' || UPPER(#{word}) || '%' 
-                                                              OR UPPER(addQuantity) LIKE '%' || UPPER(#{word}) || '%'
-                                                              OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
-                          </otherwise>
-                        </choose>
-                        ORDER BY inventoryID DESC
-               )
+    SELECT inventoryID, inventoryStatus, productID, supplierID, quantity, addQuantity, lastUpdated, r
+    FROM (
+        SELECT inventoryID, inventoryStatus, productID, supplierID, quantity, addQuantity, lastUpdated, rownum as r
+        FROM (
+            SELECT inventoryID, inventoryStatus, productID, supplierID, quantity, addQuantity, lastUpdated
+            FROM inventory
+            <choose>
+                <when test="word == null or word == ''"> <!-- 검색하지 않는 경우 -->
+                    WHERE inventoryStatus=#{inventoryStatus}
+                </when>
+                <otherwise>
+                    WHERE inventoryStatus=#{inventoryStatus} AND (
+                        UPPER(productID) LIKE '%' || UPPER(#{word}) || '%' 
+                        OR UPPER(supplierID) LIKE '%' || UPPER(#{word}) || '%' 
+                        OR UPPER(addQuantity) LIKE '%' || UPPER(#{word}) || '%'
+                        OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%'
+                        OR EXISTS (
+                            SELECT 1
+                            FROM products
+                            WHERE products.productID = inventory.productID
+                            AND (UPPER(pname) LIKE '%' || UPPER(#{word}) || '%')
+                        )
+                        OR EXISTS (
+                            SELECT 1
+                            FROM suppliers
+                            WHERE suppliers.supplierID = inventory.supplierID
+                            AND (UPPER(sname) LIKE '%' || UPPER(#{word}) || '%')
+                        )
+                    )
+                </otherwise>
+            </choose>
+            ORDER BY inventoryID DESC
+        )
     )
     WHERE <![CDATA[ r >= #{start_num} AND r <= #{end_num} ]]>
-     
-    <!-- 1 page: WHERE r >= 1 AND r <= 10; 
-          2 page: WHERE r >= 11 AND r <= 20;
-          3 page: WHERE r >= 21 AND r <= 30; -->
-  </select>
+</select>
+
   <!-- 
   특정 카테고리에 속한 레코드 갯수를 리턴
   <select id="count_by_tripno" resultType="int" parameterType="int">
@@ -154,17 +179,31 @@
     SELECT COUNT(*) as cnt
     FROM inventory
     <choose>
-      <when test="word == null or word == ''"> <!-- 검색하지 않는 경우의 레코드 갯수 -->
-      </when>
-      <otherwise> <!-- 검색하는 경우의 레코드 갯수 -->
-        WHERE (UPPER(productID) LIKE '%' || UPPER(#{word}) || '%' 
-                                                  OR UPPER(supplierID) LIKE '%' || UPPER(#{word}) || '%'
-                                                  OR UPPER(inventoryStatus) LIKE '%' || UPPER(#{word}) || '%'
-                                                  OR UPPER(addQuantity) LIKE '%' || UPPER(#{word}) || '%'
-                                                  OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
-      </otherwise>
+        <when test="word == null or word == ''"> <!-- 검색하지 않는 경우의 레코드 갯수 -->
+        </when>
+        <otherwise> <!-- 검색하는 경우의 레코드 갯수 -->
+            WHERE (UPPER(productID) LIKE '%' || UPPER(#{word}) || '%' 
+                OR UPPER(supplierID) LIKE '%' || UPPER(#{word}) || '%'
+                OR UPPER(inventoryStatus) LIKE '%' || UPPER(#{word}) || '%'
+                OR UPPER(addQuantity) LIKE '%' || UPPER(#{word}) || '%'
+                OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%'
+                OR EXISTS (
+                    SELECT 1
+                    FROM products
+                    WHERE products.productID = inventory.productID
+                    AND UPPER(pname) LIKE '%' || UPPER(#{word}) || '%'
+                )
+                OR EXISTS (
+                    SELECT 1
+                    FROM suppliers
+                    WHERE suppliers.supplierID = inventory.supplierID
+                    AND UPPER(sname) LIKE '%' || UPPER(#{word}) || '%'
+                )
+            )
+        </otherwise>
     </choose>
-  </select> 
+</select>
+
   <!-- 
   카테고리별 검색 목록
   <select id="list_by_tripno_search" resultType="dev.mvc.country.CountryVO" parameterType="HashMap">
@@ -202,32 +241,45 @@
 
   <!-- 카테고리별 검색 + 페이징 목록 -->
   <select id="list_by_inventoryStatus_search_paging2" resultType="dev.mvc.inventory.InventoryVO" parameterType="dev.mvc.inventory.InventoryVO">
-   SELECT inventoryID, inventoryStatus, productID, supplierID, quantity, addQuantity, lastUpdated, r
-   FROM (
-              SELECT inventoryID, inventoryStatus, productID, supplierID, quantity, addQuantity, lastUpdated, rownum as r
-              FROM (
-                        SELECT inventoryID, inventoryStatus, productID, supplierID, quantity, addQuantity, lastUpdated
-                        FROM inventory
-                        <choose>
-                          <when test="word == null or word == ''">
-                          </when>
-                          <otherwise>
-                            WHERE (UPPER(productID) LIKE '%' || UPPER(#{word}) || '%' 
-                                                              OR UPPER(supplierID) LIKE '%' || UPPER(#{word}) || '%' 
-                                                              OR UPPER(addQuantity) LIKE '%' || UPPER(#{word}) || '%'
-                                                              OR UPPER(inventoryStatus) LIKE '%' || UPPER(#{word}) || '%'
-                                                              OR UPPER(word) LIKE '%' || UPPER(#{word}) || '%')
-                          </otherwise>
-                        </choose>
-                        ORDER BY inventoryID DESC
-               )
+    SELECT inventoryID, inventoryStatus, productID, supplierID, quantity, addQuantity, lastUpdated, r
+    FROM (
+        SELECT inventoryID, inventoryStatus, productID, supplierID, quantity, addQuantity, lastUpdated, rownum as r
+        FROM (
+            SELECT inv.inventoryID, inv.inventoryStatus, inv.productID, inv.supplierID, inv.quantity, inv.addQuantity, inv.lastUpdated
+            FROM inventory inv
+            LEFT JOIN products p ON inv.productID = p.productID
+            LEFT JOIN suppliers s ON inv.supplierID = s.supplierID
+            <choose>
+                <when test="word == null or word == ''">
+                </when>
+                <otherwise>
+                    WHERE (UPPER(inv.productID) LIKE '%' || UPPER(#{word}) || '%'
+                           OR UPPER(inv.supplierID) LIKE '%' || UPPER(#{word}) || '%'
+                           OR UPPER(inv.addQuantity) LIKE '%' || UPPER(#{word}) || '%'
+                           OR UPPER(inv.inventoryStatus) LIKE '%' || UPPER(#{word}) || '%'
+                           OR UPPER(inv.word) LIKE '%' || UPPER(#{word}) || '%'
+                           OR EXISTS (
+                               SELECT 1
+                               FROM products pr
+                               WHERE pr.productID = inv.productID
+                               AND UPPER(pr.pname) LIKE '%' || UPPER(#{word}) || '%'
+                           )
+                           OR EXISTS (
+                               SELECT 1
+                               FROM suppliers su
+                               WHERE su.supplierID = inv.supplierID
+                               AND UPPER(su.sname) LIKE '%' || UPPER(#{word}) || '%'
+                           )
+                    )
+                </otherwise>
+            </choose>
+            ORDER BY inv.inventoryID DESC
+        )
     )
     WHERE <![CDATA[ r >= #{start_num} AND r <= #{end_num} ]]>
-     
-    <!-- 1 page: WHERE r >= 1 AND r <= 10; 
-          2 page: WHERE r >= 11 AND r <= 20;
-          3 page: WHERE r >= 21 AND r <= 30; -->
-  </select>
+</select>
+
+
   <!-- 
   특정 카테고리에 속한 레코드 갯수를 리턴
   <select id="count_by_tripno" resultType="int" parameterType="int">

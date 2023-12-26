@@ -125,8 +125,8 @@
             <td class="td_bs">${estimatedDeliveryDate}</td>
             <td class="td_bs">
               <a href="./update_file.do?shippingID=${shippingID}&now_page=${param.now_page == null ? 1 : param.now_page }" title="파일수정"><img src="/shipping/images/update.png" class="icon"></a>
-              <a href="./update.do?shippingID=${shippingID }" title="수정"><img src="/shipping/images/update.png" class="icon"></a>
-              <a href="./delete.do?shippingID=${shippingID }" title="삭제"><img src="/shipping/images/delete.png" class="icon"></a>
+              <a href="./update.do?shippingID=${shippingID }" title="수정"><img src="/category/images/update.png" class="icon"></a>
+              <a href="./delete.do?shippingID=${shippingID }" title="삭제"><img src="/category/images/delete.png" class="icon"></a>
             </td>
           </tr>
         </c:forEach>
