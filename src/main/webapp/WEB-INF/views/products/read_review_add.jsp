@@ -6,9 +6,13 @@
 
 <c:set var="categoryID" value="${productsVO.categoryID }" />
 <c:set var="productID" value="${productsVO.productID }" />
-<c:set var="thumb" value="${productsVO.thumb }" />
+<c:set var="price" value="${productsVO.price}" />
+<c:set var="origin" value="${productsVO.origin }" />
+<c:set var="volume" value="${productsVO.volume }" />
+<c:set var="alcoholContent" value="${productsVO.alcoholContent }" />
 <c:set var="imageFileSaved" value="${productsVO.imageFileSaved }" />
 <c:set var="pName" value="${productsVO.pName }" />
+<c:set var="thumb" value="${productsVO.thumb }" />
 <c:set var="description" value="${productsVO.description }" />
 <c:set var="imageFile" value="${productsVO.imageFile }" />
 <c:set var="size_label" value="${productsVO.size_label }" />
@@ -664,18 +668,15 @@ function productID_ajax_post() {
             </c:otherwise>
           </c:choose>
 
-          <span style="font-size: 1.5em; font-weight: bold;">${pName }</span>
+          <span style="font-size: 1.5em; font-weight: bold;">${pName }</span><br><br>
           ${description }
+          <br><br>
+          용량 : ${volume } 
+          <br>
+          알코올 도수 : ${alcoholContent }
+          <br>
+          가격 : ${price }
         </DIV>
-      </li>
-      
-      <li class="li_none">
-        <div>
-          <c:if test="${imageFile.trim().length() > 0 }">
-            첨부 파일: <a href='/download?dir=/products/storage&filename=${imageFileSaved}&downname=${imageFile}'>${imageFile}</a> (${size_label}) 
-            <a href='/download?dir=/products/storage&filename=${imageFileSaved}&downname=${imageFile}'><img src="/products/images/download.png"></a>
-          </c:if>
-        </div>
       </li>        
     </ul>  
   </fieldset>

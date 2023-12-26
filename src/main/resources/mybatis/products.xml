@@ -399,10 +399,9 @@
           3 page: WHERE r >= 21 AND r <= 30; -->
   </select>
   
-  <!-- 글 수정 -->
   <update id="update_text" parameterType="dev.mvc.products.ProductsVO">
     UPDATE Products
-    SET pName=#{pName}, description=#{description}
+    SET pName=#{pName}, description=#{description}, price=#{price}, supplierID=#{supplierID}, origin=#{origin}, volume=#{volume}, alcoholContent=#{alcoholContent}
     WHERE productID = #{productID}
   </update>
 

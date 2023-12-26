@@ -1638,6 +1638,9 @@ public class ProductsCont {
       ProductsVO productsVO = this.productsProc.read(productID);
       mav.addObject("productsVO", productsVO);
       
+      ArrayList<SupplierVO> list_sup = this.supplierProc.list_all();
+      mav.addObject("list_sup", list_sup);
+      
       CategoryVO categoryVO = this.categoryProc.read(productsVO.getCategoryID());
       mav.addObject("categoryVO", categoryVO);
       
@@ -1669,8 +1672,11 @@ public class ProductsCont {
       HashMap<String, Object> hashMap = new HashMap<String, Object>();
       hashMap.put("productID", productsVO.getProductID());
 
+
       this.productsProc.update_text(productsVO); // 글수정  
-       
+      
+
+      
       // mav 객체 이용
       mav.addObject("productID", productsVO.getProductID());
       mav.addObject("categoryID", productsVO.getCategoryID());

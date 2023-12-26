@@ -61,7 +61,7 @@
     </div>
     <div>
     <label>공급사</label>
-      <select name="supplierid" required="required"class="form-control" size="1">
+      <select name="supplierID" required="required"class="form-control" size="1">
           <option value="">공급사</option>
           <c:forEach var="supplierVO" items="${list_sup}">
               <c:set var="supplierid" value="${supplierVO.supplierid}"/>
