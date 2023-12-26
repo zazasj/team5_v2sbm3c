@@ -26,13 +26,29 @@
   <DIV class='title_line'>
     ${sessionScope.id }님 주문결재 내역
   </DIV>
+  
+  <div class='title_line'>
+    ${cateVO.name }
+    <c:if test="${param.word.length() > 0 }">
+      > 「${param.word }」 검색 ${search_count } 건
+    </c:if> 
+  </div>
 
   <DIV class='content_body' style='width: 100%;'>
-
-    <ASIDE class="aside_right">
-      <A href="javascript:location.reload();">새로고침</A>
-    </ASIDE> 
-   
+    
+    <DIV style="text-align: right; clear: both;">  
+    <form name='frm' id='frm' method='get' action='./list_by_memberno.do'>
+      <input type='text' name='word' id='word' value='${param.word }' style='width: 20%;'>
+      <button class="press-button" type='submit'>검색</button>
+      <c:if test="${param.word.length() > 0 }">
+        <button class="press-button" type='button' 
+                     onclick="location.href='./list_by_memberno.do?now_page=1&word='">검색 취소</button>  
+      </c:if>
+        <A href="javascript:location.reload();">새로고침</A>    
+    </form>
+    </DIV>
+    
+  
     <div class='menu_line'></div>
    
    
@@ -65,7 +81,7 @@
       <c:set var="memberno" value ="${order_payVO.memberno}" />
       <c:set var="rname" value ="${order_payVO.rname}" />
       <c:set var="rtel" value ="${order_payVO.rtel}" />
-      <c:set var="address" value ="(${order_payVO.rzipcode}) ${order_payVO.raddress1} ${order_payVO.raddress1}" />
+      <c:set var="address" value ="(${order_payVO.rzipcode}) ${order_payVO.raddress1} ${order_payVO.raddress2}" />
       <c:set var="paytype" value ="${order_payVO.paytype}" />
       <c:set var="amount" value ="${order_payVO.amount}" />
       <c:set var="rdate" value ="${order_payVO.rdate}" />
@@ -96,6 +112,8 @@
     </c:forEach>
     
   </TABLE>
+   
+   <DIV class='bottom_menu'>${paging }</DIV>
    
   <DIV class='bottom_menu'>
     <button type='button' onclick="location.reload();" class="btn btn-primary">새로 고침</button>

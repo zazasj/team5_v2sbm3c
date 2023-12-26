@@ -196,6 +196,7 @@ public class Order_payCont {
           
           System.out.println(memberno);
           
+          mav.setViewName("/order_pay/list_by_memberno");
           // Order_payVO 객체에 값을 설정합니다.
           order_payVO.setWord(word);
           order_payVO.setNow_page(now_page);
@@ -206,7 +207,7 @@ public class Order_payCont {
           hashMap.put("word", word);
           hashMap.put("now_page", now_page);
 
-          ArrayList<Order_payVO> list = this.order_payProc.list_by_memberno_search_paging(order_payVO);
+          ArrayList<Order_payVO> list = this.order_payProc.list_by_memberno_search(hashMap);
 
           for (Order_payVO order_payVO1 : list) {
               String rname = order_payVO1.getRname();
@@ -224,17 +225,17 @@ public class Order_payCont {
 
           int search_count = order_payProc.search_count(hashMap);
           mav.addObject("search_count", search_count);
-          
-          Order_payVO VO = order_payProc.read_by_memberno(order_payVO.getMemberno());
-          mav.addObject("order_payVO", VO);
-
-          String paging = order_payProc.pagingBox(order_payVO.getMemberno(), order_payVO.getNow_page(), order_payVO.getWord(), "list_by_memberno.do", search_count);
-
-          mav.addObject("paging", paging);
-
-          mav.addObject("now_page", now_page);
-
-          mav.setViewName("/order_pay/list_by_memberno");
+//          
+//          Order_payVO VO = order_payProc.read_by_memberno(order_payVO.getMemberno());
+//          mav.addObject("order_payVO", VO);
+//
+//          String paging = order_payProc.pagingBox(order_payVO.getMemberno(), order_payVO.getNow_page(), order_payVO.getWord(), "list_by_memberno.do", search_count);
+//
+//          mav.addObject("paging", paging);
+//
+//          mav.addObject("now_page", now_page);
+//
+//          mav.setViewName("/order_pay/list_by_memberno");
 
       } else {
           mav.addObject("return_url", "/order_pay/list_by_memberno.do");
