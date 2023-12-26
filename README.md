@@ -31,7 +31,10 @@ Mobile | Mobile Developer
 9개  | 4개 | 4개  | 3개 | 2개
 
 # DB Logical ERD Table
-![논리](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/91ec498d-3555-42f6-8c4a-60c8e3700022)
+![논리](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/eb79f243-41f1-4611-9867-112ff3756b87)
 
 # DB Physical ERD Table
-![물리](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/ed78357e-f272-4d0e-8fbf-77fea727cfd8)
+![물리](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/b5c8c6bb-6697-4ba0-8282-e2fa8bc1dd05)
+
+
+
