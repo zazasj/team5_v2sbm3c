@@ -239,17 +239,23 @@
   
   </DIV>
   
-  <table class="table table-hover">
+<table class="table table-hover">
     <colgroup>
       <col style="width: 10%;"></col>
-      <col style="width: 80%;"></col>
+      <col style="width: 10%"></col>
+      <col style="width: 50%;"></col>
       <col style="width: 10%;"></col>
+      <col style="width: 15%;"></col>
+      <col style="width: 5%;"></col>
     </colgroup>
     <thead>
       <tr>
         <th style='text-align: center;'>상품 사진</th>
-        <th style='text-align: center;'>상품명 / 상품 설명</th>
-        <th style='text-align: center;'>가격 / 구매</th>
+        <th style='text-align: center;'>상품 명</th>
+        <th style='text-align: center;'>상품 설명</th>
+        <th style='text-align: center;'>가격</th>
+        <th style='text-align: center;'>구매</th>
+        <th style='text-align: center;'>비고</th>
       </tr>
     </thead>
     <tbody>
@@ -275,20 +281,26 @@
               </c:otherwise>
             </c:choose>
           </td>  
-          <td style='vertical-align: middle;'>
-            <a href="./read.do?productID=${productID}&now_page=${param.now_page }&word=${param.word}"><strong>${pName}</strong> ${description}</a> 
+          <td style='vertical-align: middle; text-align: center;' >
+            <a href="./read.do?productID=${productID}&now_page=${param.now_page }&word=${param.word}"><strong>${pName}</strong></a> 
           </td> 
+          <td style="vertical-align: middle; max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center;">
+            <a href="./read.do?productID=${productID}&now_page=${param.now_page }&word=${param.word}">${description}</a> 
+          </td>
           <td style='vertical-align: middle; text-align: center;'>
             <a><fmt:formatNumber value="${price}" pattern="#,###" /></a><br>
             <span><A id="recom_${status.count }" href="javascript:recom_ajax(${productID }, ${status.count })" class="recom_link">♥(${recom })</A></span>
 
             <%-- <span id="span_animation_${status.count }"></span> --%>
             <br>
-            <button type='button' id='btn_carts' class="btn btn-info" style='margin-bottom: 2px;'
-                        onclick="carts_ajax(${productID })">장바 구니</button><br>
-            <button type='button' id='btn_ordering' class="btn btn-info" 
-                        onclick="carts_ajax(${productID })">바로 구매</button>  
+            
                                     
+          </td>
+          <td style="text-align: center;">
+          <button type='button' id='btn_carts' class="cart-button" style='margin-bottom: 2px;'
+                        onclick="carts_ajax(${productID })">장바 구니</button><br>
+            <button type='button' id='btn_ordering' class="cart-button" 
+                        onclick="carts_ajax(${productID })">바로 구매</button>  
           </td>
           <td style='vertical-align: middle; text-align: center;'>
             <A href="./update_text.do?productID=${productID}&now_page=${param.now_page }"><img src='/products/images/update.png'></A>

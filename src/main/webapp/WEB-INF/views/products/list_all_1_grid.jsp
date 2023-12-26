@@ -64,8 +64,7 @@
       <!-- 4기준 하나의 이미지, 24 * 4 = 96% -->
       <!-- 5기준 하나의 이미지, 19.2 * 5 = 96% -->
       <div onclick="location.href='./read.do?productID=${productID}&word=${param.word }&now_page=${param.now_page == null ? 1 : param.now_page }&categoryID=${param.categoryID }'" 
-             style='width: 19%; height: 200px; float: left; margin: 0.5%; padding: 0.5%; background-color: #EEEFFF; text-align: left; cursor: pointer;'>
-        
+             style='width: 19%; height: 200px; float: left; margin: 0.5%; padding: 0.5%; background-color: #EEEFFF; cursor: pointer; text-align: center;'>       
         <c:choose> 
           <c:when test="${thumb.endsWith('jpg') || thumb.endsWith('png') || thumb.endsWith('gif')}"> <%-- 이미지인지 검사 --%>
             <%-- registry.addResourceHandler("/contents/storage/**").addResourceLocations("file:///" +  Contents.getUploadDir()); --%>
@@ -76,7 +75,6 @@
           </c:otherwise>
         </c:choose>
         ${pName }
-        
       </div>
       
       <%-- 하나의 행에 이미지를 5개씩 출력후 행 변경, index는 0부터 시작 --%>

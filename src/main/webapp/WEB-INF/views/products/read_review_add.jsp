@@ -16,7 +16,6 @@
 <c:set var="description" value="${productsVO.description }" />
 <c:set var="imageFile" value="${productsVO.imageFile }" />
 <c:set var="size_label" value="${productsVO.size_label }" />
-<c:set var="word" value="${productsVO.word }" />
 <c:set var="recom" value="${productsVO.recom }" />
  <c:import url="/menu/top.do" />
 <!DOCTYPE html> 
@@ -36,6 +35,43 @@ $(function() {
     $('#btn_loadDefault').on('click', loadDefault);
     $('#btn_favproduct', favform).on('click', favproduct_ajax);
   });
+
+function recom_ajax(productID, status_count) {
+    console.log("-> recom_" + status_count + ": " + $('#recom_' + status_count).html());  // A tag body      
+    var params = "";
+    // params = $('#frm').serialize(); // 직렬화, 폼의 데이터를 키와 값의 구조로 조합
+    params = 'productID=' + productID; // 공백이 값으로 있으면 안됨.
+    $.ajax(
+      {
+        url: '/products/update_recom_ajax.do',
+        type: 'post',  // get, post
+        cache: false, // 응답 결과 임시 저장 취소
+        async: true,  // true: 비동기 통신
+        dataType: 'json', // 응답 형식: json, html, xml...
+        data: params,      // 데이터
+        success: function(rdata) { // 응답이 온경우
+          var str = '';
+          if (rdata.cnt == 1) {
+            // $('#span_animation_' + status_count).hide();   // SPAN 태그에 animation 출력
+            $('#recom_' + status_count).html('♥('+rdata.recom+')');     // A 태그에 animation 출력
+          } else {
+            // $('#span_animation_' + status_count).html("X");
+            $('#recom_' + status_count).html('♥(X)');
+          }
+        },
+        // Ajax 통신 에러, 응답 코드가 200이 아닌경우, dataType이 다른경우 
+        error: function(request, status, error) { // callback 함수
+          console.log(error);
+        }
+      }
+    );  //  $.ajax END
+
+    $('#recom_' + status_count).html("<img src='/products/images/ani04.gif' style='width: 10%;'>");
+    // $('#span_animation_' + status_count).css('text-align', 'center');
+    // $('#span_animation_' + status_count).html("<img src='/products/images/ani04.gif' style='width: 10%;'>");
+    // $('#span_animation_' + status_count).show(); // 숨겨진 태그의 출력
+      
+  }
   
 function loadDefault() {
     $('#id').val('user1');
@@ -477,6 +513,65 @@ function productID_ajax_post() {
             $('#review_list').append(msg);
           }    
         }
+
+        <%-- 쇼핑 카트에 상품 추가 --%>
+        function carts_ajax(productID) {
+          var f = $('#frm_login');
+          $('#productID', f).val(productID);  // 쇼핑카트 등록시 사용할 상품 번호를 저장.
+          
+          // console.log('-> productID: ' + $('#productID', f).val()); 
+          
+          // console.log('-> id:' + '${sessionScope.id}');
+          if ('${sessionScope.id}' != '' || $('#login_yn').val() == 'YES') {  // 로그인이 되어 있다면
+              carts_ajax_post();  // 쇼핑카트에 바로 상품을 담음
+          } else { // 로그인 안된 경우
+              $('#div_login').show(); // 로그인폼 출력
+          }
+
+        }
+
+        <%-- 쇼핑카트 상품 등록 --%>
+        function carts_ajax_post() {
+          var f = $('#frm_login');
+          var productID = $('#productID', f).val();  // 쇼핑카트 등록시 사용할 상품 번호.
+          
+          var params = "";
+          // params = $('#frm_login').serialize(); // 직렬화, 폼의 데이터를 키와 값의 구조로 조합
+          params += 'productID=' + productID;
+          params += '&${ _csrf.parameterName }=${ _csrf.token }';
+          // console.log('-> cart_ajax_post: ' + params);
+          // return;
+          
+          $.ajax(
+            {
+              url: '/carts/create.do',
+              type: 'post',  // get, post
+              cache: false, // 응답 결과 임시 저장 취소
+              async: true,  // true: 비동기 통신
+              dataType: 'json', // 응답 형식: json, html, xml...
+              data: params,      // 데이터
+              success: function(rdata) { // 응답이 온경우
+                var str = '';
+                console.log('-> carts_ajax_post cnt: ' + rdata.cnt);  // 1: 쇼핑카트 등록 성공
+                
+                if (rdata.cnt == 1) {
+                  var sw = confirm('선택한 상품이 장바구니에 담겼습니다.\n장바구니로 이동하시겠습니까?');
+                  if (sw == true) {
+                    // 쇼핑카트로 이동
+                    location.href='/carts/list_by_memberno.do';
+                  }           
+                } else {
+                  alert('선택한 상품을 장바구니에 담지못했습니다.<br>잠시후 다시 시도해주세요.');
+                }
+              },
+              // Ajax 통신 에러, 응답 코드가 200이 아닌경우, dataType이 다른경우 
+              error: function(request, status, error) { // callback 함수
+                console.log(error);
+              }
+            }
+          );  //  $.ajax END
+
+        }     
        
       
 </script>
@@ -497,6 +592,7 @@ function productID_ajax_post() {
     };
   });
 </script>
+
 
 </head> 
  
@@ -584,26 +680,7 @@ function productID_ajax_post() {
   </form> -->
     
   </aside> 
-  
-  <div style="text-align: right; clear: both;">  
-    <form name='frm' id='frm' method='get' action='./list_by_categoryID.do'>
-      <input type='hidden' name='categoryID' value='${param.categoryID }'>  <%-- 게시판의 구분 --%>
-      
-      <c:choose>
-        <c:when test="${param.word != '' }"> <%-- 검색하는 경우는 검색어를 출력 --%>
-          <input type='text' name='word' id='word' value='${param.word }'>
-        </c:when>
-        <c:otherwise> <%-- 검색하지 않는 경우 --%>
-          <input type='text' name='word' id='word' value=''>
-        </c:otherwise>
-      </c:choose>
-      <button type='submit' class='btn btn-secondary btn-sm' style="padding: 2px 8px 3px 8px; margin: 0px 0px 2px 0px;">검색</button>
-      <c:if test="${param.word.length() > 0 }"> <%-- 검색 상태하면 '검색 취소' 버튼을 출력 --%>
-        <button type='button' class='btn btn-secondary btn-sm' style="padding: 2px 8px 3px 8px; margin: 0px 0px 2px 0px;"
-                    onclick="location.href='./list_by_categoryID.do?categoryID=${param.categoryID}&word='">검색 취소</button>  
-      </c:if>    
-    </form>
-  </div>
+
   
   <DIV class='menu_line'></DIV>
 
@@ -671,15 +748,24 @@ function productID_ajax_post() {
           <span style="font-size: 1.5em; font-weight: bold;">${pName }</span><br><br>
           ${description }
           <br><br>
-          용량 : ${volume } 
+          용량 : ${volume } ml
           <br>
-          알코올 도수 : ${alcoholContent }
+          알코올 도수 : ${alcoholContent } 도
           <br>
-          가격 : ${price }
+          가격 : 
+          <a><fmt:formatNumber value="${price}" pattern="#,###" />
+          </a>
+          원
         </DIV>
       </li>        
     </ul>  
   </fieldset>
+  <form style="text-align: right; margin-right: 15%;">
+              <button type='button' id='btn_carts' class="cart-button" style='margin-bottom: 30px; margin-right: 5%;' 
+                        onclick="carts_ajax(${productID })">장바 구니</button>
+            <button type='button' id='btn_ordering' class="cart-button" 
+                        onclick="carts_ajax(${productID })">바로 구매</button>
+  </form>
   <div class="alert alert-warning alert-dismissible fade show" id="loginAlert" style="display: none;">
     <button type="button" class="btn-close" id = "warning_close" data-bs-dismiss="alert"></button>
     <strong>로그인 필요 기능</strong>  회원 로그인 후에 좋아요가 가능합니다.
