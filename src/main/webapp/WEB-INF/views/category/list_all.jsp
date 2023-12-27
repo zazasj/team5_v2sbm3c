@@ -40,8 +40,7 @@
   <table class="table table-hover">
     <colgroup>
       <col style="width: 10%;" />
-      <col style="width: 45%;" />
-      <col style="width: 10%;" />
+      <col style="width: 55%;" />
       <col style="width: 20%;" />
       <col style="width: 15%;" />
     </colgroup>
@@ -49,7 +48,6 @@
       <tr>
         <th class="th_bs">순서</th>
         <th class="th_bs">카테고리 이름</th>
-        <th class="th_bs">자료수</th>
         <th class="th_bs">등록일</th>
         <th class="th_bs">기타</th>
       </tr>
@@ -61,8 +59,7 @@
     
           <tr>
             <td class="td_bs">${info.count }</td>
-            <td><a href="../category/list_by_categoryID.do?categoryID=${categoryID }" style="display: block;">${categoryVO.categoryName }</a></td>
-            <td class="td_bs">${categoryVO.cnt }</td>
+            <td style="text-align: center;"><a href="../products/list_by_categoryID.do?categoryID=${categoryID }" style="display: block;">${categoryVO.categoryName }</a></td>
             <td class="td_bs">${categoryVO.rdate.substring(0, 10) }</td>
             <td class="td_bs">
               <c:choose>

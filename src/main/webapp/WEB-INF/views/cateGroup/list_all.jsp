@@ -59,7 +59,7 @@
     
           <tr>
             <td class="td_bs">${info.count }</td>
-            <td><a href="../cateGroup/list_by_GrpID.do?GrpID=${cateGroupVO.grpID }" style="display: block;">${cateGroupVO.gname }</a></td>
+            <td style="text-align: center;"><a href="../products/list_all_${cateGroupVO.grpID }.do?now_page=1" style="display: block;">${cateGroupVO.gname }</a></td>
             <td class="td_bs">${cateGroupVO.rdate.substring(0, 10) }</td>
             <td class="td_bs">
               <c:choose>
