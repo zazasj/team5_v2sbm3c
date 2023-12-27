@@ -68,6 +68,25 @@ public class ReviewCont {
     return mav;
   }
   
+  @RequestMapping(value="/review/admin_delete.do", method=RequestMethod.GET)
+  public ModelAndView admindelete(HttpSession session,int reviewno) {
+    ModelAndView mav = new ModelAndView();
+    reviewProc.delete(reviewno);  
+    if (adminProc.isAdmin(session)) {
+      List<ReviewVO> list = reviewProc.list();
+      
+      mav.addObject("list", list);
+      mav.setViewName("/review/list"); // /webapp/review/list.jsp
+
+    } else {
+      mav.addObject("return_url", "/review/list.do"); // 로그인 후 이동할 주소 ★
+      
+      mav.setViewName("redirect:/admin/login.do"); // /WEB-INF/views/member/login_ck_form.jsp
+    }
+    
+    return mav;
+  }
+  
 
   /**
    <xmp>   

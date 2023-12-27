@@ -74,7 +74,7 @@
               ${reviewVO.reviewdate.substring(0, 10)}
             </td>
             <td style='text-align: center; vertical-align: middle;'>
-              <a href="./delete.do?reviewno=${reviewVO.reviewno}"><img src="/review/delete.png" title="삭제"  border='0' /></a>
+              <a href="./admin_delete.do?reviewno=${reviewVO.reviewno}"><img src="/review/delete.png" title="삭제"  border='0' /></a>
             </td>
           </tr>
         </c:forEach>

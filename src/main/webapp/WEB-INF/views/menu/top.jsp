@@ -102,7 +102,7 @@
                     <a class="dropdown-item" href="/member/passwd_update.do">비밀번호 변경</a>
                     <a class="dropdown-item" href="/member/read.do">회원 정보 수정</a>
                     <a class="dropdown-item" href="/review/list_join.do">리뷰 내역</a>
-                    <a class="dropdown-item" href="/member/delete.do">회원 탈퇴</a>
+                    <a class="dropdown-item" href="/member/delete.do?memberno=${sessionScope.memberno }">회원 탈퇴</a>
                   </c:otherwise>
                 </c:choose>
               </div>

@@ -95,6 +95,9 @@
             <span class="span_success"> 회원 정보 삭제에 성공했습니다.</span>
           </li>   
           <li class='li_none'>
+          <button type='button' 
+                         onclick="location.href='/'"
+                         class="btn btn-primary btn-sm">시작 화면</button>
             <button type='button' 
                          onclick="location.href='/member/list.do'"
                          class="btn btn-primary btn-sm">확인</button>
