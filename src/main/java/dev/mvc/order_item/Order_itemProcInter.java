@@ -12,4 +12,8 @@ public interface Order_itemProcInter {
   public int create(Order_itemVO order_itemVO);
 
   public List<Order_itemVO> list_by_memberno(HashMap<String, Object> map);
+  
+  public List<Order_itemVO> list();
+  
+  public int delete(int order_payno);
 }

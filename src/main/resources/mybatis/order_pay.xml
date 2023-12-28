@@ -35,6 +35,18 @@
     WHERE memberno = #{memberno}
   </select>
   
+  <!-- 전체 주문 결재 목록 -->
+  <select id="list" resultType="dev.mvc.order_pay.Order_payVO">
+    SELECT order_payno, memberno, rname, rtel, rzipcode, raddress1, raddress2, paytype, amount, rdate
+    FROM order_pay
+    ORDER BY order_payno DESC
+  </select>
+  
+  <delete id="delete" parameterType="int">
+    DELETE FROM order_pay
+    WHERE order_payno=#{order_payno}
+  </delete>    
+  
   <!-- 회원별 주문 결재 목록 -->
   <select id="list_by_memberno" resultType="dev.mvc.order_pay.Order_payVO" parameterType="int">
     SELECT order_payno, memberno, rname, rtel, rzipcode, raddress1, raddress2, paytype, amount, rdate

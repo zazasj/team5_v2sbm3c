@@ -40,4 +40,8 @@ public interface Order_payProcInter {
    * @return 페이징 생성 문자열
    */ 
   public String pagingBox(int memberno, int now_page, String word, String list_file, int search_count);
+  
+  public List<Order_payVO> list();
+  
+  public int delete(int order_payno);
 }

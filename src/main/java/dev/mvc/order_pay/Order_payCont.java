@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import dev.mvc.admin.AdminProcInter;
 import dev.mvc.carts.CartsProcInter;
 import dev.mvc.carts.CartsVO;
 import dev.mvc.cateGroup.CateGroupVO;
@@ -32,6 +33,7 @@ import dev.mvc.order_item.Order_itemProcInter;
 import dev.mvc.order_item.Order_itemVO;
 import dev.mvc.products.ProductsProcInter;
 import dev.mvc.products.ProductsVO;
+import dev.mvc.review.ReviewVO;
 import dev.mvc.tool.Tool;
  
 @Controller
@@ -55,6 +57,10 @@ public class Order_payCont {
   @Autowired 
   @Qualifier("dev.mvc.products.ProductsProc")
   private ProductsProcInter ProductsProc;
+  
+  @Autowired 
+  @Qualifier("dev.mvc.admin.AdminProc")
+  private AdminProcInter adminProc;
   
   public Order_payCont() {
     System.out.println("-> Order_payCont created.");
@@ -243,6 +249,72 @@ public class Order_payCont {
       }
 
       return mav;
+  }
+  
+  @RequestMapping(value="/order_pay/list.do", method=RequestMethod.GET)
+  public ModelAndView list(HttpSession session) {
+    ModelAndView mav = new ModelAndView();
+    
+    if (adminProc.isAdmin(session)) {
+      List<Order_payVO> list = order_payProc.list();
+      
+      mav.addObject("list", list);
+      mav.setViewName("/order_pay/list"); // /webapp/review/list.jsp
+
+    } else {
+      mav.addObject("return_url", "/order_pay/list.do"); // 로그인 후 이동할 주소 ★
+      
+      mav.setViewName("redirect:/admin/login.do"); // /WEB-INF/views/member/login_ck_form.jsp
+    }
+    
+    return mav;
+  }
+  
+  @RequestMapping(value="/order_pay/admin_delete.do", method=RequestMethod.GET)
+  public ModelAndView admindelete(HttpSession session,int order_payno) {
+    ModelAndView mav = new ModelAndView();
+    order_payProc.delete(order_payno);  
+    if (adminProc.isAdmin(session)) {
+      List<Order_payVO> list = order_payProc.list();
+      
+      mav.addObject("list", list);
+      mav.setViewName("/order_pay/list"); // /webapp/review/list.jsp
+
+    } else {
+      mav.addObject("return_url", "/order_pay/list.do"); // 로그인 후 이동할 주소 ★
+      
+      mav.setViewName("redirect:/admin/login.do"); // /WEB-INF/views/member/login_ck_form.jsp
+    }
+    
+    return mav;
+  }
+  
+  @RequestMapping(value="/order_pay/admin_delete_combined.do", method=RequestMethod.GET)
+  public ModelAndView adminDeleteCombined(HttpSession session, int order_payno) {
+    ModelAndView mav = new ModelAndView();
+
+    // 먼저 order_item을 삭제합니다.
+    order_itemProc.delete(order_payno);
+
+    // 그 후 order_pay를 삭제합니다.
+    order_payProc.delete(order_payno);
+
+    // 삭제 후의 작업 (목록 가져오기 등)을 수행합니다.
+    if (adminProc.isAdmin(session)) {
+      List<Order_payVO> orderPayList = order_payProc.list();
+      mav.addObject("orderPayList", orderPayList);
+      
+      List<Order_itemVO> orderItemList = order_itemProc.list();
+      mav.addObject("orderItemList", orderItemList);
+
+      mav.setViewName("redirect:/order_pay/list.do"); // 목록 페이지로 이동
+
+    } else {
+      mav.addObject("return_url", "/order_pay/list.do"); // 로그인 후 이동할 주소 설정
+      mav.setViewName("redirect:/admin/login.do"); // 로그인 페이지로 이동
+    }
+    
+    return mav;
   }
 
 }

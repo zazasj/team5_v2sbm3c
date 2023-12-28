@@ -27,4 +27,8 @@ public interface Order_payDAOInter {
   
   public ArrayList<Order_payVO> list_by_memberno_search_paging(Order_payVO order_payVO);
   
+  public List<Order_payVO> list();
+  
+  public int delete(int order_payno);
+  
 }

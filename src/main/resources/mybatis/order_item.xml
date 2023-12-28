@@ -17,4 +17,15 @@
     ORDER BY order_itemno DESC
   </select>
   
+  <select id="list" parameterType="dev.mvc.order_item.Order_itemVO">
+    SELECT order_itemno, memberno, order_payno, productid, cnt, tot, stateno, rdate
+    FROM order_item
+    ORDER BY order_itemno DESC
+  </select>
+  
+  <delete id="delete" parameterType="int">
+    DELETE FROM order_item
+    WHERE order_payno=#{order_payno}
+  </delete>
+  
 </mapper>

@@ -17,4 +17,8 @@ public interface Order_itemDAOInter {
    * @return
    */
   public List<Order_itemVO> list_by_memberno(HashMap<String, Object> map);
+  
+  public List<Order_itemVO> list();
+  
+  public int delete(int order_payno);
 }

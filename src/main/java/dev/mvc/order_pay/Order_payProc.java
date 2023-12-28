@@ -161,4 +161,16 @@ public class Order_payProc implements Order_payProcInter {
     return str.toString(); 
   }
   
+  @Override
+  public List<Order_payVO> list() {
+    List<Order_payVO> list= this.order_payDAO.list();
+    return list;
+  }
+  
+  @Override
+  public int delete(int order_payno) {
+    int cnt = this.order_payDAO.delete(order_payno);
+    return cnt;
+  }
+  
 }
