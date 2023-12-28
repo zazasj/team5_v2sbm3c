@@ -509,6 +509,17 @@
             background-color: black;
             color: white;
         }
+        
+   .answer-row td span.gpt-text {
+    color: darkblue; /* "GPT:" 텍스트의 색상을 진한 초록색으로 지정 */
+    display: inline-block; /* 인라인 블록 요소로 변경하여 텍스트를 중앙에 정렬 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+  }
+
+  .q-text {
+    color: BLUE; /* "Q." 텍스트의 색상을 진한 빨간색으로 지정 */
+  }
+   
   
   
   

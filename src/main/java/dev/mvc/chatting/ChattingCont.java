@@ -1,20 +1,32 @@
 package dev.mvc.chatting;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import dev.mvc.chatting.ChattingVO;
 import dev.mvc.member.MemberProcInter;
 import dev.mvc.supplier.SupplierVO;
+import dev.mvc.admin.AdminProcInter;
 import dev.mvc.chatting.ChattingProcInter;
 import dev.mvc.tool.Tool;
 
@@ -28,6 +40,9 @@ public class ChattingCont {
 	  @Qualifier("dev.mvc.member.MemberProc")
 	  private MemberProcInter memberProc;
 	  
+	  @Autowired
+	  @Qualifier("dev.mvc.admin.AdminProc") // @Component("dev.mvc.admin.AdminProc")
+	  private AdminProcInter adminProc;
 	  
 	  public ChattingCont() {
 	    System.out.println("-> ChattingCont created.");
@@ -147,7 +162,7 @@ public class ChattingCont {
 	   @RequestMapping(value="/chatting/delete.do", method = RequestMethod.GET)
 	   public ModelAndView delete(HttpSession session , int chattingno) { 
 	     ModelAndView mav = new ModelAndView();
-	     if (this.memberProc.isMember(session) == true) {
+	     if (adminProc.isAdmin(session) == true) {
 	       mav.setViewName("/chatting/delete");
 	         
 	       ChattingVO chattingVO = this.chattingProc.read(chattingno);
@@ -156,7 +171,7 @@ public class ChattingCont {
 	       ArrayList<ChattingVO> list = this.chattingProc.list_all();
 	       mav.addObject("list", list);
 	     } else {
-	       mav.setViewName("/member/login_need"); 
+	       mav.setViewName("/admin/login_need"); 
 	     }
 	  
 	     return mav;
@@ -167,18 +182,18 @@ public class ChattingCont {
 	   public ModelAndView delete_proc(HttpSession session, int chattingno) { // <form> 태그의 값이 자동으로 저장됨
 	     ModelAndView mav = new ModelAndView();
 	     
-	     if (this.memberProc.isMember(session) == true) {
+	     if (adminProc.isAdmin(session) == true) {
 	       int cnt = this.chattingProc.delete(chattingno); // 카테고리 삭제
 	       
 	       if (cnt == 1) {
-	         mav.setViewName("redirect:/chatting/list_all.do");       // 자동 주소 이동, Spring 재호출 
+	         mav.setViewName("redirect:/chatting/list_by_chattingno.do");       // 자동 주소 이동, Spring 재호출 
 	       } else {
 	         mav.addObject("code", "delete_fail");
 	         mav.setViewName("/chatting/msg"); // /WEB-INF/views/genre/msg.jsp
 	       }
 	       mav.addObject("cnt", cnt);   
 	     } else {
-	       mav.setViewName("/member/login_need"); // /WEB-INF/views/manager/login_need.jsp
+	       mav.setViewName("/admin/login_need"); // /WEB-INF/views/manager/login_need.jsp
 	     }
 	     
 	     return mav;
@@ -260,6 +275,82 @@ public class ChattingCont {
 		    return mav;
 		  }  
 	   
+	   @GetMapping("/chatting/getAnswer_by_chattingno.do")
+	   public ResponseEntity<Map<String, Object>> getAnswerByChattingNo(@RequestParam(value = "chattingno", required = false) String chattingnoStr) {
+	       Map<String, Object> response = new HashMap<>();
+
+	       if (chattingnoStr == null || chattingnoStr.trim().isEmpty()) {
+	           response.put("error", "chattingno is required");
+	           return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	       }
+
+	       try {
+	           int chattingno = Integer.parseInt(chattingnoStr);
+	           int answerNo = (chattingno % 2 == 1) ? chattingno + 1 : chattingno;
+
+	           // 여기서 Oracle DB에서 answerNo에 해당하는 답변 메시지를 가져오는 로직을 작성합니다.
+	           String answerMsg = getAnswerFromOracleDB(answerNo); // 이 함수는 실제로 Oracle DB에서 데이터를 가져오는 로직을 포함해야 합니다.
+
+	           if (answerMsg != null) {
+	               response.put("answer", answerMsg);
+	               return new ResponseEntity<>(response, HttpStatus.OK);
+	           } else {
+	               response.put("error", "Answer not found");
+	               return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	           }
+	       } catch (NumberFormatException e) {
+	           response.put("error", "Invalid chattingno format");
+	           return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	       }
+	   }
+	   
+	   private String getAnswerFromOracleDB(int answerNo) {
+		    String answerMsg = null;
+
+		    // JDBC 연결 정보 설정
+		    String jdbcUrl = "jdbc:oracle:thin:@54.66.10.137:1521:xe"; // Oracle DB URL
+		    String username = "team5"; // Oracle DB 사용자 이름
+		    String password = "1234"; // Oracle DB 비밀번호
+
+		    Connection connection = null;
+		    PreparedStatement preparedStatement = null;
+		    ResultSet resultSet = null;
+
+		    try {
+		        // JDBC 드라이버 로드
+		        Class.forName("oracle.jdbc.driver.OracleDriver");
+
+		        // 데이터베이스 연결
+		        connection = DriverManager.getConnection(jdbcUrl, username, password);
+
+		        // SQL 쿼리 준비
+		        String sql = "SELECT msg FROM chatting WHERE chattingno = ?";
+		        preparedStatement = connection.prepareStatement(sql);
+		        preparedStatement.setInt(1, answerNo);
+
+		        // 쿼리 실행 및 결과 가져오기
+		        resultSet = preparedStatement.executeQuery();
+
+		        if (resultSet.next()) {
+		            answerMsg = resultSet.getString("msg");
+		        }
+
+		    } catch (ClassNotFoundException | SQLException e) {
+		        e.printStackTrace();
+		    } finally {
+		        // 리소스 해제
+		        try {
+		            if (resultSet != null) resultSet.close();
+		            if (preparedStatement != null) preparedStatement.close();
+		            if (connection != null) connection.close();
+		        } catch (SQLException e) {
+		            e.printStackTrace();
+		        }
+		    }
+
+		    return answerMsg;
+		}
+
 	 }
 		   
 	 
