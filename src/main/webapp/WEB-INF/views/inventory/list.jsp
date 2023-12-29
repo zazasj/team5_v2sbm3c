@@ -14,7 +14,18 @@
 <body>
 <c:import url="/menu/top.do" />
 
-  <div class='title_line'>재고현황</div>
+  <div class='title_line'>현 재고</div>
+  
+  <aside class="aside_right">
+    <a href="./list_all.do">재고현황</a>    
+    <span class='menu_divide' >│</span>
+    <a href="./list_by_inventoryStatus.do?word=&now_page=1&inventoryStatus=입고">입고</a>    
+    <span class='menu_divide' >│</span>
+    <a href="./list_by_inventoryStatus.do?word=&now_page=1&inventoryStatus=출고">출고</a>
+    <span class='menu_divide' >│</span>
+    <a href="javascript:location.reload();">새로고침</a>
+  </aside>
+  <div class="menu_line"></div>
   
   <form name='frm' method='post' action='/inventory/updatequantity.do'>
     <div style="text-align: center;">

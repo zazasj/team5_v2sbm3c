@@ -24,10 +24,14 @@
   </div>
   
   <aside class="aside_right">
-    <%-- 관리자로 로그인해야 메뉴가 출력됨 --%>
-    <c:if test="${sessionScope.admin_id != null }">
-      <span class='menu_divide' >│</span>
-    </c:if>
+    <a href="./list.do">현 재고</a>    
+    <span class='menu_divide' >│</span>
+    <a href="./list_all.do">재고 현황</a>    
+    <span class='menu_divide' >│</span>
+    <a href="./list_by_inventoryStatus.do?word=&now_page=1&inventoryStatus=입고">입고</a>    
+    <span class='menu_divide' >│</span>
+    <a href="./list_by_inventoryStatus.do?word=&now_page=1&inventoryStatus=출고">출고</a>
+    <span class='menu_divide' >│</span>
     <a href="javascript:location.reload();">새로고침</a>
   </aside>
   

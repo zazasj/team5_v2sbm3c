@@ -17,6 +17,11 @@
   <div class='title_line'>재고 내역 삭제</div>
   
   <aside class="aside_right">
+    <a href="./list.do">현 재고</a>    
+    <span class='menu_divide' >│</span>
+    <a href="./list_by_inventoryStatus.do?word=&now_page=1&inventoryStatus=입고">입고</a>    
+    <span class='menu_divide' >│</span>
+    <a href="./list_by_inventoryStatus.do?word=&now_page=1&inventoryStatus=출고">출고</a>
     <span class='menu_divide' >│</span>
     <a href="javascript:location.reload();">새로고침</a>
   </aside>
