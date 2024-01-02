@@ -94,7 +94,9 @@
       <TD class='td_basic'><fmt:formatNumber value="${amount }" pattern="#,###" /></TD>
       <TD class='td_basic'>${rdate.substring(2,16) }</TD>
       <TD class='td_basic'>
-        <A href="/order_item/list_by_memberno.do?order_payno=${order_payno}"><img src="/orderpay/images/bu6.png" title="주문 내역 상세 조회"></A>
+        <A href="/order_item/list_by_admin.do?order_payno=${order_payno}&memberno=${memberno}">
+        <img src="/orderpay/images/bu6.png" title="주문 내역 상세 조회">
+        </A>
       </TD>
       <td style='text-align: center; vertical-align: middle;'>
         <a href="./admin_delete_combined.do?order_payno=${order_payVO.order_payno}">

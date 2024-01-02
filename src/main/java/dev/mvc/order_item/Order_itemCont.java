@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import dev.mvc.admin.AdminProcInter;
@@ -80,23 +81,65 @@ public class Order_itemCont {
     return mav;
   }
   
-  @RequestMapping(value="/order_item/admin_delete.do", method=RequestMethod.GET)
-  public ModelAndView admindelete(HttpSession session,int order_payno) {
-    ModelAndView mav = new ModelAndView();
-    order_itemProc.delete(order_payno);  
-    if (adminProc.isAdmin(session)) {
-      List<Order_itemVO> list = order_itemProc.list();
-      
-      mav.addObject("list", list);
-      mav.setViewName("/order_pay/list"); // /webapp/review/list.jsp
+//  @RequestMapping(value="/order_item/admin_delete.do", method=RequestMethod.GET)
+//  public ModelAndView admindelete(HttpSession session,int order_payno) {
+//    ModelAndView mav = new ModelAndView();
+//    order_itemProc.delete(order_payno);  
+//    if (adminProc.isAdmin(session)) {
+//      List<Order_itemVO> list = order_itemProc.list();
+//      
+//      mav.addObject("list", list);
+//      mav.setViewName("/order_pay/list"); // /webapp/review/list.jsp
+//
+//    } else {
+//      mav.addObject("return_url", "/order_pay/list.do"); // 로그인 후 이동할 주소 ★
+//      
+//      mav.setViewName("redirect:/admin/login.do"); // /WEB-INF/views/member/login_ck_form.jsp
+//    }
+//    
+//    return mav;
+//  }
+  
+  /**
+   * 주문 결재/회원별 목록
+   * http://localhost:9091/order_item/list_by_memberno.do 
+   * @return
+   */
+  @RequestMapping(value = "/order_item/list_by_admin.do", method = RequestMethod.GET)
+  public ModelAndView list_by_admin(HttpSession session, 
+                                    @RequestParam int order_payno,
+                                    @RequestParam(required = false) Integer memberno) {
+      ModelAndView mav = new ModelAndView();
 
-    } else {
-      mav.addObject("return_url", "/order_pay/list.do"); // 로그인 후 이동할 주소 ★
-      
-      mav.setViewName("redirect:/admin/login.do"); // /WEB-INF/views/member/login_ck_form.jsp
-    }
-    
-    return mav;
+      int baesong_tot = 0;
+      int tot_sum = 0;
+      int total_order = 0;
+
+      // memberno 값이 null이 아니면 주문 목록 조회 및 처리
+      if (memberno != null) {
+          HashMap<String, Object> map = new HashMap<>();
+          map.put("order_payno", order_payno);
+          map.put("memberno", memberno);
+
+          List<Order_itemVO> list = this.order_itemProc.list_by_memberno(map);
+
+          for (Order_itemVO order_itemVO : list) {
+              tot_sum += order_itemVO.getPrice() * order_itemVO.getCnt();
+          }
+
+          if (tot_sum < 30000) {
+              baesong_tot = 3000;
+          }
+
+          total_order = tot_sum + baesong_tot;
+          mav.addObject("baesong_tot", baesong_tot);
+          mav.addObject("total_order", total_order);
+          mav.addObject("list", list);
+      }
+
+      // 뷰 설정
+      mav.setViewName("/order_item/list_by_admin");
+      return mav;
   }
   
 }

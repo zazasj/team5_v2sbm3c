@@ -270,24 +270,24 @@ public class Order_payCont {
     return mav;
   }
   
-  @RequestMapping(value="/order_pay/admin_delete.do", method=RequestMethod.GET)
-  public ModelAndView admindelete(HttpSession session,int order_payno) {
-    ModelAndView mav = new ModelAndView();
-    order_payProc.delete(order_payno);  
-    if (adminProc.isAdmin(session)) {
-      List<Order_payVO> list = order_payProc.list();
-      
-      mav.addObject("list", list);
-      mav.setViewName("/order_pay/list"); // /webapp/review/list.jsp
-
-    } else {
-      mav.addObject("return_url", "/order_pay/list.do"); // 로그인 후 이동할 주소 ★
-      
-      mav.setViewName("redirect:/admin/login.do"); // /WEB-INF/views/member/login_ck_form.jsp
-    }
-    
-    return mav;
-  }
+//  @RequestMapping(value="/order_pay/admin_delete.do", method=RequestMethod.GET)
+//  public ModelAndView admindelete(HttpSession session,int order_payno) {
+//    ModelAndView mav = new ModelAndView();
+//    order_payProc.delete(order_payno);  
+//    if (adminProc.isAdmin(session)) {
+//      List<Order_payVO> list = order_payProc.list();
+//      
+//      mav.addObject("list", list);
+//      mav.setViewName("/order_pay/list"); // /webapp/review/list.jsp
+//
+//    } else {
+//      mav.addObject("return_url", "/order_pay/list.do"); // 로그인 후 이동할 주소 ★
+//      
+//      mav.setViewName("redirect:/admin/login.do"); // /WEB-INF/views/member/login_ck_form.jsp
+//    }
+//    
+//    return mav;
+//  }
   
   @RequestMapping(value="/order_pay/admin_delete_combined.do", method=RequestMethod.GET)
   public ModelAndView adminDeleteCombined(HttpSession session, int order_payno) {
