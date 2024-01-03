@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import dev.mvc.admin.AdminProcInter;
+import dev.mvc.adminlog.AdlogService;
 import dev.mvc.cateGroup.CateGroupProcInter;
 import dev.mvc.cateGroup.CateGroupVO;
 import dev.mvc.category.CategoryProcInter;
@@ -48,6 +49,11 @@ public class ProductsCont {
   @Autowired
   @Qualifier("dev.mvc.supplier.SupplierProc")
   private SupplierProcInter supplierProc;
+  
+  @Autowired
+  private AdlogService adlogservice;
+  
+  private String tablename = "Product";
   
   public ProductsCont () {
     System.out.println("-> ProductsCont created.");
@@ -154,6 +160,13 @@ public class ProductsCont {
         } else {
             mav.addObject("code", "create_fail");
         }
+        //adminlog관련 
+        int recordid = productsVO.getProductID();
+        int adno =  (int) session.getAttribute("adminno");
+        String acttype = "Create";  
+        adlogservice.createLog(tablename, recordid, acttype, adno);
+        
+        
         mav.addObject("cnt", cnt); // request.setAttribute("cnt", cnt)
         
         // System.out.println("--> categoryID: " + contentsVO.getCateno());
@@ -1646,7 +1659,7 @@ public class ProductsCont {
       
       mav.setViewName("/products/update_text"); // /WEB-INF/views/contents/update_text.jsp
       // String content = "장소:\n인원:\n준비물:\n비용:\n기타:\n";
-      // mav.addObject("content", content);
+      // mav.addObject("content", content);     
 
     } else {
       mav.addObject("url", "/admin/login_need"); // /WEB-INF/views/admin/login_need.jsp
@@ -1675,7 +1688,11 @@ public class ProductsCont {
 
       this.productsProc.update_text(productsVO); // 글수정  
       
-
+      //adminlog관련 
+      int recordid = productsVO.getProductID();
+      int adno =  (int) session.getAttribute("adminno");
+      String acttype = "Update_Text";  
+      adlogservice.createLog(tablename, recordid, acttype, adno);
       
       // mav 객체 이용
       mav.addObject("productID", productsVO.getProductID());
@@ -1789,6 +1806,13 @@ public class ProductsCont {
       // -------------------------------------------------------------------
           
       this.productsProc.update_file(productsVO); // Oracle 처리
+      
+      //adminlog관련 
+      int recordid = productsVO.getProductID();
+      int adno =  (int) session.getAttribute("adminno");
+      String acttype = "Update_File";  
+      adlogservice.createLog(tablename, recordid, acttype, adno);
+      
 
       mav.addObject("productID", productsVO.getProductID());
       mav.addObject("categoryID", productsVO.getCategoryID());
@@ -1839,7 +1863,7 @@ public class ProductsCont {
    * @return
    */
   @RequestMapping(value = "/products/delete.do", method = RequestMethod.POST)
-  public ModelAndView delete(ProductsVO productsVO) {
+  public ModelAndView delete(HttpSession session, ProductsVO productsVO) {
     ModelAndView mav = new ModelAndView();
     
  // 삭제할 파일 정보를 읽어옴, 기존에 등록된 레코드 저장용
@@ -1861,6 +1885,13 @@ public class ProductsCont {
     // --------------------------------------------------------------------
         
     this.productsProc.delete(productsVO.getProductID()); // DBMS 삭제
+    
+    //adminlog관련 
+    int recordid = productsVO.getProductID();
+    int adno =  (int) session.getAttribute("adminno");
+    String acttype = "Delete";  
+    adlogservice.createLog(tablename, recordid, acttype, adno);
+    
         
     // -------------------------------------------------------------------------------------
     // 마지막 페이지의 마지막 레코드 삭제시의 페이지 번호 -1 처리

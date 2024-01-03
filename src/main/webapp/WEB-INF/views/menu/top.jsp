@@ -57,7 +57,7 @@
                 </c:when>
               </c:choose>
             </li>
-            <li class = "nav-item dropdown">
+            <%-- <li class = "nav-item dropdown">
               <c:choose>
                 <c:when test="${grpID eq 6}">
                   <a class="nav-link top_menu_link dropdown-toggle" data-bs-toggle="dropdown" href="#">${gname}</a>
@@ -73,8 +73,12 @@
                   </div>
                 </c:when>
               </c:choose>
-            </li>
+            </li> --%>
             </c:forEach>
+            
+            <li class="nav-item"> <%-- 서브 메뉴가 없는 독립메뉴 --%>
+              <a class="nav-link top_menu_link" href="http://54.66.10.137:3000/" target="_blank" onclick="window.open('http://54.66.10.137:3000/', 'newwindow', 'width=740, height=740'); return false;">공지사항</a>
+            </li>        
         
             <li class="nav-item"> <%-- 서브 메뉴가 없는 독립메뉴 --%>
               <a class="nav-link top_menu_link" href="/event/list_by_eventno.do">이벤트</a>

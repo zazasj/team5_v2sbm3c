@@ -1,6 +1,7 @@
 package dev.mvc.team5;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -24,11 +25,19 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
       registry.addResourceHandler("/products/storage/**").addResourceLocations("file:///" +  Products.getUploadDir());
       registry.addResourceHandler("/shipping/storage/**").addResourceLocations("file:///" +  Shipping.getUploadDir());
       registry.addResourceHandler("/supplier/storage/**").addResourceLocations("file:///" +  Suppliers.getUploadDir());
-      
+      }
       // JSP ?��?��?��?�� 경로: http://localhost:9091/attachfile/storage";
       // registry.addResourceHandler("/attachfile/storage/**").addResourceLocations("file:///" +  Tool.getOSPath() + "/attachfile/storage/");
       
       // JSP ?��?��?��?�� 경로: http://localhost:9091/member/storage";
       // registry.addResourceHandler("/member/storage/**").addResourceLocations("file:///" +  Tool.getOSPath() + "/member/storage/");
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+          registry.addMapping("/**")
+                  .allowedOriginPatterns("*") // EC2 포트3000 (React 2.4 부터 Patterns로 사용.
+                  .allowedMethods("GET", "POST", "PUT", "DELETE")
+                  .allowedHeaders("*")
+                  .allowCredentials(true);
+      
   }
 }
