@@ -102,7 +102,6 @@
                     <a class="dropdown-item" href="/member/read.do">가입 정보</a>
                     <a class="dropdown-item" href="/favproduct/list_by_memberno.do">관심상품</a>                    
                     <a class="dropdown-item" href="/carts/list_by_memberno.do">장바구니</a>
-                    <a class="dropdown-item" href="#">주문 결제</a>
                     <a class="dropdown-item" href="/member/passwd_update.do">비밀번호 변경</a>
                     <a class="dropdown-item" href="/member/read.do">회원 정보 수정</a>
                     <a class="dropdown-item" href="/review/list_join.do">리뷰 내역</a>

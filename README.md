@@ -28,7 +28,8 @@ Mobile | Mobile Developer
 회원탈퇴 |  |  |  |
 리뷰 |  |  |  |
 좋아요 |  |  |  |
-9개  | 4개 | 4개  | 3개 | 2개
+공지사항 |  |  |  |
+10개  | 4개 | 4개  | 3개 | 2개
 
 # DB Logical ERD Table
 ![논리](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/eb79f243-41f1-4611-9867-112ff3756b87)
