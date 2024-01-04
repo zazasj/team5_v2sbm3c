@@ -2,7 +2,7 @@
  
 전세진 | 이정탁 | 황경태 | 홍재민 | 한창명
 :--:|:--:|:--:|:--:|:--:
-PL,DA | FE | DS | AI | Mobile
+PL,DA | FE | DS | AI | ME
 <a href="https://github.com/zazasj"><img src="https://avatars.githubusercontent.com/zazasj" width="60" height="60"></a> | <a href="https://github.com/JTak2"><img src="https://avatars.githubusercontent.com/JTak2" width="60" height="60"></a> | <a href="https://github.com/HwangReaper"><img src="https://avatars.githubusercontent.com/HwangReaper" width="60" height="60"></a> | <a href="https://github.com/hongjm99"><img src="https://avatars.githubusercontent.com/hongjm99" width="60" height="60"></a> | <a href="https://github.com/ChangMyungGit"><img src="https://avatars.githubusercontent.com/ChangMyungGit" width="60" height="60"></a>
 
 
@@ -13,7 +13,7 @@ DA|Data Architecture
 FE | FrontEnd
 DS | Data Science
 AI | Artificial Intelligence
-Mobile | Mobile Developer
+ME | Mobile Engieer
 
 
 **팀원별 테이블**
@@ -32,10 +32,11 @@ Mobile | Mobile Developer
 10개  | 4개 | 4개  | 3개 | 2개
 
 # DB Logical ERD Table
-![논리](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/eb79f243-41f1-4611-9867-112ff3756b87)
+![논리최종](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/8f91799d-96f4-4c12-ad9c-829997d697fc)
 
 # DB Physical ERD Table
-![물리](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/b5c8c6bb-6697-4ba0-8282-e2fa8bc1dd05)
+![물리최종](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/9b149d52-a476-4e8a-a803-726208e31b52)
+
 
 
 
