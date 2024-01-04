@@ -22,7 +22,7 @@ public class ProductsVO {
     /** 용량 */
     private int volume;
     /** 알코올 도수 */
-    private int alcoholContent;
+    private float alcoholContent;
     /** 가격 */
     private int price;
     /** 추천수 */
@@ -109,10 +109,10 @@ public class ProductsVO {
     public void setVolume(int volume) {
       this.volume = volume;
     }
-    public int getAlcoholContent() {
+    public float getAlcoholContent() {
       return alcoholContent;
     }
-    public void setAlcoholContent(int alcoholContent) {
+    public void setAlcoholContent(float alcoholContent) {
       this.alcoholContent = alcoholContent;
     }
     public int getPrice() {

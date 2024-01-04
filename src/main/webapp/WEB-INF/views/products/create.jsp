@@ -15,10 +15,16 @@
             // 입력된 키코드 가져오기
             var charCode = (evt.which) ? evt.which : event.keyCode;
 
-            // 입력된 값이 숫자가 아니면 입력을 취소
-            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-                evt.preventDefault();
-            }
+        // 입력된 값이 숫자거나 소수점이 아니면 입력을 취소
+        if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+            evt.preventDefault();
+        }
+
+        // 소수점이 이미 입력되었을 경우, 두 번 이상 입력되지 못하게 함
+        var input = evt.target.value;
+        if (charCode === 46 && input.indexOf('.') !== -1) {
+            evt.preventDefault();
+        }
         }
 </script>
 </head>
