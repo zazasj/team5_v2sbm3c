@@ -1,3 +1,7 @@
+**웹사이트 링크**
+http://54.66.10.137:9093/ |
+:--:|
+
 **팀원별 역할**
  
 전세진 | 이정탁 | 황경태 | 홍재민 | 한창명
@@ -34,9 +38,33 @@ ME | Mobile Engieer
 # DB Logical ERD Table
 ![논리최종](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/8f91799d-96f4-4c12-ad9c-829997d697fc)
 
+
 # DB Physical ERD Table
 ![물리최종](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/9b149d52-a476-4e8a-a803-726208e31b52)
 
 
+# 메인 화면
+![01메인화면](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/6b23950c-acca-42c2-8a99-a73339ea65d0)
 
 
+# 제품 목록
+![05카테고리그룹 클릭시 전체 제품](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/2976214f-afdd-41e3-83e0-48417133fa57)
+
+
+# 제품 Read
+![08제품read](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/ea79f8ca-f6f9-41a3-901d-2287c77820db)
+
+
+# 추천 시스템
+![추천시스템1](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/b07640b8-9a99-4344-9f84-b0656b29ebf4)
+
+
+# 챗봇
+![챗봇대화](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/54fb2f48-93a2-4c92-ab19-7ff34ce35b1d)
+
+
+# 공지사항
+![공지사항로그인시](https://github.com/zazasj/team5_v2sbm3c/assets/105793155/0489d320-c87a-42b1-ae3f-1ea885a654a3)
+
+
+자세한 내용은 웹사이트 혹은 Github에 게시된 ppt를 참고해주시면 감사하겠습니다.
